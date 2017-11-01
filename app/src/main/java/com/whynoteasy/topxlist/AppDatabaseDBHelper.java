@@ -6,14 +6,34 @@ import android.database.sqlite.SQLiteDatabase;
 
 /**
  * Created by Whatever on 31.10.2017.
+ *
+ * THIS USES THE SINGLETON PATTERN!!!
+ * Sources;
+ * http://www.androiddesignpatterns.com/2012/05/correctly-managing-your-sqlite-database.html
+ * https://developer.android.com/training/basics/data-storage/databases.html
+ *
+ * After first call of getWritableDatabase() the database is cashed so no problem if I have multiple dbs
  */
 
 public class AppDatabaseDBHelper extends SQLiteOpenHelper {
+    private static AppDatabaseDBHelper sAppDatabaseDBHelperInstance;
+
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "appdatabase.db";
 
-    public AppDatabaseDBHelper(Context context) {
+    public static synchronized AppDatabaseDBHelper getAppDatabaseDBHelperInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sAppDatabaseDBHelperInstance == null) { //has not been created
+            sAppDatabaseDBHelperInstance = new AppDatabaseDBHelper(context.getApplicationContext());
+        }
+
+        return sAppDatabaseDBHelperInstance;
+    }
+
+    private AppDatabaseDBHelper(Context context) { //private, since I dont want anyone to be able to create another Instance
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
