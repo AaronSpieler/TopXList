@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //From Here On Its My Code
+
     }
 
     @Override
