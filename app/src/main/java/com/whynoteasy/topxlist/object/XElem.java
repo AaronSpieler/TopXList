@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist;
+package com.whynoteasy.topxlist.object;
 
 /**
  * THESE ARE THE ELEMENTS OF THE LISTS

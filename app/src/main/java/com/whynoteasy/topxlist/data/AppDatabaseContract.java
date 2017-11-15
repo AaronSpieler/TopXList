@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist;
+package com.whynoteasy.topxlist.data;
 
 import android.provider.BaseColumns;
 

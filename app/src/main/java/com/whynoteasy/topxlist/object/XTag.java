@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist;
+package com.whynoteasy.topxlist.object;
 
 /**
  * Created by Whatever on 31.10.2017.
