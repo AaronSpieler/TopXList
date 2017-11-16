@@ -2,6 +2,7 @@ package com.whynoteasy.topxlist.object;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -11,7 +12,9 @@ import android.support.annotation.NonNull;
 @Entity
 public class XElemModel implements Comparable<XElemModel>{
     //Constants
+    @Ignore
     final int xETlength = 255; //title length
+    @Ignore
     final int xEDlength = 8192; //description/Body length
 
     //Attributes
@@ -40,39 +43,39 @@ public class XElemModel implements Comparable<XElemModel>{
 
     //Getters and Setters
 
-    public int getxElemID() {
+    public int getXElemID() {
         return xElemID;
     }
 
-    public String getxElemTitle() {
+    public String getXElemTitle() {
         return xElemTitle;
     }
 
-    public void setxElemTitle(String xElemTitle) {
+    public void setXElemTitle(String xElemTitle) {
         this.xElemTitle = xElemTitle;
     }
 
-    public String getxElemDescription() {
+    public String getXElemDescription() {
         return xElemDescription;
     }
 
-    public void setxElemDescription(String xElemDescription) {
+    public void setXElemDescription(String xElemDescription) {
         this.xElemDescription = xElemDescription;
     }
 
-    public int getxElemNum() {
+    public int getXElemNum() {
         return xElemNum;
     }
 
-    public void setxElemNum(int xElemNum) {
+    public void setXElemNum(int xElemNum) {
         this.xElemNum = xElemNum;
     }
 
-    public int getxListIDForeign() {
+    public int getXListIDForeign() {
         return xListIDForeign;
     }
 
-    public void setxListIDForeign(int xListIDForeign) {
+    public void setXListIDForeign(int xListIDForeign) {
         this.xListIDForeign = xListIDForeign;
     }
 
@@ -80,6 +83,6 @@ public class XElemModel implements Comparable<XElemModel>{
 
     @Override
     public int compareTo(@NonNull XElemModel xElemModel) {//to be able to order them should it be necessary
-        return (this.getxElemNum() - xElemModel.getxElemNum());
+        return (this.getXElemNum() - xElemModel.getXElemNum());
     }
 }

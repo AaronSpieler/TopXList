@@ -5,6 +5,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Transaction;
 import android.arch.persistence.room.Update;
 
 import com.whynoteasy.topxlist.object.XListTagsPojo;
@@ -22,19 +23,12 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface XListTagsDao {
 
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
+    @Transaction
     @Query("SELECT * FROM XListModel")
-    public LiveData<ArrayList<XListTagsPojo>> loadAllListsWithTags();
+    public LiveData<List<XListTagsPojo>> loadAllListsWithTags();
 
+    @Transaction
     @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
     public XListTagsPojo loadListWithTagByID(String xListIDInp);
-
-    @Insert(onConflict = REPLACE)
-    void insertXListWithTag(XListTagsPojo xListTagsPojo);
-
-    @Delete
-    void deleteXListWithTag(XListTagsPojo xListTagsPojo);
-
-    @Update
-    void updateXListWithTag(XListTagsPojo xListTagsPojo);
 
 }

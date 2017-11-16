@@ -30,23 +30,23 @@ public class XTagModel {
 
     //Getters and Setters
 
-    public int getxTagID() {
+    public int getXTagID() {
         return xTagID;
     }
 
-    public String getxTagName() {
+    public String getXTagName() {
         return xTagName;
     }
 
-    public void setxTagName(String xTagName) {
+    public void setXTagName(String xTagName) {
         this.xTagName = xTagName;
     }
 
-    public int getxListIDForeign() {
+    public int getXListIDForeign() {
         return xListIDForeign;
     }
 
-    public void setxListIDForeign(int xListIDForeign) {
+    public void setXListIDForeign(int xListIDForeign) {
         this.xListIDForeign = xListIDForeign;
     }
 }
