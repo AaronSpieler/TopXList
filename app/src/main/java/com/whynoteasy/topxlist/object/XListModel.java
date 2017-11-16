@@ -1,6 +1,7 @@
 package com.whynoteasy.topxlist.object;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.Relation;
 
@@ -13,8 +14,11 @@ import java.util.List;
 @Entity
 public class XListModel {
     //Constants
+    @Ignore
     final int xLTlength = 255; //max Title length
+    @Ignore
     final int xLSDlength = 2048; //max short description length
+    @Ignore
     final int xLLDlength = 8192; //max long description length
 
     //Attributes
@@ -41,39 +45,39 @@ public class XListModel {
 
     //Getters and Setters
 
-    public int getxListID() {
+    public int getXListID() {
         return xListID;
     }
 
-    public String getxListTitle() {
+    public String getXListTitle() {
         return xListTitle;
     }
 
-    public void setxListTitle(String xListTitle) {
+    public void setXListTitle(String xListTitle) {
         this.xListTitle = xListTitle;
     }
 
-    public String getxListShortDescription() {
+    public String getXListShortDescription() {
         return xListShortDescription;
     }
 
-    public void setxListShortDescription(String xListShortDescription) {
+    public void setXListShortDescription(String xListShortDescription) {
         this.xListShortDescription = xListShortDescription;
     }
 
-    public String getxListLongDescription() {
+    public String getXListLongDescription() {
         return xListLongDescription;
     }
 
-    public void setxListLongDescription(String xListLongDescription) {
+    public void setXListLongDescription(String xListLongDescription) {
         this.xListLongDescription = xListLongDescription;
     }
 
-    public int getxListNum() {
+    public int getXListNum() {
         return xListNum;
     }
 
-    public void setxListNum(int xListNum) {
+    public void setXListNum(int xListNum) {
         this.xListNum = xListNum;
     }
 

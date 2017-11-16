@@ -14,12 +14,16 @@ public class XListTagsPojo implements Comparable<XListModel>{ //no constructor o
     @Embedded
     private XListModel xList;
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
-    @Relation(parentColumn = "xTagID", entityColumn = "xListIDForeign", entity = XTagModel.class)
+    @Relation(parentColumn = "xListID", entityColumn = "xListIDForeign", entity = XTagModel.class)
     private List<XTagModel> xTagModelList;
 
     @Override
     public int compareTo(@NonNull XListModel xListModel) {
-        return (this.xList.getxListNum() - xListModel.getxListNum()); //0 if they are equal, negative if this object is "smaller" else its positive
+        return (this.xList.getXListNum() - xListModel.getXListNum()); //0 if they are equal, negative if this object is "smaller" else its positive
+    }
+
+    public XListTagsPojo() {
+        //DUMMY; COMPILER MISSES STANDARD CONSTRUCTOR
     }
 
     public XListTagsPojo(XListModel xList, List<XTagModel> xTagModelList) {
@@ -27,19 +31,19 @@ public class XListTagsPojo implements Comparable<XListModel>{ //no constructor o
         this.xTagModelList = xTagModelList;
     }
 
-    public XListModel getxList() {
+    public XListModel getXList() {
         return xList;
     }
 
-    public void setxList(XListModel xList) {
+    public void setXList(XListModel xList) {
         this.xList = xList;
     }
 
-    public List<XTagModel> getxTagModelList() {
+    public List<XTagModel> getXTagModelList() {
         return xTagModelList;
     }
 
-    public void setxTagModelList(List<XTagModel> xTagModelList) {
+    public void setXTagModelList(List<XTagModel> xTagModelList) {
         this.xTagModelList = xTagModelList;
     }
 }

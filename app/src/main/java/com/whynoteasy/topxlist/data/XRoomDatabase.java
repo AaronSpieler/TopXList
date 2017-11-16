@@ -13,12 +13,12 @@ import com.whynoteasy.topxlist.object.XTagModel;
  * Created by Whatever on 15.11.2017.
  * Singleton Pattern
  */
-@Database(entities = {XTagModel.class, XElemModel.class, XListModel.class}, version = 1)
+@Database(entities = {XTagModel.class, XElemModel.class, XListModel.class}, version = 1, exportSchema = false)
 public abstract class XRoomDatabase extends RoomDatabase{
 
     private static XRoomDatabase sInstance;
 
-    private static XRoomDatabase getDatabase(Context context){
+    public static XRoomDatabase getDatabase(Context context){
         if (sInstance == null){
             sInstance = Room.databaseBuilder(context.getApplicationContext(), XRoomDatabase.class, "topXList_db").build();
         }
@@ -27,4 +27,6 @@ public abstract class XRoomDatabase extends RoomDatabase{
 
     public abstract XElemDao xElementsModel();
     public abstract XListTagsDao xListsAndTagsModel();
+    public abstract XTagDao xTagModel();
+    public abstract XListDao xListModel();
 }

@@ -5,16 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.whynoteasy.topxlist.MainActivity"
+    tools:context="com.whynoteasy.topxlist.listActivity.MainActivity"
     tools:showIn="@layout/app_bar_main">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/lists_scrollbar"
-        android:layout_width="352dp"
-        android:layout_height="479dp"
-        android:clipToPadding="false"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
 
 </android.support.constraint.ConstraintLayout>
