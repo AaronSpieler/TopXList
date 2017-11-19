@@ -17,6 +17,9 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Whatever on 15.11.2017.
+ * Main Purpose:    Create Querries for Object not even saved as One in Database, Informatin is Querried from two tables, Pojo Model
+ *                  Abstraction layer between sql and Java thanks to Room
+ *                  Define communication interface between database and Java Code
  */
 
 @Dao
@@ -24,7 +27,7 @@ public interface XListTagsDao {
 
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Transaction
-    @Query("SELECT * FROM XListModel")
+    @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
     public LiveData<List<XListTagsPojo>> loadAllListsWithTags();
 
     @Transaction

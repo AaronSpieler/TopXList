@@ -11,14 +11,15 @@ import com.whynoteasy.topxlist.object.XTagModel;
 
 /**
  * Created by Whatever on 15.11.2017.
- * Singleton Pattern
+ * SINGLETON PATTERN
+ * Main Purpose:    Defining & Configuring the Application Database
  */
 @Database(entities = {XTagModel.class, XElemModel.class, XListModel.class}, version = 1, exportSchema = false)
 public abstract class XRoomDatabase extends RoomDatabase{
 
     private static XRoomDatabase sInstance;
 
-    public static XRoomDatabase getDatabase(Context context){
+    public static XRoomDatabase getDatabase(Context context){//context does'nt really matter, we always create it with application context
         if (sInstance == null){
             sInstance = Room.databaseBuilder(context.getApplicationContext(), XRoomDatabase.class, "topXList_db").build();
         }

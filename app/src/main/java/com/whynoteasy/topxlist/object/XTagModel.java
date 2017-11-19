@@ -1,5 +1,6 @@
 package com.whynoteasy.topxlist.object;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
@@ -7,32 +8,30 @@ import android.arch.persistence.room.PrimaryKey;
 /**
  * Created by Whatever on 15.11.2017.
  * To use with the VMMV pattern
- *
+ * Main Purpose: Represents Tags, Defines through Room database tables
  */
 
 @Entity
 public class XTagModel {
+    //Attributes
 
     @PrimaryKey(autoGenerate = true)
-    private final int xTagID;
+    private int xTagID;
     @ForeignKey(entity = XListModel.class,
             parentColumns = "xListID",
             childColumns = "xTagID",
-            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelte
+            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
     private int xListIDForeign;
     private String xTagName;
 
-    public XTagModel(int xTagID, int xListIDForeign, String xTagName) {
-        this.xTagID = xTagID;
+    //Constructor
+
+    public XTagModel(int xListIDForeign, String xTagName) {
         this.xListIDForeign = xListIDForeign;
         this.xTagName = xTagName;
     }
 
     //Getters and Setters
-
-    public int getXTagID() {
-        return xTagID;
-    }
 
     public String getXTagName() {
         return xTagName;
@@ -40,6 +39,14 @@ public class XTagModel {
 
     public void setXTagName(String xTagName) {
         this.xTagName = xTagName;
+    }
+
+    public int getXTagID() {
+        return xTagID;
+    }
+
+    public void setXTagID(int xTagID) {
+        this.xTagID = xTagID;
     }
 
     public int getXListIDForeign() {
