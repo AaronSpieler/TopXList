@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    // CUSTOM COLORS
+    <color name="darkBlue">#4390bc</color>
+    <color name="middleDarkBlue">#68a7ca</color>
+    <color name="middleBlue">#8dbdd8</color>
+    <color name="middleLightBlue">#b2d3e6</color>
+    <color name="lightBlue">#d8e9f3</color>
+
 </resources>

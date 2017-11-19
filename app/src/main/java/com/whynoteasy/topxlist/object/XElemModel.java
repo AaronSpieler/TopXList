@@ -1,5 +1,6 @@
 package com.whynoteasy.topxlist.object;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
@@ -8,32 +9,33 @@ import android.support.annotation.NonNull;
 
 /**
  * Created by Whatever on 15.11.2017.
+ * Main Purpose: Represents Lists Elements, Defines through Room database tables
  */
 @Entity
 public class XElemModel implements Comparable<XElemModel>{
     //Constants
+
     @Ignore
     final int xETlength = 255; //title length
     @Ignore
     final int xEDlength = 8192; //description/Body length
 
     //Attributes
+
     @PrimaryKey(autoGenerate = true)
-    private final int xElemID;
+    private int xElemID;
     @ForeignKey(entity = XListModel.class,
             parentColumns = "xListID",
             childColumns = "xElemID",
-            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelte
+            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
     private int xListIDForeign;
     private String xElemTitle;
     private String xElemDescription;
     private int xElemNum;
 
-    /*future attributes
-    private int xElemID
-    */
+    //Constructor
 
-    public XElemModel(int xElemID, int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
         this.xElemID = xElemID;
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
@@ -43,8 +45,13 @@ public class XElemModel implements Comparable<XElemModel>{
 
     //Getters and Setters
 
+
     public int getXElemID() {
         return xElemID;
+    }
+
+    public void setXElemID(int xElemID) {
+        this.xElemID = xElemID;
     }
 
     public String getXElemTitle() {

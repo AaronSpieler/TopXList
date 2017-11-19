@@ -8,35 +8,31 @@ import java.util.List;
 
 /**
  * Created by Whatever on 15.11.2017.
+ * Main Purpose: Link List and Tags to an artificial Object, not saved as such in One database Table: Model: Pojo
  */
 
-public class XListTagsPojo implements Comparable<XListModel>{ //no constructor or anything needed
+public class XListTagsPojo implements Comparable<XListTagsPojo>{ //no constructor or anything needed
     @Embedded
-    private XListModel xList;
+    private XListModel xListModel;
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Relation(parentColumn = "xListID", entityColumn = "xListIDForeign", entity = XTagModel.class)
     private List<XTagModel> xTagModelList;
 
-    @Override
-    public int compareTo(@NonNull XListModel xListModel) {
-        return (this.xList.getXListNum() - xListModel.getXListNum()); //0 if they are equal, negative if this object is "smaller" else its positive
+    //CONSTRUCTOR
+
+    //Note that the @Relation annotated field cannot be a constructor parameter
+    public XListTagsPojo(XListModel xListModel) {
+        this.xListModel = xListModel;
     }
 
-    public XListTagsPojo() {
-        //DUMMY; COMPILER MISSES STANDARD CONSTRUCTOR
+    //SETTERS AND GETTERS
+
+    public XListModel getXListModel() {
+        return xListModel;
     }
 
-    public XListTagsPojo(XListModel xList, List<XTagModel> xTagModelList) {
-        this.xList = xList;
-        this.xTagModelList = xTagModelList;
-    }
-
-    public XListModel getXList() {
-        return xList;
-    }
-
-    public void setXList(XListModel xList) {
-        this.xList = xList;
+    public void setXListModel(XListModel xListModel) {
+        this.xListModel = xListModel;
     }
 
     public List<XTagModel> getXTagModelList() {
@@ -45,5 +41,12 @@ public class XListTagsPojo implements Comparable<XListModel>{ //no constructor o
 
     public void setXTagModelList(List<XTagModel> xTagModelList) {
         this.xTagModelList = xTagModelList;
+    }
+
+    //Other Moethos
+
+    @Override
+    public int compareTo(@NonNull XListTagsPojo xListTagsPojo) {
+        return (this.xListModel.getXListNum() - xListTagsPojo.xListModel.getXListNum()); //0 if they are equal, negative if this object is "smaller" else its positive
     }
 }

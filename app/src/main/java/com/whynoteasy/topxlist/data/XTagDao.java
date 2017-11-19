@@ -15,6 +15,8 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Whatever on 16.11.2017.
+ *Main Purpose:    Abstraction layer between sql and Java thanks to Room
+ *                 Define communication interface between database and Java Code
  */
 
 @Dao
@@ -31,10 +33,19 @@ public interface XTagDao {
     @Insert(onConflict = REPLACE)
     void insertTag(XTagModel xTagModel);
 
+    @Insert(onConflict = REPLACE)
+    void insertTagList(List<XTagModel> xTagModelList);
+
     @Delete
     void deleteTag(XTagModel xTagModel);
 
+    @Delete
+    void deleteTagList(List<XTagModel> xTagModelList);
+
     @Update
     void updateTag(XTagModel xTagModel);
+
+    @Update
+    void updateTagList(List<XTagModel> xTagModelList);
 
 }

@@ -17,14 +17,16 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 /**
  * Created by Whatever on 15.11.2017.
+ * Main Purpose:    Abstraction layer between sql and Java thanks to Room
+ *                  Define communication interface between database and Java Code
  */
 @Dao
 public interface XElemDao {
 
-    @Query("SELECT * FROM XElemModel")
+    @Query("SELECT * FROM XElemModel ORDER BY xElemNum ASC")
     public LiveData<List<XElemModel>> loadAllElements();
 
-    @Query("SELECT * FROM XElemModel WHERE xListIDForeign = :xListIDInp")
+    @Query("SELECT * FROM XElemModel WHERE xListIDForeign = :xListIDInp ORDER BY xElemNum ASC")
     public LiveData<List<XElemModel>> loadElementsByListID(String xListIDInp);
 
     @Query("SELECT * FROM xElemModel WHERE  xElemID = :xElemIDInp")
