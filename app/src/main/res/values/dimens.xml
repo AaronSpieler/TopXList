@@ -6,5 +6,5 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="xList_card_defaults">8dp</dimen>
-    <dimen name="xList_card_margins">16dp</dimen>
+    <dimen name="xList_card_margins">8dp</dimen>
 </resources>
