@@ -16,4 +16,14 @@
     <string name="xElem_short_description_text">Some interesting fact just occured to me so I write it down before I forget it so everything is cool, yeah!</string>
     <string name="xElem_title_text">Somsdghljl sdkldhflkas lksjdfh jksadf dsa hkjsldfh  kjsd sfddfassda jksdfjda  skdljjdslkj dsjsdkljjlsd</string>
     <string name="xElem_popup_menu">List options</string>
+
+    <string name="xList_edit">Edit</string>
+    <string name="xList_delete">Delete</string>
+    <string name="xList_view">View</string>
+    <string name="elem_card_num">11.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit_save_button">Save</string>
+    <string name="xlist_edit_title_label">Title:</string>
 </resources>
