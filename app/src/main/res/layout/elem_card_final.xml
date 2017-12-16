@@ -36,16 +36,16 @@
 
                 <TextView
                     android:id="@+id/textView2"
-                    android:layout_width="40dp"
+                    android:layout_width="45dp"
                     android:layout_height="0dp"
                     android:background="@drawable/number_rounded_corner"
                     android:gravity="center"
-
-                    android:padding="2dp"
+                    android:padding="@dimen/card_defaults"
                     android:text="@string/elem_card_num"
                     android:textAlignment="center"
                     android:textSize="18sp"
                     android:textStyle="bold"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

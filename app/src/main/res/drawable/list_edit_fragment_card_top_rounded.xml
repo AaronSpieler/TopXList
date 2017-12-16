@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <solid android:color="@color/middleLightBlue" />
 
     <corners
         android:bottomRightRadius="0dp"
-        android:bottomLeftRadius="@dimen/card_defaults"
+        android:bottomLeftRadius="0dp"
         android:topLeftRadius="@dimen/card_defaults"
-        android:topRightRadius="0dp"/>
+        android:topRightRadius="@dimen/card_defaults"/>
+
 </shape>
