@@ -27,4 +27,13 @@
     <string name="edit_save_button">Save</string>
     <string name="xlist_edit_title_label">Title:</string>
     <string name="xlist_short_desc_title"> Short Description:</string>
+    <string name="xlist_long_desc_title">Long Description:</string>
+    <string name="xlist_tags_editor_title">Tags:</string>
+    <string name="xlist_tag_add_text_name">New Tag:</string>
+    <string name="xlist_newtag_input_hint">newTagNo#</string>
+    <string name="xList_tag_input_button_label_text">ADD</string>
+    <string name="tag_contetnt_desc_delete_button">deletes Tag</string>
+    <string name="xllist_title_input_hint">My favorite Movies</string>
+    <string name="xlist_short_desc_input_hint">Just a few words so I remember what this list is for...</string>
+    <string name="xlist_long_desc_input_hint">This should contain a thorough explanation of the List and its Purpose...</string>
 </resources>

@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/list_edit_fragment_card_right_rounded"
                             android:ems="10"
-                            android:hint="My favorite Movies"
+                            android:hint="@string/xllist_title_input_hint"
                             android:inputType="textMultiLine"
                             android:padding="@dimen/card_margins"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,11 +93,11 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/list_edit_fragment_card_top_rounded"
                             android:lineSpacingExtra="0sp"
+                            android:padding="@dimen/card_margins"
                             android:text="@string/xlist_short_desc_title"
                             android:textAlignment="textStart"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:padding="@dimen/card_margins"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -108,8 +108,8 @@
                             android:layout_height="wrap_content"
                             android:background="@drawable/list_edit_fragment_card_bottom_rounded"
                             android:ems="10"
-                            android:hint="Just a few words so I remember what this list is for..."
-                            android:inputType="textMultiLine|textPostalAddress"
+                            android:hint="@string/xlist_short_desc_input_hint"
+                            android:inputType="textMultiLine"
                             android:padding="@dimen/card_margins"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -118,6 +118,142 @@
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
+                <android.support.v7.widget.CardView
+                    android:id="@+id/xlist_long_desc_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/card_defaults"
+                    app:cardElevation="@dimen/card_defaults"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_short_desc_text">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/xlist_long_desc_constraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/xlist_long_desc_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/list_edit_fragment_card_top_rounded"
+                            android:lineSpacingExtra="0sp"
+                            android:padding="@dimen/card_margins"
+                            android:text="@string/xlist_long_desc_title"
+                            android:textAlignment="textStart"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <EditText
+                            android:id="@+id/xlist_long_desc_input"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/list_edit_fragment_card_bottom_rounded"
+                            android:ems="10"
+                            android:hint="@string/xlist_long_desc_input_hint"
+                            android:inputType="textMultiLine"
+                            android:padding="@dimen/card_margins"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xlist_long_desc_label" />
+                    </android.support.constraint.ConstraintLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/xlist_tags_editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/card_defaults"
+                    app:cardElevation="@dimen/card_defaults"
+                    app:cardUseCompatPadding="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_long_desc_text">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/xlist_tags_editor_constraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/xlist_tags_label_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/list_edit_fragment_card_top_rounded"
+                            android:lineSpacingExtra="0sp"
+                            android:padding="@dimen/card_margins"
+                            android:text="@string/xlist_tags_editor_title"
+                            android:textAlignment="textStart"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <LinearLayout
+                            android:layout_marginTop="2dp"
+                            android:id="@+id/xList_tags_tagsList_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintBottom_toTopOf="@+id/xList_tag_input_field"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xlist_tags_label_label">
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/xlist_tags_add_newTag_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:background="@color/middleLightBlue"
+                            android:gravity="center"
+                            android:padding="@dimen/card_margins"
+                            android:text="@string/xlist_tag_add_text_name"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xList_tags_tagsList_view" />
+
+                        <EditText
+                            android:id="@+id/xList_tag_input_field"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/lightBlue"
+                            android:hint="@string/xlist_newtag_input_hint"
+                            android:inputType="textMultiLine"
+                            android:padding="@dimen/card_margins"
+                            android:textAlignment="textStart"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/xList_tag_input_button"
+                            app:layout_constraintStart_toEndOf="@+id/xlist_tags_add_newTag_label" />
+
+                        <Button
+                            android:id="@+id/xList_tag_input_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="0dp"
+                            android:text="@string/xList_tag_input_button_label_text"
+                            android:background="@drawable/list_edit_newTag_button_label"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xList_tags_tagsList_view" />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </android.support.v7.widget.CardView>
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
 
@@ -125,6 +261,7 @@
             android:id="@+id/xlist_edit_save_button"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            style="?android:attr/borderlessButtonStyle"
             android:background="@color/darkBlue"
             android:text="@string/edit_save_button"
             android:textColor="#ffffff"
