@@ -243,7 +243,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
                             android:text="@string/xList_tag_input_button_label_text"
-                            android:background="@drawable/list_edit_newTag_button_label"
+                            android:background="@drawable/list_edit_newtag_button_label"
                             style="?android:attr/borderlessButtonStyle"
                             android:textColor="#ffffff"
                             android:textSize="18sp"

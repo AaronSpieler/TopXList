@@ -24,10 +24,10 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface XElemDao {
 
     @Query("SELECT * FROM XElemModel ORDER BY xElemNum ASC")
-    public LiveData<List<XElemModel>> loadAllElements();
+    public List<XElemModel> loadAllElements();
 
     @Query("SELECT * FROM XElemModel WHERE xListIDForeign = :xListIDInp ORDER BY xElemNum ASC")
-    public LiveData<List<XElemModel>> loadElementsByListID(String xListIDInp);
+    public List<XElemModel> loadElementsByListID(String xListIDInp);
 
     @Query("SELECT * FROM xElemModel WHERE  xElemID = :xElemIDInp")
     public XElemModel loadElemByID(String xElemIDInp);

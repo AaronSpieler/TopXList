@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 public class XListViewModel extends ViewModel{
-    private LiveData<List<XListTagsPojo>> elemList;
+    private List<XListTagsPojo> elemList;
     private LocalDataRepository localRep;
     private int listID;
 
@@ -34,7 +34,7 @@ public class XListViewModel extends ViewModel{
     //ALL METHODS, ALREADY ASYNCHRONOUS
 
     //Getters
-    public LiveData<List<XListTagsPojo>> getAllListWTags(){
+    public List<XListTagsPojo> getAllListWTags(){
         return elemList;
     }
 
@@ -72,7 +72,7 @@ public class XListViewModel extends ViewModel{
     }
 
     public int getListsLength(){
-        return elemList.getValue().size();
+        return elemList.size();
     }
 
 }

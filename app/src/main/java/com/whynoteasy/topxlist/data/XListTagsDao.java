@@ -28,7 +28,7 @@ public interface XListTagsDao {
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Transaction
     @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
-    public LiveData<List<XListTagsPojo>> loadAllListsWithTags();
+    public List<XListTagsPojo> loadAllListsWithTags();
 
     @Transaction
     @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
