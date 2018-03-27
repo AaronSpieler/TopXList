@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 public class XElemViewModel extends ViewModel {
-    private LiveData<List<XElemModel>> elemList;
+    private List<XElemModel> elemList;
     private LocalDataRepository localRep;
     private int listID;
 
@@ -35,7 +35,7 @@ public class XElemViewModel extends ViewModel {
 
     //Getters
 
-    public LiveData<List<XElemModel>> getAllElements(){
+    public List<XElemModel> getAllElements(){
         return elemList;
     }
 

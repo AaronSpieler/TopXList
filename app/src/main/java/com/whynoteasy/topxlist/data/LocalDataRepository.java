@@ -30,7 +30,7 @@ public class LocalDataRepository{
     //--------------------------Tags------------------------------
 
     //GET ALL TAGS BY LIST ID
-    public LiveData<List<XTagModel>> getTagsByListID(int listID) {
+    public List<XTagModel> getTagsByListID(int listID) {
         return xRoomDatabase.xTagModel().loadTagsByListID(Integer.toString(listID));
     }
 
@@ -85,12 +85,12 @@ public class LocalDataRepository{
     //--------------------------ELEMENTS--------------------------
 
     //GET ALL ELEMENTS
-    public LiveData<List<XElemModel>> getAllElements() {
+    public List<XElemModel> getAllElements() {
         return xRoomDatabase.xElementsModel().loadAllElements();
     }
 
     //GET ELEMTS LIST CORRESPONDING TO SPECIFIC ID
-    public LiveData<List<XElemModel>> getElementsByListID(int listID) {
+    public List<XElemModel> getElementsByListID(int listID) {
         return xRoomDatabase.xElementsModel().loadElementsByListID(Integer.toString(listID));
     }
 
@@ -182,7 +182,7 @@ public class LocalDataRepository{
     //---------------------------------Lists--------------------------
 
     //GET THE LIST OF LISTS
-    public LiveData<List<XListModel>> getLists() {
+    public List<XListModel> getLists() {
         return xRoomDatabase.xListModel().loadAllLists();
     }
 
@@ -274,7 +274,7 @@ public class LocalDataRepository{
     //---------------------------------ListTagPojo-----------------------
 
     //GET THE LIST OF LISTS
-    public LiveData<List<XListTagsPojo>> getListsWithTags() {
+    public List<XListTagsPojo> getListsWithTags() {
         return xRoomDatabase.xListsAndTagsModel().loadAllListsWithTags();
     }
 

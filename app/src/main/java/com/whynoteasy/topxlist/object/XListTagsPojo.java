@@ -43,10 +43,18 @@ public class XListTagsPojo implements Comparable<XListTagsPojo>{ //no constructo
         this.xTagModelList = xTagModelList;
     }
 
-    //Other Moethos
+    //Other Methods
 
     @Override
     public int compareTo(@NonNull XListTagsPojo xListTagsPojo) {
         return (this.xListModel.getXListNum() - xListTagsPojo.xListModel.getXListNum()); //0 if they are equal, negative if this object is "smaller" else its positive
+    }
+
+    public String tagsToString(){
+        String temp = "";
+        for (XTagModel elm : xTagModelList) {
+            temp = temp + elm.getXTagName();
+        }
+        return temp;
     }
 }

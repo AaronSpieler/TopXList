@@ -22,13 +22,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface XTagDao {
     @Query("SELECT * FROM XTagModel")
-    public LiveData<List<XTagModel>> loadAllTags();
+    public List<XTagModel> loadAllTags();
 
     @Query("SELECT * FROM XTagModel WHERE xTagID = :xTagIDInp")
     public XTagModel loadTagByID(String xTagIDInp);
 
     @Query("SELECT * FROM XTagModel WHERE xListIDForeign = :xListIDInp")
-    public LiveData<List<XTagModel>> loadTagsByListID(String xListIDInp);
+    public List<XTagModel> loadTagsByListID(String xListIDInp);
 
     @Insert(onConflict = REPLACE)
     void insertTag(XTagModel xTagModel);
@@ -45,6 +45,7 @@ public interface XTagDao {
     @Update
     void updateTag(XTagModel xTagModel);
 
+    //will have to check wheter this works, but maybe I dont use it at all
     @Update
     void updateTagList(List<XTagModel> xTagModelList);
 

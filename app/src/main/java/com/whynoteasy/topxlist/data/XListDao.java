@@ -25,7 +25,7 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface XListDao {
 
     @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
-    public LiveData<List<XListModel>> loadAllLists();
+    public List<XListModel> loadAllLists();
 
     @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
     public XListModel loadListByID(String xListIDInp);

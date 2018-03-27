@@ -16,9 +16,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
 
     //experimental method
     public void showPopup(View v) {
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity
         popup.show();
     }
 
+    //TODO: floating button should trigger add list activity
+    //TODO: listoflists fragment should be added
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //This floating action button is used to trigger the add list activity!!!
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //I NEED TO GET THE SEARCH FILTER & FUNCTIONALITY HERE
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -87,6 +92,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //I think this is the menu on the side, dont care so far
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -110,5 +116,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onListFragmentInteraction(XListTagsPojo item) {
+        //Have to implement this because I use tme MainListOfListsFragment Fragment
+        //So far No idea what to do?
     }
 }
