@@ -1,16 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/xlist_root_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.whynoteasy.topxlist.listActivity.XListEdit">
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/xlist_constraint_root"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start">
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.whynoteasy.topxlist.listActivity.XListEditActivity"
+    tools:showIn="@layout/activity_xlist_edit">
 
         <ScrollView
             android:id="@+id/xlist_edit_cards_scroller"
@@ -198,10 +194,10 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <LinearLayout
-                            android:layout_marginTop="2dp"
                             android:id="@+id/xList_tags_tagsList_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
                             android:orientation="vertical"
                             app:layout_constraintBottom_toTopOf="@+id/xList_tag_input_field"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -240,11 +236,11 @@
 
                         <Button
                             android:id="@+id/xList_tag_input_button"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:text="@string/xList_tag_input_button_label_text"
                             android:background="@drawable/list_edit_newtag_button_label"
-                            style="?android:attr/borderlessButtonStyle"
+                            android:text="@string/xList_tag_input_button_label_text"
                             android:textColor="#ffffff"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -260,9 +256,9 @@
 
         <Button
             android:id="@+id/xlist_edit_save_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            style="?android:attr/borderlessButtonStyle"
             android:background="@color/darkBlue"
             android:text="@string/edit_save_button"
             android:textColor="#ffffff"
@@ -270,6 +266,5 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-    </android.support.constraint.ConstraintLayout>
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

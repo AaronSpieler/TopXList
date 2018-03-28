@@ -11,10 +11,12 @@ import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Whatever on 18.11.2017.
- * EVERYTHING BUT REAL QUARRIES ARE WRAPPED IN ASYNC TASKS
+ * EVERYTHING IS WRAPPED IN ASYNC TASKS
+ * HOWEVER THE QUERRIES ARE NOT REALLY ASYNC BECAUSE THE APPLICATION WAITS FOR THE RESULTS :/
  * Main Purpose:    Handle granular communication between local database(s) and database access objects
  *                  Wrap everything necessary in Async Methods
  */
@@ -224,18 +226,25 @@ public class LocalDataRepository{
     }
 
     //INSERT
-    public void insertList(XListModel xListModel) {
-        new InsertListAsyncTask(xRoomDatabase).execute(xListModel);
+    public long insertList(XListModel xListModel) {
+        try{
+            //the rowId which is the primaryKey is returned
+            return new InsertListAsyncTask(xRoomDatabase).execute(xListModel).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
-    private static class InsertListAsyncTask extends AsyncTask<XListModel, Void, Void> {
+    private static class InsertListAsyncTask extends AsyncTask<XListModel, Void, Long> {
         private XRoomDatabase db;
         InsertListAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
         @Override
-        protected Void doInBackground(final XListModel... params) {
-            db.xListModel().insertXList(params[0]);
-            return null;
+        protected Long doInBackground(final XListModel... params) {
+            return db.xListModel().insertXList(params[0]);
         }
     }
 
@@ -271,15 +280,73 @@ public class LocalDataRepository{
         }
     }
 
+    //GET LIST COUNT
+    public int getListCount() {
+        try{
+            //the rowId which is the primaryKey is returned
+            return new GetListCountAsyncTask(xRoomDatabase).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    private static class GetListCountAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private XRoomDatabase db;
+        GetListCountAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return db.xListModel().getNumberOfLists();
+        }
+    }
+
+
     //---------------------------------ListTagPojo-----------------------
 
     //GET THE LIST OF LISTS
     public List<XListTagsPojo> getListsWithTags() {
-        return xRoomDatabase.xListsAndTagsModel().loadAllListsWithTags();
+        try {
+            return new GetListsWithTagsAsyncTask(xRoomDatabase).execute().get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetListsWithTagsAsyncTask extends AsyncTask<Void, Void, List<XListTagsPojo>> {
+        private XRoomDatabase db;
+        GetListsWithTagsAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected List<XListTagsPojo> doInBackground(Void... voids) {
+            return db.xListsAndTagsModel().loadAllListsWithTags();
+        }
     }
 
     //GET LIST BY ID
-    public XListTagsPojo getListWithTagsByID(int listID){
-        return xRoomDatabase.xListsAndTagsModel().loadListWithTagByID(Integer.toString(listID)); //Querries only happen with Strings so casting is needed
+    public XListTagsPojo getListWithTagsByID(int listID) {
+        try {
+            return new GetListWithTagsByIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetListWithTagsByIDAsyncTask extends AsyncTask<Integer, Void, XListTagsPojo> {
+        private XRoomDatabase db;
+        GetListWithTagsByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected XListTagsPojo doInBackground(Integer... integers) {
+            return db.xListsAndTagsModel().loadListWithTagByID(Integer.toString(integers[0]));  //Querries only happen with Strings so casting is needed
+        }
     }
 }

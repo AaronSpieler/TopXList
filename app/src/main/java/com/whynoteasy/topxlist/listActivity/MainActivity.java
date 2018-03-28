@@ -1,8 +1,10 @@
 package com.whynoteasy.topxlist.listActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.PopupMenu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -21,6 +23,9 @@ import com.whynoteasy.topxlist.object.XListTagsPojo;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
 
+    //For other activities to set to true, so when this activity resumes, it knows to redo the list drawing
+    public static boolean listsChanged = false;
+
     //experimental method
     public void showPopup(View v) {
         PopupMenu popup = new PopupMenu(this, v);
@@ -29,23 +34,23 @@ public class MainActivity extends AppCompatActivity
         popup.show();
     }
 
-    //TODO: floating button should trigger add list activity
     //TODO: listoflists fragment should be added
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbar.setTitle("TopXLists");
         setSupportActionBar(toolbar);
 
         //This floating action button is used to trigger the add list activity!!!
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Open Add List Activity
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //Start XLIstEditActivity empty
+                Intent intent = new Intent(view.getContext(), XListEditActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -57,6 +62,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //from here on is my own shit:
+
+        //I dont know wheter I should Initialise these things here...
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        MainListOfListsFragment LOL_fragment = new MainListOfListsFragment();
+        fragmentTransaction.add(R.id.main_activity_fragment_placeholder, LOL_fragment);
+        fragmentTransaction.commit();
     }
 
     @Override
@@ -122,5 +137,6 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(XListTagsPojo item) {
         //Have to implement this because I use tme MainListOfListsFragment Fragment
         //So far No idea what to do?
+        System.out.println("Im Here!!!");
     }
 }

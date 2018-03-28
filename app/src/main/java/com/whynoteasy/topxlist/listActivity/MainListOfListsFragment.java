@@ -11,10 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.listActivity.dummy.DummyContent;
-import com.whynoteasy.topxlist.listActivity.dummy.DummyContent.DummyItem;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 import java.util.List;
@@ -27,13 +24,17 @@ import java.util.List;
  */
 public class MainListOfListsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
+    // TODO: Customize parameter argument names, Done I guess?
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+    // TODO: Customize parameters, Done I guess?
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    //repository Instance
+    LocalDataRepository myRep;
+
     //List of the Lists with their Tags
+    //It is pulled onCreate, but should be updated every time it changes
     private List<XListTagsPojo> listOfListWithTags;
 
     /**
@@ -58,8 +59,19 @@ public class MainListOfListsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        myRep = new LocalDataRepository(getActivity());
+        if (myRep == null) {
+            getActivity().finish();
+            System.exit(0);
+        }
+
         //in the on create the database is querried once
-        listOfListWithTags = TopXListApplication.getREP().getListsWithTags();
+        //this should happen every time onCreate,
+        listOfListWithTags = myRep.getListsWithTags();
+        if (listOfListWithTags == null) {
+            getActivity().finish();
+            System.exit(0);
+        }
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -115,6 +127,7 @@ public class MainListOfListsFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
+        //Have done that?
         void onListFragmentInteraction(XListTagsPojo item);
     }
 }
