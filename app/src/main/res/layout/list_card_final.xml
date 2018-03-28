@@ -59,7 +59,6 @@
                     android:adjustViewBounds="true"
                     android:background="@null"
                     android:contentDescription="@string/xList_popup_menu"
-                    android:onClick="showListMenuPopup"
                     android:padding="@dimen/card_defaults"
                     android:scaleType="fitXY"
                     android:visibility="visible"

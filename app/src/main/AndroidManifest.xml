@@ -19,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".listActivity.XListEditActivity"
+            android:label="@string/title_activity_xlist_edit"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".listActivity.MainActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -31,7 +31,7 @@ public interface XListDao {
     public XListModel loadListByID(String xListIDInp);
 
     @Insert(onConflict = REPLACE)
-    void insertXList(XListModel xListModel);
+    long insertXList(XListModel xListModel);
 
     @Delete
     void deleteXList(XListModel xListModel);
@@ -48,6 +48,10 @@ public interface XListDao {
     //from should be the old position of the list item, to should be the new position, In the case the new position > old position
     @Query("UPDATE XListModel SET xListNum = xListNum - 1 WHERE xListNum > :oldPos AND xListNum <= :newPos")
     void updateIncrementNumOfListsFromToHigherPos(String newPos, String oldPos);
+
+    //basically how many lists there are so far
+    @Query("SELECT COUNT(*) FROM XListModel WHERE xListID IS NOT NULL")
+    int getNumberOfLists();
 
 
 }
