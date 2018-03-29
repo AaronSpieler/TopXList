@@ -137,6 +137,6 @@ public class MainActivity extends AppCompatActivity
     public void onListFragmentInteraction(XListTagsPojo item) {
         //Have to implement this because I use tme MainListOfListsFragment Fragment
         //So far No idea what to do?
-        System.out.println("Im Here!!!");
+        System.out.println("My number is "+item.getXListModel().getXListNum()+" !!!");
     }
 }

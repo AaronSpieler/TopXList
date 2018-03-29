@@ -2,9 +2,11 @@ package com.whynoteasy.topxlist.listActivity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -50,8 +52,6 @@ public class XListEditActivity extends AppCompatActivity {
 
         thisActivity = this;
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         //Get the List that is relevant
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -70,7 +70,10 @@ public class XListEditActivity extends AppCompatActivity {
         currentList = myRep.getListWithTagsByID(currentListID);
 
         //set the title
-        toolbar.setTitle("Edit: " + currentList.getXListModel().getXListTitle());
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+        ab.setTitle("Edit: " + currentList.getXListModel().getXListTitle());
 
         //set the TextFields
         ((TextView)findViewById(R.id.xlist_title_input)).setText(currentList.getXListModel().getXListTitle());
@@ -213,8 +216,8 @@ public class XListEditActivity extends AppCompatActivity {
         //FROM HERE ON ITS THE ALERT DIALOG
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Exit whitout saving?");
-        builder.setMessage("Are you sure you want to exit without saving the list?");
+        builder.setTitle("Exit whitout saving changes?");
+        builder.setMessage("Are you sure you want to exit without saving the the changes to your list?");
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //exit without saving anything
