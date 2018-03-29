@@ -68,6 +68,24 @@ public class LocalDataRepository{
         }
     }
 
+    //DELETE TAGS BY ID
+    public void deleteTagsByID(List<Integer> xTagIDList) {
+        new DeleteTagByIDsAsyncTask(xRoomDatabase).execute(xTagIDList);
+    }
+    private static class DeleteTagByIDsAsyncTask extends AsyncTask<List<Integer>, Void, Void> {
+        private XRoomDatabase db;
+        DeleteTagByIDsAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final List<Integer>... params) {
+            for (Integer tempID : params[0]) {
+                db.xTagModel().deleteTagByID(tempID.toString());
+            }
+            return null;
+        }
+    }
+
     //UPDATE TAGS
     public void updateTags(List<XTagModel> xTagModelList) {
         new UpdateTagsAsyncTask(xRoomDatabase).execute(xTagModelList);

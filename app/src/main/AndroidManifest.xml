@@ -20,10 +20,18 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".listActivity.XListCreateActivity"
+            android:label="@string/title_activity_xlist_edit"
+            android:parentActivityName=".listActivity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".listActivity.XListEditActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".listActivity.MainActivity">
+            android:parentActivityName=".listActivity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.listActivity.MainActivity" />
         </activity>
     </application>
 

@@ -49,4 +49,7 @@ public interface XTagDao {
     @Update
     void updateTagList(List<XTagModel> xTagModelList);
 
+    //delte Querries: delete Tags by ID
+    @Query("DELETE FROM XTagModel WHERE xTagID = :xTagIDInp")
+    void deleteTagByID(String xTagIDInp);
 }

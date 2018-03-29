@@ -2,6 +2,7 @@ package com.whynoteasy.topxlist.listActivity;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -24,27 +25,29 @@ import com.whynoteasy.topxlist.object.XListTagsPojo;
 import java.util.List;
 
 /**
- * TODO: Make the Lists Draggable & Rearrangeble, Make the 3dots clickable so that a menu pops up,
+ * TODO: Make the Lists Draggable & Rearrangeble
  * TODO: make the lists clickable so their detailed activity can launch (I dont know but dont think thath the OnListFragmentInteractionlistener is for that)
  * {@link RecyclerView.Adapter} that can display a {@link XListTagsPojo} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
-public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.ViewHolder> implements PopupMenu.OnMenuItemClickListener {
+public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.XListViewHolder> {
 
     private List<XListTagsPojo> mValues;
     private final OnListFragmentInteractionListener mListener;
+    private Context activityContext;
 
-    public LOLRecyclerViewAdapter(List<XListTagsPojo> items, OnListFragmentInteractionListener listener) {
+    public LOLRecyclerViewAdapter(List<XListTagsPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
         mValues = items;
         mListener = listener;
+        this.activityContext = activityContext;
     }
 
     //I guess this method is done?
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public XListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_card_final, parent, false);
-        return new ViewHolder(view);
+        return new XListViewHolder(view);
     }
 
     /* AUTO GENERATED
@@ -68,14 +71,15 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     */
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        final LOLRecyclerViewAdapter ownRef = this;
-
+    public void onBindViewHolder(final XListViewHolder holder, int position) {
+        //reference to the object itself
         holder.mItem = mValues.get(position);
+
         holder.listTitle.setText(mValues.get(position).getXListModel().getXListTitle());
         holder.listShortDesc.setText(mValues.get(position).getXListModel().getXListShortDescription());
         holder.listTags.setText(mValues.get(position).tagsToString());
 
+        //TODO: figure out wheter I need this?
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,7 +99,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 //PopupMenu popup = new PopupMenu(wrapper, v);
                 */
                 PopupMenu popup = new PopupMenu(v.getContext(),v);
-                popup.setOnMenuItemClickListener(ownRef);
+                //the ViewHolder implements the menuListener
+                popup.setOnMenuItemClickListener(holder);
                 popup.inflate(R.menu.list_card_menu);
                 popup.show();
             }
@@ -105,24 +110,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
-        switch (item.getItemId()) {
-            case R.id.xList_edit:
-                // do your code
-                return true;
-            case R.id.xList_delete:
-                // do your code
-                return true;
-            case R.id.xList_view:
-                // do your code
-                return true;
-            default:
-                return false;
-        }
     }
 
     /* THIS WAS AUTO GENERATED
@@ -146,19 +133,22 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
     */
 
-    //this is my own shit
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    //It must be the ViewHolder that implements the MenuClickListener because
+    //this it the best way to get a refrence of the XList that is relevant to the menu
+    public class XListViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
         public final View mView;
         public final CardView listCard;
         public final TextView listTitle;
         public final TextView listShortDesc;
         public final TextView listTags;
+
+        //possibly useful to have a reference to the object itself later on
         public XListTagsPojo mItem;
 
         //the button which when clicked opens menu
         public final ImageButton imgButton;
 
-        ViewHolder(View itemView) {
+        XListViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
             listCard = (CardView) itemView.findViewById(R.id.xList_card);
@@ -166,8 +156,27 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             imgButton = (ImageButton)  itemView.findViewById(R.id.xList_popup_button);
             listShortDesc = (TextView) itemView.findViewById(R.id.xList_short_description);
             listTags = (TextView)  itemView.findViewById(R.id.xList_tags);
+        }
 
-
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+            switch (item.getItemId()) {
+                case R.id.xList_edit:
+                    //starting the activity from the MainActivity context
+                    Intent intent = new Intent(activityContext , XListEditActivity.class);
+                    intent.putExtra("X_LIST_ID", this.mItem.getXListModel().getXListID());
+                    activityContext.startActivity(intent);
+                    return true;
+                case R.id.xList_delete:
+                    // do your code
+                    return true;
+                case R.id.xList_view:
+                    // do your code
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

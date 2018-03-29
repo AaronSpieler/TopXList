@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.whynoteasy.topxlist.listActivity.XListEditActivity"
-    tools:showIn="@layout/activity_xlist_edit">
+    tools:context="com.whynoteasy.topxlist.listActivity.XListCreateActivity"
+    tools:showIn="@layout/activity_xlist_create">
 
         <ScrollView
             android:id="@+id/xlist_edit_cards_scroller"
@@ -23,6 +23,7 @@
                 android:layout_height="wrap_content">
 
                 <android.support.v7.widget.CardView
+                    app:contentPadding="@dimen/negative_content_padding"
                     android:id="@+id/xlist_name_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -68,6 +69,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:contentPadding="@dimen/negative_content_padding"
                     android:id="@+id/xlist_short_desc_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,6 +117,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:contentPadding="@dimen/negative_content_padding"
                     android:id="@+id/xlist_long_desc_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -162,6 +165,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    app:contentPadding="@dimen/negative_content_padding"
                     android:id="@+id/xlist_tags_editor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

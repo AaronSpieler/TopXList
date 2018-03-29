@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity
         popup.show();
     }
 
-    //TODO: listoflists fragment should be added
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         toolbar.setTitle("TopXLists");
+        toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
         //This floating action button is used to trigger the add list activity!!!
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 //Start XLIstEditActivity empty
-                Intent intent = new Intent(view.getContext(), XListEditActivity.class);
+                Intent intent = new Intent(view.getContext(), XListCreateActivity.class);
                 startActivity(intent);
             }
         });

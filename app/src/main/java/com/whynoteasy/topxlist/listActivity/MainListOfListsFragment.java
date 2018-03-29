@@ -19,14 +19,13 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
+ * TODO: check wheter I need Arg_column_clunt and mColumnCount at all
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class MainListOfListsFragment extends Fragment {
 
-    // TODO: Customize parameter argument names, Done I guess?
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters, Done I guess?
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -44,8 +43,6 @@ public class MainListOfListsFragment extends Fragment {
     public MainListOfListsFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    //I just want one column so am I fine here?
     @SuppressWarnings("unused")
     public static MainListOfListsFragment newInstance(int columnCount) {
         MainListOfListsFragment fragment = new MainListOfListsFragment();
@@ -81,7 +78,7 @@ public class MainListOfListsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lol_fragment_list, container, false);
+        View view = inflater.inflate(R.layout.lol_fragment, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -92,7 +89,7 @@ public class MainListOfListsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new LOLRecyclerViewAdapter(listOfListWithTags, mListener));
+            recyclerView.setAdapter(new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity()));
         }
         return view;
     }
@@ -126,8 +123,6 @@ public class MainListOfListsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        //Have done that?
         void onListFragmentInteraction(XListTagsPojo item);
     }
 }
