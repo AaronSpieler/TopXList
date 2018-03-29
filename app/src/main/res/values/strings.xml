@@ -22,7 +22,6 @@
     <string name="xList_view">View</string>
     <string name="elem_card_num">11.</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="edit_save_button">Save</string>
     <string name="xlist_edit_title_label">Title:</string>

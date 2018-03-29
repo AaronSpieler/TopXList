@@ -44,4 +44,11 @@
         <item name="android:dividerHeight">2dp</item>
     </style>
 
+    <!--this is for the Alert Dialog-->
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">#ffffff</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+        <item name="android:background">@color/darkBlue</item>
+    </style>
+
 </resources>
