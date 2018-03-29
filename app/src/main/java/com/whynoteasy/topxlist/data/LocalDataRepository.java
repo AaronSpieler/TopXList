@@ -146,7 +146,10 @@ public class LocalDataRepository{
             } else {
                 db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].xElemModel.getXListIDForeign()), Integer.toString(params[0].newPos), Integer.toString(params[0].oldPos));
             }
-            db.xElementsModel().updateXElem(params[0].xElemModel);
+            //TODO: Check wheter this actually works
+            XElemModel xElemTemp = params[0].xElemModel;
+            xElemTemp.setXElemNum(params[0].newPos);
+            db.xElementsModel().updateXElem(xElemTemp);
             return null;
         }
     }
@@ -178,7 +181,27 @@ public class LocalDataRepository{
         }
         @Override
         protected Void doInBackground(final XElemModel... params) {
+            Integer posOfDel = params[0].getXElemNum();
             db.xElementsModel().deleteXElem(params[0]);
+            //update the other positions
+            //TODO: Check wheter this actually works
+            db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign())+1)), Integer.toString(posOfDel));
+            return null;
+        }
+    }
+
+    //DELETE ELEMENTS BY LIST_ID
+    public void deleteElementsByListID(Integer listID) {
+        new DeleteElementsByListIDAsyncTask(xRoomDatabase).execute(listID);
+    }
+    private static class DeleteElementsByListIDAsyncTask extends AsyncTask<Integer, Void, Void> {
+        private XRoomDatabase db;
+        DeleteElementsByListIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final Integer... params) {
+            db.xElementsModel().deleteElementsByListsID(params[0].toString());
             return null;
         }
     }
@@ -238,7 +261,9 @@ public class LocalDataRepository{
             } else {
                 db.xListModel().updateIncrementNumOfListsFromToHigherPos(Integer.toString(params[0].newPos), Integer.toString(params[0].oldPos));
             }
-            db.xListModel().updateXList(params[0].xListModel);
+            XListModel xListTemp = params[0].xListModel;
+            xListTemp.setXListNum(params[0].newPos);
+            db.xListModel().updateXList(xListTemp);
             return null;
         }
     }
@@ -277,7 +302,10 @@ public class LocalDataRepository{
         }
         @Override
         protected Void doInBackground(final XListModel... params) {
+            Integer posOfDel = params[0].getXListNum();
             db.xListModel().deleteXList(params[0]);
+            //update the other positions
+            db.xListModel().updateIncrementNumOfListsFromToHigherPos(Integer.toString(db.xListModel().getNumberOfLists()+1), Integer.toString(posOfDel));
             return null;
         }
     }

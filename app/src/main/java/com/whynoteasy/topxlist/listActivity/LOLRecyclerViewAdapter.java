@@ -2,7 +2,10 @@ package com.whynoteasy.topxlist.listActivity;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivity.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
@@ -25,12 +29,13 @@ import com.whynoteasy.topxlist.object.XListTagsPojo;
 import java.util.List;
 
 /**
- * TODO: Make the Lists Draggable & Rearrangeble
+ * TODO: Make the Lists Draggable & Rearrangeble & animate the list
  * TODO: make the lists clickable so their detailed activity can launch (I dont know but dont think thath the OnListFragmentInteractionlistener is for that)
+ * TODO: Make it so the numbers of the list are correct
  * {@link RecyclerView.Adapter} that can display a {@link XListTagsPojo} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
-public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.XListViewHolder> {
+public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.XListViewHolder> implements ListTouchHelper.ActionCompletionContract {
 
     private List<XListTagsPojo> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -112,6 +117,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         return mValues.size();
     }
 
+
+
     /* THIS WAS AUTO GENERATED
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -169,7 +176,31 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     activityContext.startActivity(intent);
                     return true;
                 case R.id.xList_delete:
-                    // do your code
+                    //FROM HERE ON ITS THE ALERT DIALOG
+                    final XListTagsPojo theListPojo = this.mItem;
+                    final Integer cardPos = this.getAdapterPosition();
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
+                    builder.setTitle("Delete List?");
+                    builder.setMessage("Are you sure you want to delete the list: \n"+"\""+theListPojo.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                            LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                            myRep.deleteElementsByListID(theListPojo.getXListModel().getXListID());
+                            myRep.deleteList(theListPojo.getXListModel());
+                            //remove the List from the activity cache and notify the adapter
+                            //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
+                            mValues.remove(theListPojo);
+                            notifyItemRemoved(cardPos);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    });
+                    builder.show();
                     return true;
                 case R.id.xList_view:
                     // do your code
@@ -178,5 +209,25 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     return false;
             }
         }
+    }
+
+    //EVERYTHING THAT HAS TO DO WITH THE DRAG AND DROP ANIMATIONS
+
+    @Override
+    public void onViewMoved(int oldPosition, int newPosition) {
+        XListTagsPojo tempPojo = mValues.get(oldPosition);
+        //User user = new User(targetUser);
+        mValues.remove(oldPosition);
+        mValues.add(newPosition, tempPojo);
+        notifyItemMoved(oldPosition, newPosition);
+        System.out.println("I definitely came this far");
+        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        myRep.changeAllListNumbersList(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
+        //TODO: make the lists numbers correct
+    }
+
+    @Override
+    public void onViewSwiped(int position) {
+        //I dont actually use this in the lists of lists view
     }
 }

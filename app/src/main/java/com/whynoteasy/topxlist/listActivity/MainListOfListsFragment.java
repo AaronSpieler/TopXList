@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,14 +20,16 @@ import java.util.List;
 /**
  * A fragment representing a list of Items.
  * <p/>
- * TODO: check wheter I need Arg_column_clunt and mColumnCount at all
+ * TODO: check wheter I need Arg_column_clunt and mColumnCount at allb
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class MainListOfListsFragment extends Fragment {
 
+    //columncount could be used so that on larger devices the cards arent stretched too wide
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
+
     private OnListFragmentInteractionListener mListener;
 
     //repository Instance
@@ -57,18 +60,9 @@ public class MainListOfListsFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         myRep = new LocalDataRepository(getActivity());
-        if (myRep == null) {
-            getActivity().finish();
-            System.exit(0);
-        }
 
-        //in the on create the database is querried once
-        //this should happen every time onCreate,
+        //get the ListsWithTags for the Adapter
         listOfListWithTags = myRep.getListsWithTags();
-        if (listOfListWithTags == null) {
-            getActivity().finish();
-            System.exit(0);
-        }
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -89,7 +83,13 @@ public class MainListOfListsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity()));
+            LOLRecyclerViewAdapter tempAdapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
+            recyclerView.setAdapter(tempAdapterRef);
+
+            //The ItemTouchHelperAnimation Stuff
+            ListTouchHelper swipeAndDragHelper = new ListTouchHelper(tempAdapterRef);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
+            touchHelper.attachToRecyclerView((RecyclerView) view);
         }
         return view;
     }

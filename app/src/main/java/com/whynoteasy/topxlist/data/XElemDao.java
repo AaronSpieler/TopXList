@@ -50,4 +50,12 @@ public interface XElemDao {
     //from should be the old position of the element list item, to should be the new position, In the case the new position > old position
     @Query("UPDATE XElemModel SET xElemNum = xElemNum - 1 WHERE xElemNum > :oldPos AND xElemNum <= :newPos AND xListIDForeign == :listID")
     void updateIncrementNumOfElemFromToHigherPos(String listID, String newPos, String oldPos);
+
+    //DELETE ALL ELEMENTS ASSOCIATED WITH A LIST
+    @Query("DELETE FROM XElemModel WHERE xListIDForeign = :xListIDInp")
+    void deleteElementsByListsID(String xListIDInp);
+
+    //basically how many lists there are so far
+    @Query("SELECT COUNT(*) FROM XElemModel WHERE xListIDForeign = :xListIDInp")
+    int getNumberOfElementsOfList(String xListIDInp);
 }
