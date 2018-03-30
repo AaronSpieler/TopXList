@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list"
+    android:name="com.whynoteasy.topxlist.listActivities.ListOfElementsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/card_defaults"
+    android:layout_marginRight="@dimen/card_defaults"
+    app:layoutManager="LinearLayoutManager"
+    tools:context="com.whynoteasy.topxlist.listActivities.ListOfElementsFragment"
+    tools:listitem="@layout/elem_card_final" />

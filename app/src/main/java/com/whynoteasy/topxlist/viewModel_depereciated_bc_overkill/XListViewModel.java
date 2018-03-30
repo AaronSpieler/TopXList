@@ -1,6 +1,5 @@
-package com.whynoteasy.topxlist.viewModel;
+package com.whynoteasy.topxlist.viewModel_depereciated_bc_overkill;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.support.annotation.NonNull;

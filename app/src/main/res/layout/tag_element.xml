@@ -21,7 +21,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/delete_tag_icon" />
+        app:srcCompat="@drawable/delete_tag_icon_dark_blue" />
 
     <TextView
         android:id="@+id/tag_name_text"

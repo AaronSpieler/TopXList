@@ -10,9 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".listActivity.MainActivity"
+            android:name=".mainActivities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,18 +22,40 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".listActivity.XListCreateActivity"
+            android:name=".listActivities.XListCreateActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:parentActivityName=".listActivity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:parentActivityName=".mainActivities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
-            android:name=".listActivity.XListEditActivity"
+            android:name=".listActivities.XListEditActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:parentActivityName=".listActivity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".mainActivities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.listActivity.MainActivity" />
+                android:value="com.whynoteasy.topxlist.mainActivities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".listActivities.XListViewActivity"
+            android:label="@string/title_activity_xlist_view"
+            android:parentActivityName=".mainActivities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.mainActivities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".elemActivities.XElemCreateActivity"
+            android:label="@string/title_activity_xelem_create"
+            android:parentActivityName=".listActivities.XListViewActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.listActivities.XListViewActivity" />
         </activity>
     </application>
 

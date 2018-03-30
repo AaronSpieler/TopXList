@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.mainActivities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -46,7 +46,6 @@ public class MainListOfListsFragment extends Fragment {
     public MainListOfListsFragment() {
     }
 
-    @SuppressWarnings("unused")
     public static MainListOfListsFragment newInstance(int columnCount) {
         MainListOfListsFragment fragment = new MainListOfListsFragment();
         Bundle args = new Bundle();
@@ -72,7 +71,7 @@ public class MainListOfListsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.lol_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_lol, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {

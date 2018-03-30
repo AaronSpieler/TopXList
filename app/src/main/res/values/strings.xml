@@ -36,4 +36,9 @@
     <string name="xlist_short_desc_input_hint">Just a few words so I remember what this list is for...</string>
     <string name="xlist_long_desc_input_hint">This should contain a thorough explanation of the List and its Purpose...</string>
     <string name="title_activity_xlist_edit">XListEditActivity</string>
+    <string name="elem_desc_title">Description:</string>
+    <string name="xelem_description_input_hint">Here you can explain everything regarding this element in yout list...</string>
+    <string name="xelem_title_input_hint">5th favorite icecream</string>
+    <string name="title_activity_xlist_view">XListViewActivity</string>
+    <string name="title_activity_xelem_create">XElemCreateActivity</string>
 </resources>

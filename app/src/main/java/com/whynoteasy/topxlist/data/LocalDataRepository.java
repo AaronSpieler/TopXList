@@ -111,7 +111,25 @@ public class LocalDataRepository{
 
     //GET ELEMTS LIST CORRESPONDING TO SPECIFIC ID
     public List<XElemModel> getElementsByListID(int listID) {
-        return xRoomDatabase.xElementsModel().loadElementsByListID(Integer.toString(listID));
+        try{
+            //the rowId which is the primaryKey is returned
+            return new GetElementsListByIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetElementsListByIDAsyncTask extends AsyncTask<Integer, Void, List<XElemModel>> {
+        private XRoomDatabase db;
+        GetElementsListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected List<XElemModel> doInBackground(final Integer... params) {
+            return db.xElementsModel().loadElementsByListID(Integer.toString(params[0]));
+        }
     }
 
     //GET ELEMENT BY ID
@@ -222,6 +240,28 @@ public class LocalDataRepository{
         }
     }
 
+    //GET ELEM COUNT FOR LIST
+    public int getElemCountByListID(int listID) {
+        try{
+            return new GetElemCountByListIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    private static class GetElemCountByListIDAsyncTask extends AsyncTask<Integer, Void, Integer> {
+        private XRoomDatabase db;
+        GetElemCountByListIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Integer doInBackground(final Integer... params) {
+            return db.xElementsModel().getNumberOfElementsOfList(params[0].toString());
+        }
+    }
+
     //---------------------------------Lists--------------------------
 
     //GET THE LIST OF LISTS
@@ -231,7 +271,25 @@ public class LocalDataRepository{
 
     //GET LIST BY ID
     public XListModel getListByID(int listID){
-        return xRoomDatabase.xListModel().loadListByID(Integer.toString(listID));
+        try{
+            //the rowId which is the primaryKey is returned
+            return new GetListByIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetListByIDAsyncTask extends AsyncTask<Integer, Void, XListModel> {
+        private XRoomDatabase db;
+        GetListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected XListModel doInBackground(final Integer... params) {
+            return db.xListModel().loadListByID(Integer.toString(params[0]));
+        }
     }
 
     //CHANGE lIST NUMBERS AFTER MOVEMENT //ERROR PRONE !!!!
@@ -329,7 +387,6 @@ public class LocalDataRepository{
     //GET LIST COUNT
     public int getListCount() {
         try{
-            //the rowId which is the primaryKey is returned
             return new GetListCountAsyncTask(xRoomDatabase).execute().get();
         } catch (InterruptedException e) {
             e.printStackTrace();
