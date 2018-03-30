@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.mainActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewActivity;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 public class MainActivity extends AppCompatActivity
@@ -84,7 +86,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //I NEED TO GET THE SEARCH FILTER & FUNCTIONALITY HERE
+    //TODO: I NEED TO GET THE SEARCH FILTER & FUNCTIONALITY HERE
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -135,8 +137,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(XListTagsPojo item) {
-        //Have to implement this because I use tme MainListOfListsFragment Fragment
-        //So far No idea what to do?
-        System.out.println("My number is "+item.getXListModel().getXListNum()+" !!!");
+        //Start XListViewActivity
+        Intent intent = new Intent(this.getApplicationContext(), XListViewActivity.class);
+        intent.putExtra("X_LIST_ID", item.getXListModel().getXListID());
+        startActivity(intent);
     }
 }

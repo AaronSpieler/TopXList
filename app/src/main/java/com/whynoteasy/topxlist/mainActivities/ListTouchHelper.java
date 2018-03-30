@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.mainActivities;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;

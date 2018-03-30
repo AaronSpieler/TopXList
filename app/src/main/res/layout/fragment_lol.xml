@@ -6,8 +6,8 @@
     android:name="com.whynoteasy.topxlist.listActivity.MainListOfListsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="0dp"
-    android:layout_marginRight="0dp"
+    android:layout_marginLeft="@dimen/card_defaults"
+    android:layout_marginRight="@dimen/card_defaults"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.whynoteasy.topxlist.listActivity.MainListOfListsFragment"
+    tools:context="com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment"
     tools:listitem="@layout/list_card_final" />

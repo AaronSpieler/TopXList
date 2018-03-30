@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.whynoteasy.topxlist.listActivities.XListCreateActivity">
+    tools:context="com.whynoteasy.topxlist.elemActivities.XElemCreateActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_xlist_create"
+            android:id="@+id/toolbar_xelem_create"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -20,8 +20,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include
-        layout="@layout/content_xlist_create_and_edit"
-        app:layout_anchorGravity="bottom" />
+    <include layout="@layout/content_xelem_create_and_edit" />
 
 </android.support.design.widget.CoordinatorLayout>

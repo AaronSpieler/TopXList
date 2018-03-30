@@ -1,29 +1,24 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.mainActivities;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.listActivity.MainListOfListsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.listActivities.XListEditActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewActivity;
+import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 import java.util.List;
@@ -133,10 +128,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             mContentView = (TextView) view.findViewById(R.id.content);
         }
 
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
-        }
     }
     */
 
@@ -158,12 +149,21 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         XListViewHolder(View itemView) {
             super(itemView);
             mView = itemView;
+
             listCard = (CardView) itemView.findViewById(R.id.xList_card);
             listTitle = (TextView)  itemView.findViewById(R.id.xList_title);
-            imgButton = (ImageButton)  itemView.findViewById(R.id.xList_popup_button);
             listShortDesc = (TextView) itemView.findViewById(R.id.xList_short_description);
             listTags = (TextView)  itemView.findViewById(R.id.xList_tags);
+
+            imgButton = (ImageButton)  itemView.findViewById(R.id.xList_popup_button);
         }
+
+        /*DONT NEED IT SO FAR
+        @Override
+        public String toString() {
+            return super.toString() + " '" + mContentView.getText() + "'";
+        }
+        */
 
         @Override
         public boolean onMenuItemClick(MenuItem item) {
@@ -203,7 +203,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     builder.show();
                     return true;
                 case R.id.xList_view:
-                    // do your code
+                    //Start XListViewActivity
+                    Intent viewIntent = new Intent(activityContext, XListViewActivity.class);
+                    viewIntent.putExtra("X_LIST_ID", this.mItem.getXListModel().getXListID());
+                    activityContext.startActivity(viewIntent);
                     return true;
                 default:
                     return false;
@@ -220,10 +223,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         mValues.remove(oldPosition);
         mValues.add(newPosition, tempPojo);
         notifyItemMoved(oldPosition, newPosition);
-        System.out.println("I definitely came this far");
         LocalDataRepository myRep = new LocalDataRepository(activityContext);
         myRep.changeAllListNumbersList(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
-        //TODO: make the lists numbers correct
     }
 
     @Override

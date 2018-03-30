@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.listActivities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 

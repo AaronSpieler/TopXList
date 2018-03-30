@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivity;
+package com.whynoteasy.topxlist.listActivities;
 
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
@@ -49,7 +49,6 @@ public class XListCreateActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setTitle("New List");
         ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
 

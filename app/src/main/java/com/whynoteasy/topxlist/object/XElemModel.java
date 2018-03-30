@@ -45,7 +45,6 @@ public class XElemModel implements Comparable<XElemModel>{
 
     //Getters and Setters
 
-
     public int getXElemID() {
         return xElemID;
     }

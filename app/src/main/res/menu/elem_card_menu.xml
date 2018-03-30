@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/xElem_delete"
+        android:title="@string/xList_delete" />
+    <item
+        android:id="@+id/xElem_edit"
+        android:title="@string/xList_edit"/>
+
+    <item
+        android:id="@+id/xElem_view"
+        android:title="@string/xList_view"/>
+</menu>
