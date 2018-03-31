@@ -3,8 +3,8 @@ package com.whynoteasy.topxlist.listActivities;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -16,11 +16,11 @@ import android.widget.TextView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.elemActivities.XElemCreateActivity;
-import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment;
+import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
 
-public class XListViewActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
+public class XListViewCollapsingActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
 
     private LocalDataRepository myRep;
     private int currentListID;
@@ -29,8 +29,10 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xlist_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xlist_view);
+        setContentView(R.layout.activity_xlist_view_collapsing);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_collapsing);
+        toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
         //Get the List that is relevant
@@ -47,7 +49,6 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Start XListViewActivity
                 Intent intent = new Intent(view.getContext(), XElemCreateActivity.class);
                 intent.putExtra("X_LIST_ID", currentListID);
                 startActivity(intent);
@@ -58,15 +59,18 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
         myRep = new LocalDataRepository(this);
         currentList = myRep.getListByID(currentListID);
 
-        //set the title of the activity
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
         ab.setTitle(currentList.getXListTitle());
 
-        //set the longDescription of the list
-        TextView longDescView = (TextView) findViewById(R.id.xlist_long_desc_view);
-        longDescView.setText(currentList.getXListLongDescription());
+        TextView collapsingText = (TextView) findViewById(R.id.collapsing_toolbar_textview);
+        collapsingText.setText(currentList.getXListLongDescription());
+
+        //the collapsing toolbar
+        CollapsingToolbarLayout collapsingTB = (CollapsingToolbarLayout) findViewById(R.id.xlist_view_collapsing_toolbar_layout);
+        collapsingTB.setTitleEnabled(false);
+        collapsingTB.setBackgroundColor(getResources().getColor(R.color.middleDarkBlue));
 
         //Set the Fragment
         //However, the fragment should not be readded on rotation
@@ -76,14 +80,15 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
 
             //with the newInstance function I pass on the relevant ListID
             ListOfElementsFragment LOE_fragment = ListOfElementsFragment.newInstance(1, currentListID);
-            fragmentTransaction.add(R.id.list_view_activity_fragment_placeholder, LOE_fragment);
+            fragmentTransaction.add(R.id.xlist_view_collapsing_container, LOE_fragment);
             fragmentTransaction.commit();
         }
     }
 
     @Override
     public void onListFragmentInteraction(XElemModel item) {
-        //TODO: start detailed view activity here
-        System.out.println("My number is "+item.getXElemNum()+" !!!");
+        Intent viewIntent = new Intent(this.getApplicationContext(), XElemViewActivity.class);
+        viewIntent.putExtra("X_ELEM_ID", item.getXElemID());
+        startActivity(viewIntent);
     }
 }

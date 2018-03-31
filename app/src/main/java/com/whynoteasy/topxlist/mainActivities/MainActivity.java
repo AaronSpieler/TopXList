@@ -19,7 +19,7 @@ import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 public class MainActivity extends AppCompatActivity
@@ -137,8 +137,8 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onListFragmentInteraction(XListTagsPojo item) {
-        //Start XListViewActivity
-        Intent intent = new Intent(this.getApplicationContext(), XListViewActivity.class);
+        //Start XListViewCollapsingActivity
+        Intent intent = new Intent(this.getApplicationContext(), XListViewCollapsingActivity.class);
         intent.putExtra("X_LIST_ID", item.getXListModel().getXListID());
         startActivity(intent);
     }

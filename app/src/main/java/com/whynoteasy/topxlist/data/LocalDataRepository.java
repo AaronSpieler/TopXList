@@ -134,7 +134,23 @@ public class LocalDataRepository{
 
     //GET ELEMENT BY ID
     public XElemModel getElemByID(int elemID){
-        return xRoomDatabase.xElementsModel().loadElemByID(Integer.toString(elemID));
+        try{
+            return new GetElemByIDAsyncTask(xRoomDatabase).execute(elemID).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetElemByIDAsyncTask extends AsyncTask<Integer, Void, XElemModel> {
+        private XRoomDatabase db;
+        GetElemByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected XElemModel doInBackground(final Integer... params) {
+            return db.xElementsModel().loadElemByID(Integer.toString(params[0]));        }
     }
 
     //CHANGE lIST NUMBERS AFTER MOVEMENT //ERROR PRONE !!!!
@@ -164,10 +180,29 @@ public class LocalDataRepository{
             } else {
                 db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].xElemModel.getXListIDForeign()), Integer.toString(params[0].newPos), Integer.toString(params[0].oldPos));
             }
-            //TODO: Check wheter this actually works
             XElemModel xElemTemp = params[0].xElemModel;
             xElemTemp.setXElemNum(params[0].newPos);
             db.xElementsModel().updateXElem(xElemTemp);
+            return null;
+        }
+    }
+
+    //INSERT ELEMENT AT POS
+    public void inserElemAtPos(XElemModel xElemModel, int thePos){
+        new InserElemAtPosAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, thePos, thePos));
+    }
+    private static class InserElemAtPosAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
+        private XRoomDatabase db;
+        InserElemAtPosAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final NumElemUpdateParameters... params) {
+            XElemModel xElemTemp = params[0].xElemModel;
+            int tempNumOfElem = db.xElementsModel().getNumberOfElementsOfList(Integer.toString(xElemTemp.getXListIDForeign()));
+            db.xElementsModel().updateIncrementNumOfeElemFromToSmallerPos(Integer.toString(params[0].xElemModel.getXListIDForeign()), Integer.toString(params[0].newPos), Integer.toString(tempNumOfElem+1));
+            xElemTemp.setXElemNum(params[0].newPos);
+            db.xElementsModel().insertXElem(xElemTemp);
             return null;
         }
     }
@@ -202,8 +237,7 @@ public class LocalDataRepository{
             Integer posOfDel = params[0].getXElemNum();
             db.xElementsModel().deleteXElem(params[0]);
             //update the other positions
-            //TODO: Check wheter this actually works
-            db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign())+1)), Integer.toString(posOfDel));
+            db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign()))+1), Integer.toString(posOfDel));
             return null;
         }
     }

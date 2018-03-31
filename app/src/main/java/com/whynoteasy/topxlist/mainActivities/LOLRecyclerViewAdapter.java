@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
@@ -203,8 +203,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     builder.show();
                     return true;
                 case R.id.xList_view:
-                    //Start XListViewActivity
-                    Intent viewIntent = new Intent(activityContext, XListViewActivity.class);
+                    //Start XListViewCollapsingActivity
+                    Intent viewIntent = new Intent(activityContext, XListViewCollapsingActivity.class);
                     viewIntent.putExtra("X_LIST_ID", this.mItem.getXListModel().getXListID());
                     activityContext.startActivity(viewIntent);
                     return true;
