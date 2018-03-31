@@ -104,6 +104,7 @@
 
                     <EditText
                         android:id="@+id/xelem_title_input"
+                        android:maxLength="255"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/create_and_edit_card_right_rounded"
@@ -153,6 +154,7 @@
 
                     <EditText
                         android:id="@+id/xelem_desc_input"
+                        android:maxLength="8192"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/create_and_edit_card_bottom_rounded"

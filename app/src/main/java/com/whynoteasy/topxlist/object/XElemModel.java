@@ -16,9 +16,9 @@ public class XElemModel implements Comparable<XElemModel>{
     //Constants
 
     @Ignore
-    final int xETlength = 255; //title length
+    public final int xETlength = 255; //title length
     @Ignore
-    final int xEDlength = 8192; //description/Body length
+    public final int xEDlength = 8192; //description/Body length
 
     //Attributes
 

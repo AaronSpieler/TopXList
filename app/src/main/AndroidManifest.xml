@@ -73,6 +73,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.whynoteasy.topxlist.mainActivities.MainActivity" />
         </activity>
+        <activity
+            android:name=".elemActivities.XListViewLongDescriptionActivity"
+            android:label="@string/title_activity_xlist_view_long_description"
+            android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
+        </activity>
     </application>
 
 </manifest>

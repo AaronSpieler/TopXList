@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.whynoteasy.topxlist.elemActivities.XListViewLongDescriptionActivity"
+    tools:showIn="@layout/activity_xlist_view_long_description">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/card_defaults"
+        android:layout_marginRight="@dimen/card_defaults"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/xelem_desc_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="@dimen/card_defaults"
+            app:cardElevation="@dimen/card_defaults"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="@dimen/negative_content_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/xelem_name_text">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/xlist_view_desc_constraint"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/xlist_view_long_desc_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/create_and_edit_card_top_rounded"
+                    android:lineSpacingExtra="0sp"
+                    android:padding="@dimen/card_margins"
+                    android:text="@string/xlist_long_desc_view_label"
+                    android:textAlignment="textStart"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/xlist_view_long_desc_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/create_and_edit_card_bottom_rounded"
+                    android:ems="10"
+                    android:inputType="textMultiLine"
+                    android:padding="@dimen/card_margins"
+                    android:textColor="@color/cutom_grey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_view_long_desc_label" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>
