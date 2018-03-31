@@ -14,11 +14,11 @@ import android.support.annotation.NonNull;
 public class XListModel implements Comparable<XListModel>{
     //Constants
     @Ignore
-    final int xLTlength = 255; //max Title length
+    public final int xLTlength = 255; //max Title length
     @Ignore
-    final int xLSDlength = 2048; //max short description length
+    public final int xLSDlength = 2048; //max short description length
     @Ignore
-    final int xLLDlength = 8192; //max long description length
+    public final int xLLDlength = 8192; //max long description length
 
     //Attributes
 
