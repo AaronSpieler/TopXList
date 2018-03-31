@@ -10,4 +10,5 @@
     android:layout_marginRight="@dimen/card_defaults"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.whynoteasy.topxlist.listActivities.ListOfElementsFragment"
-    tools:listitem="@layout/elem_card_final" />
+    tools:listitem="@layout/elem_card_final"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

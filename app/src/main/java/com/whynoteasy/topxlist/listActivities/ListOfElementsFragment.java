@@ -99,11 +99,15 @@ public class ListOfElementsFragment extends Fragment {
             LOERecyclerViewAdapter tempAdapRef = new LOERecyclerViewAdapter(listOfElements, mListener, this.getActivity());
             recyclerView.setAdapter(tempAdapRef);
 
-            //TODO: replace with own custom imtemTouchHelper
             //The ItemTouchHelperAnimation Stuff
             ElementTouchHelper swipeAndDragHelper = new ElementTouchHelper(tempAdapRef);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
-            touchHelper.attachToRecyclerView((RecyclerView) view);
+            touchHelper.attachToRecyclerView(recyclerView);
+
+            //For apperent smoothness
+            //recyclerView.setNestedScrollingEnabled(false);
+
+            return recyclerView;
         }
         return view;
     }
