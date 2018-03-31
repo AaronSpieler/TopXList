@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -16,14 +15,12 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -31,51 +28,53 @@ import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
-public class XElemCreateActivity extends AppCompatActivity {
+public class XElemEditActivity extends AppCompatActivity {
+
+    private XElemModel currentElement;
+    private int currentElementID;
+    private LocalDataRepository myRep;
 
     private Activity thisActivity;
-    private int currentListID;
-    private XListModel currentList;
-    private LocalDataRepository myRep;
-    private int propableElemNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xelem_create);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xelem_create);
+        setContentView(R.layout.activity_xelem_edit);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xelem_edit);
         setSupportActionBar(toolbar);
 
-        //get the reference to itself (activity)
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         thisActivity = this;
 
         //Get the List that is relevant
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                System.err.println("XElem Create Activity cannot proceed without LIST_ID");
+                System.err.println("Edit List Activity cannot proceed without ELEM_ID");
                 System.exit(0);
             } else {
-                currentListID = extras.getInt("X_LIST_ID");
+                currentElementID = extras.getInt("X_ELEM_ID");
             }
         } else {
-            currentListID= (int) savedInstanceState.getSerializable("X_LIST_ID");
+            //this will crash
+            currentElementID= (int) savedInstanceState.getSerializable("X_ELEM_ID");
         }
 
-        //get the List, its title is needed later
+        //get the List with its Tags
         myRep = new LocalDataRepository(this);
-        currentList = myRep.getListByID(currentListID);
+        currentElement = myRep.getElemByID(currentElementID);
 
-        //set the title of the activity
+        //set the title
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
         ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle("Add Element to: " + currentList.getXListTitle());
+        ab.setTitle("Edit: " + currentElement.getXElemTitle());
 
-        //set the probable element number
-        propableElemNum = myRep.getElemCountByListID(currentListID)+1;
-        final TextView numView = (TextView) findViewById(R.id.xelem_num_input);
-        numView.setText(Integer.toString(propableElemNum));
+        //set the TextFields
+        ((TextView)findViewById(R.id.xelem_title_input)).setText(currentElement.getXElemTitle());
+        ((TextView)findViewById(R.id.xelem_desc_input)).setText(currentElement.getXElemDescription());
+        ((TextView)findViewById(R.id.xelem_num_input)).setText(Integer.toString(currentElement.getXElemNum()));
 
         //The saveList Button
         Button listSaveButton = (Button) findViewById(R.id.xelem_edit_save_button);
@@ -91,19 +90,31 @@ public class XElemCreateActivity extends AppCompatActivity {
                     return;
                 }
                 String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
+                String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString();
 
+                List<XTagModel> newTagList = new ArrayList<XTagModel>();
+
+                //update the necessary values
                 try {
-                    //I dont know wheter parsing always works, dont think so
-                    Integer tempNum = Integer.parseInt(numView.getText().toString());
+                    int tempIntNum = Integer.parseInt(tempNum);
+                    int lastPossibleNum = myRep.getElemCountByListID(currentElement.getXListIDForeign())+1;
 
-                    //if number larger the elements list size +1 then elements list size is used
-                    if (tempNum >= propableElemNum || tempNum < 1) {
-                        myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, propableElemNum));
+                    if (tempIntNum < 1) {
+                        Snackbar mySnackbar = Snackbar.make(view, "No proper number was entered for Element", LENGTH_SHORT);
+                        mySnackbar.show();
+                        return;
                     } else {
-                        XElemModel tempElemRef = new XElemModel(currentListID, tempTitle, tempDescription, tempNum);
-                        myRep.inserElemAtPos(tempElemRef,tempNum);
+                        if (tempIntNum >= lastPossibleNum) {
+                            tempIntNum = lastPossibleNum;
+                        }
+                        int oldPos = currentElement.getXElemNum();
+                        currentElement.setXElemNum(lastPossibleNum);
+                        currentElement.setXElemDescription(tempDescription);
+                        currentElement.setXElemTitle(tempTitle);
+
+                        myRep.changeAllListNumbersElem(currentElement, tempIntNum, oldPos);
                     }
-                } catch (Exception e) {
+                }catch (Exception e){
                     Snackbar mySnackbar = Snackbar.make(view, "No proper number was entered for Element", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
@@ -111,7 +122,7 @@ public class XElemCreateActivity extends AppCompatActivity {
 
                 //return to parent activity
                 Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                intent.putExtra("X_LIST_ID", currentListID);
+                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
                 NavUtils.navigateUpTo(thisActivity,intent);
             }
         });
@@ -137,7 +148,6 @@ public class XElemCreateActivity extends AppCompatActivity {
             returnToXListViewCollapsingActivity();
             return true;
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -150,7 +160,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         if (tempTitle.equals("") && tempDescription.equals("")){
             //exit without saving anything
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-            intent.putExtra("X_LIST_ID", currentListID);
+            intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
             //FROM HERE ON ITS THE ALERT DIALOG
@@ -162,7 +172,7 @@ public class XElemCreateActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialog, int which) {
                     //exit without saving anything
                     Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                    intent.putExtra("X_LIST_ID", currentListID);
+                    intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
                     NavUtils.navigateUpTo(thisActivity,intent);
                 }
             });

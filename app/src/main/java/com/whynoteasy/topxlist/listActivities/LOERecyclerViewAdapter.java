@@ -1,9 +1,14 @@
 package com.whynoteasy.topxlist.listActivities;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -11,8 +16,11 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
+import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 import java.util.List;
 
@@ -60,6 +68,18 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                 }
             }
         });
+
+        holder.imgButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //set up the popupMenu
+                PopupMenu popup = new PopupMenu(v.getContext(),v);
+                //the ViewHolder implements the menuListener
+                popup.setOnMenuItemClickListener(holder);
+                popup.inflate(R.menu.elem_card_menu);
+                popup.show();
+            }
+        });
     }
 
     @Override
@@ -68,7 +88,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
         public final View mView;
         public final CardView elemCard;
         public final TextView elemNum;
@@ -91,6 +111,53 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             elemDescription = (TextView) itemView.findViewById(R.id.xElem_description);
 
             imgButton = (ImageButton)  itemView.findViewById(R.id.xElem_popup_button);
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+            switch (item.getItemId()) {
+                case R.id.xElem_edit:
+                    //starting the activity from the MainActivity context
+                    Intent intent = new Intent(activityContext , XElemEditActivity.class);
+                    intent.putExtra("X_ELEM_ID", this.mItem.getXElemID());
+                    activityContext.startActivity(intent);
+                    return true;
+                case R.id.xElem_delete:
+                    //FROM HERE ON ITS THE ALERT DIALOG
+                    final XElemModel theElement = this.mItem;
+                    final Integer cardPos = this.getAdapterPosition();
+                    AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
+                    builder.setTitle("Delete Element?");
+                    builder.setMessage("Are you sure you want to delete this Element: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                            LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                            myRep.deleteElem(theElement);
+                            //remove the List from the activity cache and notify the adapter
+                            //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
+                            mValues.remove(theElement);
+                            notifyItemRemoved(cardPos);
+                            makeNumChangesVisibleOnDeletion(cardPos);
+                        }
+                    });
+                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // do nothing
+                        }
+                    });
+                    builder.show();
+                    return true;
+                case R.id.xElem_view:
+                    Intent viewIntent = new Intent(activityContext, XElemViewActivity.class);
+                    viewIntent.putExtra("X_ELEM_ID", this.mItem.getXElemID());
+                    activityContext.startActivity(viewIntent);
+                    return true;
+                default:
+                    return false;
+            }
         }
 
     }
@@ -123,6 +190,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                 mValues.get(i).setXElemNum(i+1);
                 notifyItemChanged(i);
             }
+        }
+    }
+
+    private void makeNumChangesVisibleOnDeletion(int posOfDel){
+        for (int i = posOfDel; i <= mValues.size()-1; i++){
+            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
+            notifyItemChanged(i);
         }
     }
 }
