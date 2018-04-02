@@ -43,7 +43,7 @@ public class XElemCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xelem_create);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xelem_create);
+        Toolbar toolbar = findViewById(R.id.toolbar_xelem_create);
         setSupportActionBar(toolbar);
 
         //get the reference to itself (activity)
@@ -74,11 +74,15 @@ public class XElemCreateActivity extends AppCompatActivity {
 
         //set the probable element number
         propableElemNum = myRep.getElemCountByListID(currentListID)+1;
-        final TextView numView = (TextView) findViewById(R.id.xelem_num_input);
+        final TextView numView = findViewById(R.id.xelem_num_input);
         numView.setText(Integer.toString(propableElemNum));
 
+        //set focus on title not num
+        TextView titleView = findViewById(R.id.xelem_title_input);
+        titleView.requestFocus();
+
         //The saveList Button
-        Button listSaveButton = (Button) findViewById(R.id.xelem_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

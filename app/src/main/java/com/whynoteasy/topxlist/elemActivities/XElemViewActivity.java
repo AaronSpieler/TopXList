@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
 
@@ -34,7 +35,7 @@ public class XElemViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xelem_view);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xelem_view);
+        Toolbar toolbar = findViewById(R.id.toolbar_xelem_view);
         setSupportActionBar(toolbar);
 
         thisActivity = this;
@@ -63,9 +64,19 @@ public class XElemViewActivity extends AppCompatActivity {
         ab.setTitle(currentElement.getXElemTitle());
 
         //set the description TextField
-        TextView descView = ((TextView)findViewById(R.id.xelem_view_desc_input));
+        TextView descView = findViewById(R.id.xelem_view_desc_input);
         descView.setText(currentElement.getXElemDescription());
         descView.setEnabled(false);
+
+        FloatingActionButton fab = findViewById(R.id.fab_xelem_view_desc);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(thisActivity, XElemEditActivity.class);
+                intent.putExtra("X_ELEM_ID", currentElementID);
+                thisActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override

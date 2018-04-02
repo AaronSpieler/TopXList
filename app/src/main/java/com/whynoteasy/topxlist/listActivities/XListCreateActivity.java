@@ -39,7 +39,7 @@ public class XListCreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xlist_create);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xlist_create);
+        Toolbar toolbar = findViewById(R.id.toolbar_xlist_create);
         setSupportActionBar(toolbar);
 
         //get the reference to itself (activity)
@@ -53,10 +53,10 @@ public class XListCreateActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         //the text typed in the addTag TextField
-        tagEditText = (EditText)findViewById(R.id.xList_tag_input_field);
+        tagEditText = findViewById(R.id.xList_tag_input_field);
 
         //The Tag Add Button
-        Button tagAddButton = (Button) findViewById(R.id.xList_tag_input_button);
+        Button tagAddButton = findViewById(R.id.xList_tag_input_button);
         tagAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,22 +70,22 @@ public class XListCreateActivity extends AppCompatActivity {
                     final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
 
                     //The TextView of the TagView is filled here
-                    TextView tagTextView = (TextView) tagView.findViewById(R.id.tag_name_text);
+                    TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
                     tagTextView.setText("#"+tagEditText.getText().toString());
 
                     //This is, so when the X is clicked the tag is removed
-                    ImageButton tagImgButton = (ImageButton) tagView.findViewById(R.id.tag_delete_button);
+                    ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
                     tagImgButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View view2) {
                             tempTagList.remove(tempTempStr);
-                            ViewGroup parent = (ViewGroup) findViewById(R.id.xList_tags_tagsList_view);
+                            ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                             parent.removeView(tagView);
                         }
                     });
 
                     //The tagView is inserted into the LinearLayout
-                    ViewGroup insertPoint = (ViewGroup) findViewById(R.id.xList_tags_tagsList_view);
+                    ViewGroup insertPoint = findViewById(R.id.xList_tags_tagsList_view);
                     insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
                     tagEditText.setText("");
@@ -94,7 +94,7 @@ public class XListCreateActivity extends AppCompatActivity {
         });
 
         //The saveList Button
-        Button listSaveButton = (Button) findViewById(R.id.xlist_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

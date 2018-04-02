@@ -26,8 +26,6 @@ import java.util.List;
 
 /**
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: impement the touchhelper functions
- * TODO: make the edit icon clickable
  */
 public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerViewAdapter.ViewHolder> implements ElementTouchHelper.ActionCompletionContract{
 
@@ -57,13 +55,10 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         holder.elemNum.setText(mValues.get(position).getXElemNum()+".");
         holder.elemDescription.setText(mValues.get(position).getXElemDescription());
 
-        //TODO: figure out wheter I need this?
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
@@ -105,12 +100,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             super(itemView);
 
             mView = itemView;
-            elemCard = (CardView) itemView.findViewById(R.id.xElem_card);
-            elemNum = (TextView) itemView.findViewById(R.id.xElem_num);
-            elemTitle = (TextView)  itemView.findViewById(R.id.xElem_title);
-            elemDescription = (TextView) itemView.findViewById(R.id.xElem_description);
+            elemCard = itemView.findViewById(R.id.xElem_card);
+            elemNum = itemView.findViewById(R.id.xElem_num);
+            elemTitle = itemView.findViewById(R.id.xElem_title);
+            elemDescription = itemView.findViewById(R.id.xElem_description);
 
-            imgButton = (ImageButton)  itemView.findViewById(R.id.xElem_popup_button);
+            imgButton = itemView.findViewById(R.id.xElem_popup_button);
         }
 
         @Override
@@ -130,7 +125,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                     AlertDialog.Builder builder;
                     builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
                     builder.setTitle("Delete Element?");
-                    builder.setMessage("Are you sure you want to delete this Element: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+                    builder.setMessage("Are you sure you want to delete: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
                     builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)

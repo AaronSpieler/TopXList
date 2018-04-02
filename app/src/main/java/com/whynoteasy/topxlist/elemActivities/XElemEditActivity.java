@@ -40,7 +40,7 @@ public class XElemEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xelem_edit);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xelem_edit);
+        Toolbar toolbar = findViewById(R.id.toolbar_xelem_edit);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -77,7 +77,7 @@ public class XElemEditActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.xelem_num_input)).setText(Integer.toString(currentElement.getXElemNum()));
 
         //The saveList Button
-        Button listSaveButton = (Button) findViewById(R.id.xelem_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

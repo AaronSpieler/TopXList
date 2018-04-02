@@ -34,7 +34,7 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xlist_view_long_description);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xlist_long_desc_view);
+        Toolbar toolbar = findViewById(R.id.toolbar_xlist_long_desc_view);
         setSupportActionBar(toolbar);
 
         System.out.println("I definitely come this far");
@@ -65,11 +65,11 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         ab.setTitle(currentList.getXListTitle());
 
         //set the description TextField
-        TextView descView = ((TextView)findViewById(R.id.xlist_view_long_desc_input));
+        TextView descView = findViewById(R.id.xlist_view_long_desc_input);
         descView.setText(currentList.getXListLongDescription());
         descView.setEnabled(false);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_xlist_view_long_desc);
+        FloatingActionButton fab = findViewById(R.id.fab_xlist_view_long_desc);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
