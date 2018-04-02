@@ -35,7 +35,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xlist_view_collapsing);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_collapsing);
+        Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
@@ -51,7 +51,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
             currentListID = extras.getInt("X_LIST_ID");
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_elements);
+        FloatingActionButton fab = findViewById(R.id.fab_elements);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +71,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         ab.setTitle(currentList.getXListTitle());
 
         //the long description is clickable
-        TextView collapsingText = (TextView) findViewById(R.id.collapsing_toolbar_textview);
+        TextView collapsingText = findViewById(R.id.collapsing_toolbar_textview);
         collapsingText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +88,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         }
 
         //the collapsing toolbar
-        CollapsingToolbarLayout collapsingTB = (CollapsingToolbarLayout) findViewById(R.id.xlist_view_collapsing_toolbar_layout);
+        CollapsingToolbarLayout collapsingTB = findViewById(R.id.xlist_view_collapsing_toolbar_layout);
         collapsingTB.setTitleEnabled(false);
         collapsingTB.setBackgroundColor(getResources().getColor(R.color.middleDarkBlue));
 

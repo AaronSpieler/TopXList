@@ -24,13 +24,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface XElemDao {
 
     @Query("SELECT * FROM XElemModel ORDER BY xElemNum ASC")
-    public List<XElemModel> loadAllElements();
+    List<XElemModel> loadAllElements();
 
     @Query("SELECT * FROM XElemModel WHERE xListIDForeign = :xListIDInp ORDER BY xElemNum ASC")
-    public List<XElemModel> loadElementsByListID(String xListIDInp);
+    List<XElemModel> loadElementsByListID(String xListIDInp);
 
     @Query("SELECT * FROM xElemModel WHERE  xElemID = :xElemIDInp")
-    public XElemModel loadElemByID(String xElemIDInp);
+    XElemModel loadElemByID(String xElemIDInp);
 
     @Insert(onConflict = REPLACE)
     void insertXElem(XElemModel xElemModel);
@@ -55,7 +55,11 @@ public interface XElemDao {
     @Query("DELETE FROM XElemModel WHERE xListIDForeign = :xListIDInp")
     void deleteElementsByListsID(String xListIDInp);
 
-    //basically how many lists there are so far
+    //how many elements does the list have?
     @Query("SELECT COUNT(*) FROM XElemModel WHERE xListIDForeign = :xListIDInp")
     int getNumberOfElementsOfList(String xListIDInp);
+
+    //how many elements are there so far in total
+    @Query("SELECT COUNT(*) FROM XElemModel")
+    int getNumberOfElementsTotal();
 }

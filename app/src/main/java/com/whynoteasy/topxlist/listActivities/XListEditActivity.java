@@ -46,7 +46,7 @@ public class XListEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xlist_edit);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_xlist_edit);
+        Toolbar toolbar = findViewById(R.id.toolbar_xlist_edit);
         setSupportActionBar(toolbar);
 
         thisActivity = this;
@@ -81,21 +81,21 @@ public class XListEditActivity extends AppCompatActivity {
 
         //inflate the Tags
         //since everything is tied to the tagView, we can have different onClickListeners for different type of TagViews
-        insertPoint = (ViewGroup) findViewById(R.id.xList_tags_tagsList_view);
+        insertPoint = findViewById(R.id.xList_tags_tagsList_view);
         for (XTagModel tempTag : currentList.getXTagModelList()){
             final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
 
-            TextView tagTextView = (TextView) tagView.findViewById(R.id.tag_name_text);
+            TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
             tagTextView.setText("#"+tempTag.getXTagName());
 
             //This is, so when the X is clicked the tag is put on the List of Tags to be permanently removed
             final int tagID = tempTag.getXTagID();
-            ImageButton tagImgButton = (ImageButton) tagView.findViewById(R.id.tag_delete_button);
+            ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
             tagImgButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view2) {
                     tempTagListDeleted.add(tagID);
-                    ViewGroup parent = (ViewGroup) findViewById(R.id.xList_tags_tagsList_view);
+                    ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                     parent.removeView(tagView);
                 }
             });
@@ -104,11 +104,11 @@ public class XListEditActivity extends AppCompatActivity {
         }
 
         //the text typed in the addTag TextField
-        tagEditText = (EditText)findViewById(R.id.xList_tag_input_field);
+        tagEditText = findViewById(R.id.xList_tag_input_field);
 
         //what happens to newly inserted Tags
         //The Tag Add Button
-        Button tagAddButton = (Button) findViewById(R.id.xList_tag_input_button);
+        Button tagAddButton = findViewById(R.id.xList_tag_input_button);
         tagAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,16 +122,16 @@ public class XListEditActivity extends AppCompatActivity {
                     final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
 
                     //The TextView of the TagView is filled here
-                    TextView tagTextView = (TextView) tagView.findViewById(R.id.tag_name_text);
+                    TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
                     tagTextView.setText("#" + tagEditText.getText().toString());
 
                     //This is, so when the X is clicked the tag is removed
-                    ImageButton tagImgButton = (ImageButton) tagView.findViewById(R.id.tag_delete_button);
+                    ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
                     tagImgButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view2) {
                             tempTagListNew.remove(tempTempStr);
-                            ViewGroup parent = (ViewGroup) findViewById(R.id.xList_tags_tagsList_view);
+                            ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                             parent.removeView(tagView);
                         }
                     });
@@ -145,7 +145,7 @@ public class XListEditActivity extends AppCompatActivity {
         });
 
         //The saveList Button
-        Button listSaveButton = (Button) findViewById(R.id.xlist_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

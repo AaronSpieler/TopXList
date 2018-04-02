@@ -19,10 +19,6 @@ import java.util.List;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * TODO: check wheter I need Arg_column_clunt and mColumnCount at allb
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
  */
 public class MainListOfListsFragment extends Fragment {
 
@@ -32,17 +28,12 @@ public class MainListOfListsFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
 
-    //repository Instance
-    LocalDataRepository myRep;
-
-    //List of the Lists with their Tags
-    //It is pulled onCreate, but should be updated every time it changes
+    private LocalDataRepository myRep;
     private List<XListTagsPojo> listOfListWithTags;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    private LOLRecyclerViewAdapter adapterRef;
+
+    //Mandatory empty constructor
     public MainListOfListsFragment() {
     }
 
@@ -82,11 +73,13 @@ public class MainListOfListsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            LOLRecyclerViewAdapter tempAdapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
-            recyclerView.setAdapter(tempAdapterRef);
+
+            //Instanciate and set the adapter
+            adapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
+            recyclerView.setAdapter(adapterRef);
 
             //The ItemTouchHelperAnimation Stuff
-            ListTouchHelper swipeAndDragHelper = new ListTouchHelper(tempAdapterRef);
+            ListTouchHelper swipeAndDragHelper = new ListTouchHelper(adapterRef);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
             touchHelper.attachToRecyclerView((RecyclerView) view);
         }
@@ -111,17 +104,13 @@ public class MainListOfListsFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(XListTagsPojo item);
     }
+
+    //This is to get the adapter refrence through the fragment: needed so the main view can tell the adapter to redraw
+    public LOLRecyclerViewAdapter getAdapterRef(){
+        return adapterRef;
+    }
+
 }

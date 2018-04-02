@@ -436,6 +436,11 @@ public class LocalDataRepository{
         }
         @Override
         protected Integer doInBackground(Void... voids) {
+            /*DEBUG
+            System.out.println("Num of Lists" + db.xListModel().getNumberOfLists());
+            System.out.println("Num of Elems" + db.xElementsModel().getNumberOfElementsTotal());
+            System.out.println("Num of Tags" + db.xTagModel().getNumberOfTagsTotal());
+            */
             return db.xListModel().getNumberOfLists();
         }
     }

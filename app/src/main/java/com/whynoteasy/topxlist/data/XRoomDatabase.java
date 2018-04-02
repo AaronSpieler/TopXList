@@ -19,7 +19,7 @@ public abstract class XRoomDatabase extends RoomDatabase{
 
     private static XRoomDatabase sInstance;
 
-    public static XRoomDatabase getDatabase(Context context){//context does'nt really matter, we always create it with application context
+    public static XRoomDatabase getDatabase(Context context){//which context does'nt really matter, we always create it with application context
         if (sInstance == null){
             sInstance = Room.databaseBuilder(context.getApplicationContext(), XRoomDatabase.class, "topXList_db").build();
         }

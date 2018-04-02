@@ -25,10 +25,10 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 public interface XListDao {
 
     @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
-    public List<XListModel> loadAllLists();
+    List<XListModel> loadAllLists();
 
     @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
-    public XListModel loadListByID(String xListIDInp);
+    XListModel loadListByID(String xListIDInp);
 
     @Insert(onConflict = REPLACE)
     long insertXList(XListModel xListModel);
