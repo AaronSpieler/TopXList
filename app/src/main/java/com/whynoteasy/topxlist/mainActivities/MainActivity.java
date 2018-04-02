@@ -60,10 +60,13 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //must be first to set style back to normal
+        setTheme(R.style.AppTheme_NoActionBar);
+        //from here on business as usual
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar_main);
-        toolbar.setTitle("TopXLists");
+        toolbar.setTitle("TopXList");
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
@@ -243,7 +246,7 @@ public class MainActivity extends AppCompatActivity
             //Setting up a list and Card
             String introListTitle = "How to get started...";
             String introListShortDesc = "Click on the Floating Button to create your first list.\n" +
-                    "You can Edit and Delete it later by clicking on the pencil icon.\n" +
+                    "You can Edit & Delete lists by clicking on the pencil icon.\n" +
                     "Reorder lists via Drag & Drop.\n" +
                     "Filter you lists through the search-field at the top.\n" +
                     "Think of a number between 1 and 10 and then click me";
