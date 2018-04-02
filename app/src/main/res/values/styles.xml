@@ -1,19 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/middleBlue</item>
+        <item name="colorPrimaryDark">@color/darkBlue</item>
+        <item name="colorAccent">#fff</item>
+
+        <!--This Actually Works-->
+        <item name="android:textColor">@color/superDarkBlue</item>
 
         <!--FROM HERE ON ITS ALL ME-->
 
         <!-- Change Overflow Menu ListView Property -->
         <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
         <item name="android:actionBarWidgetTheme">@style/PopupMenuTextView</item>
-        <item name="android:popupMenuStyle">@style/PopupListMenu</item>
-        <item name="popupMenuStyle">@style/PopupListMenu</item>
+        <item name="android:popupMenuStyle">@style/PopupMenu</item>
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -27,17 +31,20 @@
 
     <!-- OWN SHIT FROM HERE ON -->
 
+    <!--This Actually Works-->
     <!-- Change Overflow Menu ListView Divider Property -->
-    <style name="PopupListMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+    <style name="PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
         <item name="android:popupBackground">@color/middleLightBlue</item>
     </style>
 
+    <!--This DOESNT Work-->
     <!-- Change Overflow Menu ListView Text Size and Text Size -->
     <style name="PopupMenuTextView" parent="@style/android:Theme.Holo.Light">
-        <item name="android:textColor">#000000</item>
+        <item name="android:textColor">@color/superDarkBlue</item>
         <item name="android:textSize">12sp</item>
     </style>
 
+    <!--This Actually Works-->
     <!-- Change Overflow Menu ListView Divider Property -->
     <style name="PopupMenuListView" parent="@android:style/Widget.Holo.ListView.DropDown">
         <item name="android:divider">@color/middleBlue</item>

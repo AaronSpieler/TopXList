@@ -3,8 +3,9 @@
     package="com.whynoteasy.topxlist">
 
     <application
-        android:allowBackup="false"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -59,6 +60,7 @@
             android:name=".elemActivities.XElemEditActivity"
             android:label="@string/title_activity_xelem_edit"
             android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -68,6 +70,7 @@
             android:name=".elemActivities.XElemViewActivity"
             android:label="@string/title_activity_xelem_view"
             android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -77,6 +80,7 @@
             android:name=".listActivities.XListViewCollapsingActivity"
             android:label="@string/title_activity_scrolling"
             android:parentActivityName=".mainActivities.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -86,6 +90,7 @@
             android:name=".elemActivities.XListViewLongDescriptionActivity"
             android:label="@string/title_activity_xlist_view_long_description"
             android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

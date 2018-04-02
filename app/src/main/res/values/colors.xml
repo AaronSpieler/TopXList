@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
 
     // CUSTOM COLORS
+    <color name="ultraDarkBlue">#21465C</color>
+    <color name="superDarkBlue">#336D8F</color>
     <color name="darkBlue">#4390bc</color>
     <color name="middleDarkBlue">#68a7ca</color>
     <color name="middleBlue">#8dbdd8</color>
