@@ -42,6 +42,8 @@ public class XListEditActivity extends AppCompatActivity {
 
     private Activity thisActivity;
 
+    private boolean tagWereEdited = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +95,7 @@ public class XListEditActivity extends AppCompatActivity {
             tagImgButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view2) {
+                    tagWereEdited = true;
                     tempTagListDeleted.add(tempTag);
                     ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                     parent.removeView(tagView);
@@ -113,33 +116,45 @@ public class XListEditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //get the tagText
                 final String tempTagStr = tagEditText.getText().toString();
-                //if its not empty, add it to the temporary List
-                if (!tagEditText.getText().toString().equals("")&& !isTagDuplicate(view, tempTagStr)) {
-                    tempTagListNew.add(tempTagStr);
 
-                    //All this to put a visual representation of the tag in the view
-                    final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
-
-                    //The TextView of the TagView is filled here
-                    TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
-                    tagTextView.setText("#" + tagEditText.getText().toString());
-
-                    //This is, so when the X is clicked the tag is removed
-                    ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
-                    tagImgButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view2) {
-                            tempTagListNew.remove(tempTagStr);
-                            ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
-                            parent.removeView(tagView);
-                        }
-                    });
-
-                    //The tagView is inserted into the LinearLayout
-                    insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                    tagEditText.setText("");
+                //only continue if everything checksout
+                if (tagEditText.getText().toString().trim().length() == 0) {
+                    Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (tempTagStr.contains(" ")) {
+                    Snackbar mySnackbar = Snackbar.make(view, "No spaces allowed in tags.", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (isTagDuplicate(view, tempTagStr)) {
+                    return;
                 }
+
+                tempTagListNew.add(tempTagStr);
+                tagWereEdited = true;
+
+                //All this to put a visual representation of the tag in the view
+                final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
+
+                //The TextView of the TagView is filled here
+                TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
+                tagTextView.setText("#" + tagEditText.getText().toString());
+
+                //This is, so when the X is clicked the tag is removed
+                ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
+                tagImgButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view2) {
+                        tempTagListNew.remove(tempTagStr);
+                        ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
+                        parent.removeView(tagView);
+                    }
+                });
+
+                //The tagView is inserted into the LinearLayout
+                insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+                tagEditText.setText("");
             }
         });
 
@@ -219,6 +234,16 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     private void returnToMainActivity(){
+        String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
+        String tempShortDesc = ((TextView)findViewById(R.id.xlist_short_desc_input)).getText().toString();
+        String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
+
+        if (!tagWereEdited && currentList.getXListModel().getXListTitle().equals(tempTitle) && currentList.getXListModel().getXListShortDescription().equals(tempShortDesc) && currentList.getXListModel().getXListLongDescription().equals(tempLongDesc)) {
+            //exit without saving anything and without promting
+            NavUtils.navigateUpFromSameTask(thisActivity);
+            return;
+        }
+
         //FROM HERE ON ITS THE ALERT DIALOG
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);

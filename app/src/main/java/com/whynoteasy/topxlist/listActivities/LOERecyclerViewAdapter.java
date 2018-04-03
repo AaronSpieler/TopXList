@@ -51,6 +51,9 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
+        //Xlist_card, set backcround color if marked
+
+
         holder.elemTitle.setText(mValues.get(position).getXElemTitle());
         holder.elemNum.setText(mValues.get(position).getXElemNum()+".");
         holder.elemDescription.setText(mValues.get(position).getXElemDescription());

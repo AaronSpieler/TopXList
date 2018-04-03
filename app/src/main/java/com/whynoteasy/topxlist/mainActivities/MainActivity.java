@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         //must be first to set style back to normal
         setTheme(R.style.AppTheme_NoActionBar);
-        //from here on business as usual
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         toolbar.setTitle("TopXList");
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
@@ -101,19 +102,19 @@ public class MainActivity extends AppCompatActivity
 
         */
 
-        //from here on is my own shit:
 
-        //Initialise and set the fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if (savedInstanceState == null) {
+            //Initialise and set the fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        theFragment = new MainListOfListsFragment();
-        fragmentTransaction.add(R.id.main_activity_fragment_placeholder, theFragment);
-        fragmentTransaction.commit();
+            theFragment = new MainListOfListsFragment();
+            fragmentTransaction.add(R.id.main_activity_fragment_placeholder, theFragment);
+            fragmentTransaction.commit();
+        }
 
         //probably not needed here, but for consistenc< and later on it does make sence
         handleIntent(getIntent());
-
     }
 
     @Override
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity
             int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1));
 
             ArrayList<XTagModel> introTags = new ArrayList<>();
-            introTags.add(new XTagModel(tempListID,"listCanHaveTags"));
+            introTags.add(new XTagModel(tempListID,"listsCanHaveTags"));
             myRep.insertTags(introTags);
 
             myRep.insertElem(new XElemModel(tempListID, "Intuitive", "To get started right away",1));

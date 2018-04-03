@@ -80,12 +80,9 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
                 thisActivity.startActivity(intent);
             }
         });
-        //If the long description is too long not everything is shown
-        if (currentList.getXListLongDescription().length() <= 255) {
-            collapsingText.setText(currentList.getXListLongDescription());
-        } else {
-            collapsingText.setText(currentList.getXListLongDescription().substring(0, 249).concat(" [...]"));
-        }
+
+        //If the long description is too long not everything is shown, only 7 lines
+        collapsingText.setText(currentList.getXListLongDescription());
 
         //the collapsing toolbar
         CollapsingToolbarLayout collapsingTB = findViewById(R.id.xlist_view_collapsing_toolbar_layout);

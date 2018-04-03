@@ -65,35 +65,44 @@ public class XListCreateActivity extends AppCompatActivity {
                 final String tempTagStr = tagEditText.getText().toString();
                 //if its not empty, add it to the temporary List
 
-                if (!(tempTagStr.trim().length()==0) && !isTagDuplicate(view, tempTagStr)){
-                    tempTagList.add(tempTagStr);
-
-                    //All this to put a visual representation of the tag in the view
-                    final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
-
-                    //The TextView of the TagView is filled here
-                    TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
-                    tagTextView.setText("#"+tagEditText.getText().toString());
-
-                    //This is, so when the X is clicked the tag is removed
-                    ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
-                    tagImgButton.setOnClickListener(new View.OnClickListener(){
-                        @Override
-                        public void onClick(View view2) {
-                            tempTagList.remove(tempTagStr);
-                            ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
-                            parent.removeView(tagView);
-                        }
-                    });
-
-                    //The tagView is inserted into the LinearLayout
-                    ViewGroup insertPoint = findViewById(R.id.xList_tags_tagsList_view);
-                    insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-                    tagEditText.setText("");
+                //only continue if everything checksout
+                if (tempTagStr.trim().length() == 0) {
+                    Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered.", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (tempTagStr.contains(" ")) {
+                    Snackbar mySnackbar = Snackbar.make(view, "No spaces allowed in tags.", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (isTagDuplicate(view, tempTagStr)) {
+                    return;
                 }
 
+                tempTagList.add(tempTagStr);
 
+                //All this to put a visual representation of the tag in the view
+                final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
+
+                //The TextView of the TagView is filled here
+                TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
+                tagTextView.setText("#"+tagEditText.getText().toString());
+
+                //This is, so when the X is clicked the tag is removed
+                ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
+                tagImgButton.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view2) {
+                        tempTagList.remove(tempTagStr);
+                        ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
+                        parent.removeView(tagView);
+                    }
+                });
+
+                //The tagView is inserted into the LinearLayout
+                ViewGroup insertPoint = findViewById(R.id.xList_tags_tagsList_view);
+                insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+                tagEditText.setText("");
             }
         });
 
@@ -104,6 +113,7 @@ public class XListCreateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //retrieving the inputs
                 String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
+                //if there is only spaces
                 if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
@@ -176,7 +186,7 @@ public class XListCreateActivity extends AppCompatActivity {
         String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
         //if there is nothing entered so far
-        if (tempTitle.trim().length() == 0 && tempShortDesc.equals("") && tempLongDesc.equals("")){
+        if (tempTitle.trim().length() == 0 && tempShortDesc.trim().length() == 0 && tempLongDesc.trim().length() == 0){
             //exit without saving anything
             NavUtils.navigateUpFromSameTask(thisActivity);
         } else {
