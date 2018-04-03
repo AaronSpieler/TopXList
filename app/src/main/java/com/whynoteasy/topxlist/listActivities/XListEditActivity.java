@@ -35,7 +35,7 @@ public class XListEditActivity extends AppCompatActivity {
     private LocalDataRepository myRep;
 
     private List<String> tempTagListNew = new ArrayList<String>();
-    private List<Integer> tempTagListDeleted = new ArrayList<Integer>();
+    private List<XTagModel> tempTagListDeleted = new ArrayList<XTagModel>();
 
     private ViewGroup insertPoint;
     private EditText tagEditText;
@@ -82,19 +82,18 @@ public class XListEditActivity extends AppCompatActivity {
         //inflate the Tags
         //since everything is tied to the tagView, we can have different onClickListeners for different type of TagViews
         insertPoint = findViewById(R.id.xList_tags_tagsList_view);
-        for (XTagModel tempTag : currentList.getXTagModelList()){
+        for (final XTagModel tempTag : currentList.getXTagModelList()){
             final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
 
             TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
             tagTextView.setText("#"+tempTag.getXTagName());
 
             //This is, so when the X is clicked the tag is put on the List of Tags to be permanently removed
-            final int tagID = tempTag.getXTagID();
             ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
             tagImgButton.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view2) {
-                    tempTagListDeleted.add(tagID);
+                    tempTagListDeleted.add(tempTag);
                     ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                     parent.removeView(tagView);
                 }
@@ -113,10 +112,10 @@ public class XListEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //get the tagText
+                final String tempTagStr = tagEditText.getText().toString();
                 //if its not empty, add it to the temporary List
-                if (!tagEditText.getText().toString().equals("")) {
-                    final String tempTempStr = tagEditText.getText().toString();
-                    tempTagListNew.add(tempTempStr);
+                if (!tagEditText.getText().toString().equals("")&& !isTagDuplicate(view, tempTagStr)) {
+                    tempTagListNew.add(tempTagStr);
 
                     //All this to put a visual representation of the tag in the view
                     final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
@@ -130,7 +129,7 @@ public class XListEditActivity extends AppCompatActivity {
                     tagImgButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view2) {
-                            tempTagListNew.remove(tempTempStr);
+                            tempTagListNew.remove(tempTagStr);
                             ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                             parent.removeView(tagView);
                         }
@@ -151,9 +150,13 @@ public class XListEditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //retrieving the inputs
                 String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
-                if (tempTitle.equals("")){
+                if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (titleAlreadyExists(tempTitle)) {
+                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -179,7 +182,11 @@ public class XListEditActivity extends AppCompatActivity {
                 myRep.insertTags(newTagList);
 
                 //now delete the appropriate Tags
-                myRep.deleteTagsByID(tempTagListDeleted);
+                ArrayList<Integer> deleteTagIDList = new ArrayList<>();
+                for (XTagModel tagTemp : tempTagListDeleted) {
+                    deleteTagIDList.add(tagTemp.getXTagID());
+                }
+                myRep.deleteTagsByID(deleteTagIDList);
 
                 //return to parent activity
                 NavUtils.navigateUpFromSameTask(thisActivity);
@@ -231,4 +238,44 @@ public class XListEditActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private boolean titleAlreadyExists(String newTitle) {
+        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+        List<XListTagsPojo> allLists = myRep.getListsWithTags();
+        for (XListTagsPojo tempList : allLists) {
+            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Boolean isTagDuplicate(View view, String newTag) {
+        for (XTagModel tempTag : tempTagListDeleted) {
+            if (tempTag.getXTagName().equals(newTag)) {
+                //If a tag is added that was temporarily deleted, than
+                //its just removed from the temporarily deleted tag list and will thus not be deleted
+                tempTagListDeleted.remove(tempTag);
+
+                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                mySnackbar.show();
+                return true;
+            }
+        }
+        for (XTagModel tempTag : currentList.getXTagModelList()) {
+            //if the tags match, and the tag has not been deleted temporarily so far
+            if (tempTag.getXTagName().equals(newTag) && !(tempTagListDeleted.contains(tempTag))) {
+                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                mySnackbar.show();
+                return true;
+            }
+        }
+        for (String tempTag : tempTagListNew) {
+            if (tempTag.equals(newTag)) {
+                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                mySnackbar.show();
+                return true;
+            }
+        }
+        return false;
+    }
 }

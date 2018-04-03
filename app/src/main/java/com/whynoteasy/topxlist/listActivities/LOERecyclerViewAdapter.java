@@ -7,6 +7,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
 import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 import java.util.List;
 
@@ -67,8 +67,9 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         holder.imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //set up the popupMenu
-                PopupMenu popup = new PopupMenu(v.getContext(),v);
+                //This is to style tme Popup menu
+                Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
+                PopupMenu popup = new PopupMenu(wrapper, v);
                 //the ViewHolder implements the menuListener
                 popup.setOnMenuItemClickListener(holder);
                 popup.inflate(R.menu.elem_card_menu);

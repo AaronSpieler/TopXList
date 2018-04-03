@@ -1,6 +1,6 @@
 package com.whynoteasy.topxlist.mainActivities;
 
-import android.app.SearchManager;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,6 @@ import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 
 import java.util.ArrayList;
@@ -77,11 +77,9 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         holder.imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*This didnt work
-                //Context wrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupListMenu);
-                //PopupMenu popup = new PopupMenu(wrapper, v);
-                */
-                PopupMenu popup = new PopupMenu(v.getContext(),v);
+                //This is to style tme Popup menu
+                Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
+                PopupMenu popup = new PopupMenu(wrapper, v);
                 //the ViewHolder implements the menuListener
                 popup.setOnMenuItemClickListener(holder);
                 popup.inflate(R.menu.list_card_menu);
