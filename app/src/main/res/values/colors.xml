@@ -16,4 +16,13 @@
     <color name="cutom_grey">#808080</color>
 
 
+    <color name="ultraDarkGreen">#24642e</color>
+    <color name="superDarkGreen">#308b3e</color>
+    <color name="darkGreen">#3da84e</color>
+    <color name="middleGreen">#8dd899</color>
+    <color name="middleLightGreen">#b2e6bb</color>
+
+
+
+
 </resources>

@@ -28,18 +28,20 @@ public class XListModel implements Comparable<XListModel>{
     private String xListShortDescription;
     private String xListLongDescription;
     private int xListNum;
+    private boolean xListMarked;
 
     /*possible future Attributes
     private int xListPrivacySetting;
     private int xListLanguageID
     */
 
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum) {
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, boolean xListMarked) {
         this.xListID = xListID;
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
+        this.xListMarked = xListMarked;
     }
 
     //Getters and Setters
@@ -84,11 +86,18 @@ public class XListModel implements Comparable<XListModel>{
         this.xListID = xListID;
     }
 
+    public boolean isXListMarked() {
+        return xListMarked;
+    }
+
+    public void setXListMarked(boolean xListMarked) {
+        this.xListMarked = xListMarked;
+    }
+
     //Other Methods
 
     @Override
     public int compareTo(@NonNull XListModel xListModel) {
         return (this.getXListNum() - xListModel.getXListNum());
     }
-
 }

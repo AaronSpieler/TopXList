@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
 import android.view.MenuInflater;
@@ -244,11 +245,16 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
         mboolean = settings.getBoolean("FIRST_RUN", false);
         if (!mboolean) {
+            //this is a configuration to enable drawing images dynamically from vectors
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
+            //this is all related to the creation and insertion of the firsst card
             //Setting up a list and Card
             String introListTitle = "How to get started...";
             String introListShortDesc = "Click on the Floating Button to create your first list.\n" +
-                    "You can Edit & Delete lists by clicking on the pencil icon.\n" +
+                    "YEdit lists by clicking on the pencil or check icon.\n" +
                     "Reorder lists via Drag & Drop.\n" +
+                    "Swipe Left to delete and right to mark list as done\n" +
                     "Filter you lists through the search-field at the top.\n" +
                     "Think of a number between 1 and 10 and then click me";
             String introListLongDesc = "Long description can be really long...\n" +
@@ -256,19 +262,19 @@ public class MainActivity extends AppCompatActivity
                     "Click this to see all of it.\n" +
                     "This List is about the best features of this App...";
 
-            int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1));
+            int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1, false));
 
             ArrayList<XTagModel> introTags = new ArrayList<>();
             introTags.add(new XTagModel(tempListID,"listsCanHaveTags"));
             myRep.insertTags(introTags);
 
-            myRep.insertElem(new XElemModel(tempListID, "Intuitive", "To get started right away",1));
-            myRep.insertElem(new XElemModel(tempListID, "Simple", "Our lives are complicated enough",2));
-            myRep.insertElem(new XElemModel(tempListID, "Numbered", "Keep track of the best",3));
-            myRep.insertElem(new XElemModel(tempListID, "Drag and Drop", "Easy to reorder",4));
-            myRep.insertElem(new XElemModel(tempListID, "Create", "No lists without it",5));
-            myRep.insertElem(new XElemModel(tempListID, "Edit", "Errare humanum est...",6));
-            myRep.insertElem(new XElemModel(tempListID, "Visually pleasing", "At least thats what I was aiming for...",7));
+            myRep.insertElem(new XElemModel(tempListID, "Intuitive", "To get started right away",1,false));
+            myRep.insertElem(new XElemModel(tempListID, "Simple", "Our lives are complicated enough",2,false));
+            myRep.insertElem(new XElemModel(tempListID, "Numbered", "Keep track of the best",3,false));
+            myRep.insertElem(new XElemModel(tempListID, "Drag and Drop", "Easy to reorder",4,false));
+            myRep.insertElem(new XElemModel(tempListID, "Swipe left and right", "Its just fun",5,false));
+            myRep.insertElem(new XElemModel(tempListID, "Edit", "Errare humanum est...",6,false));
+            myRep.insertElem(new XElemModel(tempListID, "Visually pleasing", "At least thats what I was aiming for...",7,false));
 
             //Setting up done
             settings = getSharedPreferences("PREFS_NAME", 0);

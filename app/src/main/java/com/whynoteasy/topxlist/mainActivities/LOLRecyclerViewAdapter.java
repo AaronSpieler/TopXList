@@ -4,7 +4,9 @@ package com.whynoteasy.topxlist.mainActivities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +61,12 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         holder.mItem = mValues.get(position);
 
         //Xlist_card, set backcround color if marked
-
+        if (holder.mItem.getXListModel().isXListMarked()) {
+            holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
+            holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+        }
 
         holder.listTitle.setText(mValues.get(position).getXListModel().getXListTitle());
         holder.listShortDesc.setText(mValues.get(position).getXListModel().getXListShortDescription());
@@ -79,6 +86,12 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         holder.imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //starting the activity from the MainActivity context
+                Intent intent = new Intent(activityContext , XListEditActivity.class);
+                intent.putExtra("X_LIST_ID", holder.mItem.getXListModel().getXListID());
+                activityContext.startActivity(intent);
+
+                /*THIS IS THE OLD IMPLEMENTIATION WITH THE POPUP MENU
                 //This is to style tme Popup menu
                 Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
                 PopupMenu popup = new PopupMenu(wrapper, v);
@@ -86,6 +99,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 popup.setOnMenuItemClickListener(holder);
                 popup.inflate(R.menu.list_card_menu);
                 popup.show();
+                */
             }
         });
     }
@@ -133,32 +147,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     activityContext.startActivity(intent);
                     return true;
                 case R.id.xList_delete:
-                    //FROM HERE ON ITS THE ALERT DIALOG
-                    final XListTagsPojo theListPojo = this.mItem;
-                    final Integer cardPos = this.getAdapterPosition();
-                    AlertDialog.Builder builder;
-                    builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
-                    builder.setTitle("Delete List?");
-                    builder.setMessage("Are you sure you want to delete the list: \n"+"\""+theListPojo.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
-                            LocalDataRepository myRep = new LocalDataRepository(activityContext);
-                            myRep.deleteElementsByListID(theListPojo.getXListModel().getXListID());
-                            myRep.deleteTags(theListPojo.getXTagModelList());
-                            myRep.deleteList(theListPojo.getXListModel());
-                            //remove the List from the activity cache and notify the adapter
-                            //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
-                            mValues.remove(theListPojo);
-                            notifyItemRemoved(cardPos);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    });
-                    builder.show();
+                    deleteAtPositionIfConfirmed(this.getAdapterPosition());
                     return true;
                 case R.id.xList_view:
                     //Start XListViewCollapsingActivity
@@ -186,9 +175,23 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     @Override
-    public void onViewSwiped(int position) {
-        //I dont actually use this in the lists of lists view
+    public void onViewSwipedLeft(int position) {
+        deleteAtPositionIfConfirmed(position);
     }
+
+    @Override
+    public void onViewSwipedRight(int position) {
+        XListTagsPojo tempPojo = mValues.get(position);
+        this.mValues.remove(tempPojo);
+
+        tempPojo.getXListModel().setXListMarked(!tempPojo.getXListModel().isXListMarked());
+        this.mValues.add(position,tempPojo);
+        this.notifyItemChanged(position);
+
+        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        myRep.updateList(tempPojo.getXListModel());
+    }
+
 
     //important so that an ancivity can tell the adapter what to show
     public void setmValues (List<XListTagsPojo> newValues) {
@@ -284,5 +287,31 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     @Override
     public CustomListFilter getFilter() {
         return mFilter;
+    }
+
+    private void deleteAtPositionIfConfirmed(final int position) {
+        final XListTagsPojo tempPojo = mValues.get(position);
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Delete List?");
+        builder.setMessage("Are you sure you want to delete the list: \n"+"\""+tempPojo.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                myRep.deleteElementsByListID(tempPojo.getXListModel().getXListID());
+                myRep.deleteTags(tempPojo.getXTagModelList());
+                myRep.deleteList(tempPojo.getXListModel());
+                //remove the List from the activity cache and notify the adapter
+                //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
+                mValues.remove(tempPojo);
+                notifyItemRemoved(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                notifyItemChanged(position);
+            }
+        });
+        builder.show();
     }
 }

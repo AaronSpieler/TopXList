@@ -32,15 +32,17 @@ public class XElemModel implements Comparable<XElemModel>{
     private String xElemTitle;
     private String xElemDescription;
     private int xElemNum;
+    private boolean xElemMarked;
 
     //Constructor
 
-    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, boolean xElemMarked) {
         this.xElemID = xElemID;
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
         this.xElemDescription = xElemDescription;
         this.xElemNum = xElemNum;
+        this.xElemMarked = xElemMarked;
     }
 
     //Getters and Setters
@@ -83,6 +85,14 @@ public class XElemModel implements Comparable<XElemModel>{
 
     public void setXListIDForeign(int xListIDForeign) {
         this.xListIDForeign = xListIDForeign;
+    }
+
+    public boolean isXElemMarked() {
+        return xElemMarked;
+    }
+
+    public void setXElemMarked(boolean xElemMarked) {
+        this.xElemMarked = xElemMarked;
     }
 
     //Other Methods

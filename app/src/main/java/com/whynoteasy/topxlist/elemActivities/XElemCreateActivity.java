@@ -102,9 +102,9 @@ public class XElemCreateActivity extends AppCompatActivity {
 
                     //if number larger the elements list size +1 then elements list size is used
                     if (tempNum >= propableElemNum || tempNum < 1) {
-                        myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, propableElemNum));
+                        myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, propableElemNum, false));
                     } else {
-                        XElemModel tempElemRef = new XElemModel(currentListID, tempTitle, tempDescription, tempNum);
+                        XElemModel tempElemRef = new XElemModel(currentListID, tempTitle, tempDescription, tempNum, false);
                         myRep.inserElemAtPos(tempElemRef,tempNum);
                     }
                 } catch (Exception e) {
