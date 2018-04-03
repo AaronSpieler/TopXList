@@ -49,8 +49,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     //I guess this method is done?
     @Override
     public XListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_card_final, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card_final, parent, false);
         return new XListViewHolder(view);
     }
 
@@ -58,6 +57,9 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     public void onBindViewHolder(final XListViewHolder holder, int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
+
+        //Xlist_card, set backcround color if marked
+
 
         holder.listTitle.setText(mValues.get(position).getXListModel().getXListTitle());
         holder.listShortDesc.setText(mValues.get(position).getXListModel().getXListShortDescription());

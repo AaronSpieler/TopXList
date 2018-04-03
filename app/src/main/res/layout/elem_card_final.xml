@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_xElem_card"
@@ -11,9 +12,7 @@
         android:id="@+id/xElem_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:cardPreventCornerOverlap="true"
-
         app:cardBackgroundColor="@color/middleLightBlue"
         app:cardCornerRadius="@dimen/card_defaults"
         app:cardElevation="@dimen/card_defaults"
@@ -108,7 +107,8 @@
                     android:layout_marginTop="@dimen/card_margins"
                     android:text="@string/xElem_short_description_text"
                     android:textColor="@color/superDarkBlue"
-                    android:textSize="14sp"
+                    android:maxLines="7"
+                    android:ellipsize="end"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

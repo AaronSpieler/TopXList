@@ -88,7 +88,7 @@ public class XElemCreateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //retrieving the inputs
                 String tempTitle = ((TextView)findViewById(R.id.xelem_title_input)).getText().toString();
-                if (tempTitle.equals("")){
+                if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
@@ -151,7 +151,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
 
         //if there is nothing entered so far
-        if (tempTitle.equals("") && tempDescription.equals("")){
+        if (tempTitle.trim().length() == 0 && tempDescription.trim().length() == 0){
             //exit without saving anything
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
             intent.putExtra("X_LIST_ID", currentListID);

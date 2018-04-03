@@ -11,4 +11,6 @@
     app:layoutManager="LinearLayoutManager"
     tools:context="com.whynoteasy.topxlist.listActivities.ListOfElementsFragment"
     tools:listitem="@layout/elem_card_final"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:paddingBottom="100dp"
+    android:clipToPadding="false"/>
