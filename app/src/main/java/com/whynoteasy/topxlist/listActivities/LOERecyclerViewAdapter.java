@@ -57,6 +57,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         //Xlist_card, set backcround color if marked
         //Xlist_card, set backcround color if marked
         if (holder.mItem.isXElemMarked()) {
+            System.out.println("Now marked positive");
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
             holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left_green));
@@ -176,12 +177,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         XElemModel tempElem = mValues.get(position);
         this.mValues.remove(tempElem);
 
-        tempElem.setXElemMarked(!tempElem.isXElemMarked());
-        this.mValues.add(position,tempElem);
-        this.notifyItemChanged(position);
-
+        tempElem.negateMarked();
         LocalDataRepository myRep = new LocalDataRepository(activityContext);
         myRep.updateElem(tempElem);
+
+        this.mValues.add(position,tempElem);
+        this.notifyItemChanged(position);
     }
 
     private void changeNumbersVisbly(int newPos, int oldPos){

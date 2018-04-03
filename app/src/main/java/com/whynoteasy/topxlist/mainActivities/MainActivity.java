@@ -1,17 +1,15 @@
 package com.whynoteasy.topxlist.mainActivities;
 
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
@@ -20,7 +18,6 @@ import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -36,28 +33,15 @@ import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-
-import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
 
     //the adapter of the recycler view
-    private MainListOfListsFragment theFragment;
+    private MainListOfListsFragment lolFragment;
 
     //the repository
     LocalDataRepository myRep;
-
-    //experimental method
-    public void showPopup(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        MenuInflater inflater = popup.getMenuInflater();
-        //inflater.inflate(R.menu.actions, popup.getMenu());
-        popup.show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,19 +87,16 @@ public class MainActivity extends AppCompatActivity
 
         */
 
-
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        lolFragment = new MainListOfListsFragment();
+        //very important, so the fragments dont stack
         if (savedInstanceState == null) {
-            //Initialise and set the fragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            theFragment = new MainListOfListsFragment();
-            fragmentTransaction.add(R.id.main_activity_fragment_placeholder, theFragment);
-            fragmentTransaction.commit();
+            transaction.add(R.id.main_activity_fragment_placeholder, lolFragment);
+        } else {
+            transaction.replace(R.id.main_activity_fragment_placeholder, lolFragment);
         }
-
-        //probably not needed here, but for consistenc< and later on it does make sence
-        handleIntent(getIntent());
+        transaction.commit();
     }
 
     @Override
@@ -143,12 +124,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 //not neccessary to do anything, onQuerryTextChange is more than enough
-                return false;
+                return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                LOLRecyclerViewAdapter tempAdapter = theFragment.getAdapterRef();
+                LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
                     tempAdapter.getFilter().filter(newText);
                 }
@@ -166,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                LOLRecyclerViewAdapter tempAdapter = theFragment.getAdapterRef();
+                LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
                     tempAdapter.setmValues(myRep.getListsWithTags());
                 }
@@ -176,6 +157,11 @@ public class MainActivity extends AppCompatActivity
         });
 
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -233,7 +219,7 @@ public class MainActivity extends AppCompatActivity
     private void handleIntent(Intent intent) {
         //this should always be called because if we return to this activity from some other activity
         //like the add or edit activity the dataset may have changed
-        LOLRecyclerViewAdapter tempAdapter = theFragment.getAdapterRef();
+        LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
         //have to check if its null, because on first call it might not have been initialised yet
         if (tempAdapter != null) {
             tempAdapter.setmValues(myRep.getListsWithTags());
@@ -283,5 +269,4 @@ public class MainActivity extends AppCompatActivity
             editor.commit();
         }
     }
-
 }

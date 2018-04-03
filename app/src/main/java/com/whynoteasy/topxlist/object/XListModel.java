@@ -100,4 +100,8 @@ public class XListModel implements Comparable<XListModel>{
     public int compareTo(@NonNull XListModel xListModel) {
         return (this.getXListNum() - xListModel.getXListNum());
     }
+
+    public void negateMarked(){
+        xListMarked = !xListMarked;
+    }
 }
