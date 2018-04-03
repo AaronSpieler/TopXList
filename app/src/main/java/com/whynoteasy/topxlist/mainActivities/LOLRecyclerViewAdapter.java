@@ -64,7 +64,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         if (holder.mItem.getXListModel().isXListMarked()) {
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
         }
 
@@ -184,12 +183,12 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         XListTagsPojo tempPojo = mValues.get(position);
         this.mValues.remove(tempPojo);
 
-        tempPojo.getXListModel().setXListMarked(!tempPojo.getXListModel().isXListMarked());
-        this.mValues.add(position,tempPojo);
-        this.notifyItemChanged(position);
-
+        tempPojo.getXListModel().negateMarked();
         LocalDataRepository myRep = new LocalDataRepository(activityContext);
         myRep.updateList(tempPojo.getXListModel());
+
+        this.mValues.add(position,tempPojo);
+        this.notifyItemChanged(position);
     }
 
 

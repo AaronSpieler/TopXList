@@ -101,4 +101,8 @@ public class XElemModel implements Comparable<XElemModel>{
     public int compareTo(@NonNull XElemModel xElemModel) {//to be able to order them should it be necessary
         return (this.getXElemNum() - xElemModel.getXElemNum());
     }
+
+    public void negateMarked(){
+        xElemMarked = !xElemMarked;
+    }
 }
