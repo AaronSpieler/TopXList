@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -61,10 +62,11 @@ public class XListCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //get the tagText
+                final String tempTagStr = tagEditText.getText().toString();
                 //if its not empty, add it to the temporary List
-                if (!tagEditText.getText().toString().equals("")){
-                    final String tempTempStr = tagEditText.getText().toString();
-                    tempTagList.add(tempTempStr);
+
+                if (!(tempTagStr.trim().length()==0) && !isTagDuplicate(view, tempTagStr)){
+                    tempTagList.add(tempTagStr);
 
                     //All this to put a visual representation of the tag in the view
                     final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
@@ -78,7 +80,7 @@ public class XListCreateActivity extends AppCompatActivity {
                     tagImgButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View view2) {
-                            tempTagList.remove(tempTempStr);
+                            tempTagList.remove(tempTagStr);
                             ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                             parent.removeView(tagView);
                         }
@@ -90,6 +92,8 @@ public class XListCreateActivity extends AppCompatActivity {
 
                     tagEditText.setText("");
                 }
+
+
             }
         });
 
@@ -100,9 +104,13 @@ public class XListCreateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //retrieving the inputs
                 String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
-                if (tempTitle.equals("")){
+                if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
+                } else if (titleAlreadyExists(tempTitle)) {
+                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -168,7 +176,7 @@ public class XListCreateActivity extends AppCompatActivity {
         String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
         //if there is nothing entered so far
-        if (tempTitle.equals("") && tempShortDesc.equals("") && tempLongDesc.equals("")){
+        if (tempTitle.trim().length() == 0 && tempShortDesc.equals("") && tempLongDesc.equals("")){
             //exit without saving anything
             NavUtils.navigateUpFromSameTask(thisActivity);
         } else {
@@ -190,5 +198,27 @@ public class XListCreateActivity extends AppCompatActivity {
             });
             builder.show();
         }
+    }
+
+    private boolean titleAlreadyExists(String newTitle) {
+        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+        List<XListTagsPojo> allLists = myRep.getListsWithTags();
+        for (XListTagsPojo tempList : allLists) {
+            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isTagDuplicate(View view, String newTag){
+        for (String tempTag : tempTagList) {
+            if (newTag.equals(tempTag)) {
+                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                mySnackbar.show();
+                return true;
+            }
+        }
+        return false;
     }
 }
