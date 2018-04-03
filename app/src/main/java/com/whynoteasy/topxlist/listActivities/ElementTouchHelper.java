@@ -18,9 +18,7 @@ public class ElementTouchHelper extends ItemTouchHelper.Callback {
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-        //I dont want to allow swiping in lists
-        //int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
-        int swipeFlags = 0;
+        int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
@@ -32,11 +30,16 @@ public class ElementTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        //contract.onViewSwiped(viewHolder.getAdapterPosition());
+        if (direction == ItemTouchHelper.LEFT) {
+            contract.onViewSwipedLeft(viewHolder.getAdapterPosition());
+        } else if (direction == ItemTouchHelper.RIGHT) {
+            contract.onViewSwipedRight(viewHolder.getAdapterPosition());
+        }
     }
 
     public interface ActionCompletionContract {
         void onViewMoved(int oldPosition, int newPosition);
-        void onViewSwiped(int position);
+        void onViewSwipedLeft(int position);
+        void onViewSwipedRight(int position);
     }
 }

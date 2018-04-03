@@ -3,7 +3,9 @@ package com.whynoteasy.topxlist.listActivities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -21,6 +23,7 @@ import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
 import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.object.XListModel;
 
 import java.util.List;
 
@@ -52,6 +55,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         holder.mItem = mValues.get(position);
 
         //Xlist_card, set backcround color if marked
+        //Xlist_card, set backcround color if marked
+        if (holder.mItem.isXElemMarked()) {
+            holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
+            holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left_green));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+        }
 
 
         holder.elemTitle.setText(mValues.get(position).getXElemTitle());
@@ -70,6 +80,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         holder.imgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //starting the activity from the MainActivity context
+                Intent intent = new Intent(activityContext , XElemEditActivity.class);
+                intent.putExtra("X_ELEM_ID", holder.mItem.getXElemID());
+                activityContext.startActivity(intent);
+
+                /*THIS IS THE OLND VERSION WITH THE POPUP MENU
                 //This is to style tme Popup menu
                 Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
                 PopupMenu popup = new PopupMenu(wrapper, v);
@@ -77,6 +93,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                 popup.setOnMenuItemClickListener(holder);
                 popup.inflate(R.menu.elem_card_menu);
                 popup.show();
+                */
             }
         });
     }
@@ -123,31 +140,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                     activityContext.startActivity(intent);
                     return true;
                 case R.id.xElem_delete:
-                    //FROM HERE ON ITS THE ALERT DIALOG
-                    final XElemModel theElement = this.mItem;
-                    final Integer cardPos = this.getAdapterPosition();
-                    AlertDialog.Builder builder;
-                    builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
-                    builder.setTitle("Delete Element?");
-                    builder.setMessage("Are you sure you want to delete: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
-                    builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
-                            LocalDataRepository myRep = new LocalDataRepository(activityContext);
-                            myRep.deleteElem(theElement);
-                            //remove the List from the activity cache and notify the adapter
-                            //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
-                            mValues.remove(theElement);
-                            notifyItemRemoved(cardPos);
-                            makeNumChangesVisibleOnDeletion(cardPos);
-                        }
-                    });
-                    builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    });
-                    builder.show();
+                    deleteAtPositionIfConfirmed(this.getAdapterPosition());
                     return true;
                 case R.id.xElem_view:
                     Intent viewIntent = new Intent(activityContext, XElemViewActivity.class);
@@ -174,8 +167,21 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     }
 
     @Override
-    public void onViewSwiped(int position) {
-        //TODO: implement method
+    public void onViewSwipedLeft(int position) {
+        deleteAtPositionIfConfirmed(position);
+    }
+
+    @Override
+    public void onViewSwipedRight(int position) {
+        XElemModel tempElem = mValues.get(position);
+        this.mValues.remove(tempElem);
+
+        tempElem.setXElemMarked(!tempElem.isXElemMarked());
+        this.mValues.add(position,tempElem);
+        this.notifyItemChanged(position);
+
+        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        myRep.updateElem(tempElem);
     }
 
     private void changeNumbersVisbly(int newPos, int oldPos){
@@ -197,5 +203,31 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
             notifyItemChanged(i);
         }
+    }
+
+    private void deleteAtPositionIfConfirmed(final int position) {
+        final XElemModel theElement = mValues.get(position);
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Delete Element?");
+        builder.setMessage("Are you sure you want to delete: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                myRep.deleteElem(theElement);
+                //remove the List from the activity cache and notify the adapter
+                //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
+                mValues.remove(theElement);
+                notifyItemRemoved(position);
+                makeNumChangesVisibleOnDeletion(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                notifyItemChanged(position);
+            }
+        });
+        builder.show();
     }
 }

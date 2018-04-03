@@ -131,7 +131,7 @@ public class XListCreateActivity extends AppCompatActivity {
 
                 LocalDataRepository myRep = new LocalDataRepository(view.getContext());
 
-                long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1));
+                long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1, false));
 
                 //ATTENTION: THIS COULD BE A MAJOR MISTAKE CONVERTING LONG TO INT,
                 // however, the long value should be the primary key, thus it should not give a conversion problem since primary keyss are int
