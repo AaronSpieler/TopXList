@@ -139,5 +139,7 @@
     <string name="xlist_long_desc_view_label">Long Description:</string>
     <string name="search_hint">Filter lists by #tags or keywords</string>
     <string name="search_title_main">Listfilter</string>
+    <string name="xelem_mark_text">Mark Done</string>
+    <string name="xelem_delete_text">Delete</string>
 
 </resources>

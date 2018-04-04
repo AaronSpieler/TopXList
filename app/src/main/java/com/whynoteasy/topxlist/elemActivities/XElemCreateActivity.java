@@ -20,10 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -37,7 +39,10 @@ public class XElemCreateActivity extends AppCompatActivity {
     private int currentListID;
     private XListModel currentList;
     private LocalDataRepository myRep;
+
+    private EditText titleEditView;
     private int propableElemNum;
+    private EditText descriptionEditView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +83,14 @@ public class XElemCreateActivity extends AppCompatActivity {
         numView.setText(Integer.toString(propableElemNum));
 
         //set focus on title not num
-        TextView titleView = findViewById(R.id.xelem_title_input);
-        titleView.requestFocus();
+        titleEditView = findViewById(R.id.xelem_title_input);
+        titleEditView.requestFocus();
+
+        //get the shortDescEditText to focus next
+        descriptionEditView = findViewById(R.id.xelem_desc_input);
+
+        //configure the title so no manual newlines are entered
+        titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
 
         //The saveList Button
         Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
@@ -87,14 +98,18 @@ public class XElemCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = ((TextView)findViewById(R.id.xelem_title_input)).getText().toString();
+                String tempTitle = titleEditView.getText().toString();
                 if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
+                } else if (titleAlreadyExists(tempTitle)) {
+                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
+                    mySnackbar.show();
+                    return;
                 }
-                String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
+                String tempDescription = descriptionEditView.getText().toString();
 
                 try {
                     //I dont know wheter parsing always works, dont think so
@@ -147,8 +162,8 @@ public class XElemCreateActivity extends AppCompatActivity {
 
     private void returnToXListViewCollapsingActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = ((TextView)findViewById(R.id.xelem_title_input)).getText().toString();
-        String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
+        String tempTitle = titleEditView.getText().toString();
+        String tempDescription = descriptionEditView.getText().toString();
 
         //if there is nothing entered so far
         if (tempTitle.trim().length() == 0 && tempDescription.trim().length() == 0){
@@ -177,6 +192,17 @@ public class XElemCreateActivity extends AppCompatActivity {
             });
             builder.show();
         }
+    }
+
+    private boolean titleAlreadyExists(String tempTitle) {
+        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+        List<XElemModel> allListElements = myRep.getElementsByListID(currentListID);
+        for (XElemModel tempElem : allListElements) {
+            if (tempElem.getXElemTitle().toLowerCase().equals(tempTitle)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

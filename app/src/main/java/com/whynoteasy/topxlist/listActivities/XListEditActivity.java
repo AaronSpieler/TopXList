@@ -9,6 +9,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
@@ -39,10 +41,18 @@ public class XListEditActivity extends AppCompatActivity {
 
     private ViewGroup insertPoint;
     private EditText tagEditText;
+    private EditText titleEditText;
+    private EditText shortDescEditText;
 
     private Activity thisActivity;
 
     private boolean tagWereEdited = false;
+    private boolean markWasEdited = false;
+
+    private CardView markCard;
+    private boolean mMarked;
+
+    private CardView deleteCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +86,16 @@ public class XListEditActivity extends AppCompatActivity {
         ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
         ab.setTitle("Edit: " + currentList.getXListModel().getXListTitle());
 
+        //get the shortDescEditText to focus next
+        shortDescEditText = findViewById(R.id.xlist_short_desc_input);
+
+        //set up the title edit text
+        titleEditText = findViewById(R.id.xlist_title_input);
+        titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
+
         //set the TextFields
-        ((TextView)findViewById(R.id.xlist_title_input)).setText(currentList.getXListModel().getXListTitle());
-        ((TextView)findViewById(R.id.xlist_short_desc_input)).setText(currentList.getXListModel().getXListShortDescription());
+        titleEditText.setText(currentList.getXListModel().getXListTitle());
+        shortDescEditText.setText(currentList.getXListModel().getXListShortDescription());
         ((TextView)findViewById(R.id.xlist_long_desc_input)).setText(currentList.getXListModel().getXListLongDescription());
 
         //inflate the Tags
@@ -144,7 +161,7 @@ public class XListEditActivity extends AppCompatActivity {
                 ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
                 tagImgButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view2) {
+                    public void onClick(View view) {
                         tempTagListNew.remove(tempTagStr);
                         ViewGroup parent = findViewById(R.id.xList_tags_tagsList_view);
                         parent.removeView(tagView);
@@ -158,24 +175,80 @@ public class XListEditActivity extends AppCompatActivity {
             }
         });
 
+        //MARK BUTTON
+        mMarked = currentList.getXListModel().isXListMarked();
+        //This is, so when the X is clicked the tag is removed
+        markCard = (CardView) findViewById(R.id.xlist_mark_button);
+
+        if (mMarked == false) {
+            markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
+            ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Done");
+        } else {
+            markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
+            ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Not Done");
+        }
+
+        markCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                markWasEdited = true;
+
+                if (mMarked == true) {
+                    mMarked = false;
+                    markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
+                    ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Done");
+                } else {
+                    mMarked = true;
+                    markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
+                    ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Not Done");
+                }
+            }
+        });
+
+        //delete Button
+        deleteCard = (CardView) findViewById(R.id.xlist_delet_button);
+        deleteCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Delete List?");
+                builder.setMessage("Are you sure you want to delete the list: \n"+"\""+currentList.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+                        myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
+                        myRep.deleteTags(currentList.getXTagModelList());
+                        myRep.deleteList(currentList.getXListModel());
+
+                        //return to activity
+                        NavUtils.navigateUpFromSameTask(thisActivity);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+                });
+                builder.show();
+            }
+        });
+
         //The saveList Button
         Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
+                String tempTitle = titleEditText.getText().toString();
                 if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
-                } else if (titleAlreadyExists(tempTitle)) {
-                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
-                    mySnackbar.show();
-                    return;
                 }
-                String tempShortDesc = ((TextView)findViewById(R.id.xlist_short_desc_input)).getText().toString();
+
+                String tempShortDesc = shortDescEditText.getText().toString();
                 String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
                 List<XTagModel> newTagList = new ArrayList<XTagModel>();
@@ -184,6 +257,7 @@ public class XListEditActivity extends AppCompatActivity {
                 currentList.getXListModel().setXListTitle(tempTitle);
                 currentList.getXListModel().setXListShortDescription(tempShortDesc);
                 currentList.getXListModel().setXListLongDescription(tempLongDesc);
+                currentList.getXListModel().setXListMarked(mMarked);
 
                 //update the Room DataBase
                 myRep.updateList(currentList.getXListModel());
@@ -234,11 +308,11 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     private void returnToMainActivity(){
-        String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
-        String tempShortDesc = ((TextView)findViewById(R.id.xlist_short_desc_input)).getText().toString();
+        String tempTitle = titleEditText.getText().toString();
+        String tempShortDesc = shortDescEditText.getText().toString();
         String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
-        if (!tagWereEdited && currentList.getXListModel().getXListTitle().equals(tempTitle) && currentList.getXListModel().getXListShortDescription().equals(tempShortDesc) && currentList.getXListModel().getXListLongDescription().equals(tempLongDesc)) {
+        if (!markWasEdited && !tagWereEdited && currentList.getXListModel().getXListTitle().equals(tempTitle) && currentList.getXListModel().getXListShortDescription().equals(tempShortDesc) && currentList.getXListModel().getXListLongDescription().equals(tempLongDesc)) {
             //exit without saving anything and without promting
             NavUtils.navigateUpFromSameTask(thisActivity);
             return;

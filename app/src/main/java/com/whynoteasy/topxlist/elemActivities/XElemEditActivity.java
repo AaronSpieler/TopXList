@@ -10,14 +10,17 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
@@ -35,6 +38,16 @@ public class XElemEditActivity extends AppCompatActivity {
     private LocalDataRepository myRep;
 
     private Activity thisActivity;
+
+    private EditText titleEditView;
+    private EditText descriptionEditView;
+
+    private boolean markWasEdited = false;
+
+    private CardView markCard;
+    private boolean mMarked;
+
+    private CardView deleteCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,25 +84,96 @@ public class XElemEditActivity extends AppCompatActivity {
         ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
         ab.setTitle("Edit: " + currentElement.getXElemTitle());
 
+        //set focus on title not num
+        titleEditView = findViewById(R.id.xelem_title_input);
+        titleEditView.requestFocus();
+
+        //get the shortDescEditText to focus next
+        descriptionEditView = findViewById(R.id.xelem_desc_input);
+
+        //configure the title so no manual newlines are entered
+        titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
+
         //set the TextFields
-        ((TextView)findViewById(R.id.xelem_title_input)).setText(currentElement.getXElemTitle());
-        ((TextView)findViewById(R.id.xelem_desc_input)).setText(currentElement.getXElemDescription());
+        titleEditView.setText(currentElement.getXElemTitle());
+        descriptionEditView.setText(currentElement.getXElemDescription());
         ((TextView)findViewById(R.id.xelem_num_input)).setText(Integer.toString(currentElement.getXElemNum()));
 
+        //MARK BUTTON
+        mMarked = currentElement.isXElemMarked();
+        //This is, so when the X is clicked the tag is removed
+        markCard = (CardView) findViewById(R.id.xelem_mark_button);
+
+        if (mMarked == false) {
+            markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
+            ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Done");
+        } else {
+            markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
+            ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Not Done");
+        }
+
+        markCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                markWasEdited = true;
+
+                if (mMarked == true) {
+                    mMarked = false;
+                    markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
+                    ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Done");
+                } else {
+                    mMarked = true;
+                    markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
+                    ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Not Done");
+                }
+            }
+        });
+
+        //delete Button
+        deleteCard = (CardView) findViewById(R.id.xelem_delet_button);
+        deleteCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder;
+                builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
+                builder.setTitle("Delete Element?");
+                builder.setMessage("Are you sure you want to delete: \n"+"\""+currentElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+                        myRep.deleteElem(currentElement);
+
+                        //exit to listView
+                        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                        intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+                        NavUtils.navigateUpTo(thisActivity,intent);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing
+                    }
+                });
+                builder.show();
+            }
+        });
+
         //The saveList Button
-        Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
-        listSaveButton.setOnClickListener(new View.OnClickListener(){
+        Button elemSaveButton = findViewById(R.id.xelem_edit_save_button);
+        elemSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = ((TextView)findViewById(R.id.xelem_title_input)).getText().toString();
+                String tempTitle = titleEditView.getText().toString();
                 if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
-                String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
+
+                String tempDescription = descriptionEditView.getText().toString();
                 String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString();
 
                 List<XTagModel> newTagList = new ArrayList<XTagModel>();
@@ -111,6 +195,7 @@ public class XElemEditActivity extends AppCompatActivity {
                         currentElement.setXElemNum(lastPossibleNum);
                         currentElement.setXElemDescription(tempDescription);
                         currentElement.setXElemTitle(tempTitle);
+                        currentElement.setXElemMarked(mMarked);
 
                         myRep.changeAllListNumbersElem(currentElement, tempIntNum, oldPos);
                     }
@@ -153,8 +238,8 @@ public class XElemEditActivity extends AppCompatActivity {
 
     private void returnToXListViewCollapsingActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = ((TextView)findViewById(R.id.xelem_title_input)).getText().toString();
-        String tempDescription = ((TextView)findViewById(R.id.xelem_desc_input)).getText().toString();
+        String tempTitle = titleEditView.getText().toString();
+        String tempDescription = descriptionEditView.getText().toString();
 
         //if there is nothing entered so far
         if (currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){

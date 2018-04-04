@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
@@ -34,6 +35,8 @@ public class XListCreateActivity extends AppCompatActivity {
 
     private List<String> tempTagList = new ArrayList<String>();
     private EditText tagEditText;
+    private EditText titleEditText;
+    private EditText shortDescEditText;
     private Activity thisActivity;
 
     @Override
@@ -55,6 +58,13 @@ public class XListCreateActivity extends AppCompatActivity {
 
         //the text typed in the addTag TextField
         tagEditText = findViewById(R.id.xList_tag_input_field);
+
+        //get the shortDescEditText to focus next
+        shortDescEditText = findViewById(R.id.xlist_short_desc_input);
+
+        //set up the title edit text
+        titleEditText = findViewById(R.id.xlist_title_input);
+        titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
 
         //The Tag Add Button
         Button tagAddButton = findViewById(R.id.xList_tag_input_button);
@@ -112,7 +122,7 @@ public class XListCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
+                String tempTitle = titleEditText.getText().toString();
                 //if there is only spaces
                 if (tempTitle.trim().length() == 0){
                     //alert user that no title was entered
@@ -124,7 +134,7 @@ public class XListCreateActivity extends AppCompatActivity {
                     mySnackbar.show();
                     return;
                 }
-                String tempShortDesc = ((TextView)findViewById(R.id.xlist_short_desc_input)).getText().toString();
+                String tempShortDesc = shortDescEditText.getText().toString();
                 String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
                 List<XTagModel> tagList = new ArrayList<XTagModel>();
@@ -181,8 +191,8 @@ public class XListCreateActivity extends AppCompatActivity {
 
     private void returnToMainActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = ((TextView)findViewById(R.id.xlist_title_input)).getText().toString();
-        String tempShortDesc = ((TextView)findViewById(R.id.xlist_short_desc_input)).getText().toString();
+        String tempTitle = titleEditText.getText().toString();
+        String tempShortDesc = shortDescEditText.getText().toString();
         String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
 
         //if there is nothing entered so far
