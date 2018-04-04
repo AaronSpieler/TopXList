@@ -65,6 +65,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+        } else {
+            holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleBlue));
+            holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
         }
 
         holder.listTitle.setText(mValues.get(position).getXListModel().getXListTitle());
