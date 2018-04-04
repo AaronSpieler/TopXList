@@ -20,6 +20,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_xelem_create_and_edit" />
+    <include layout="@layout/content_xelem_create" />
 
 </android.support.design.widget.CoordinatorLayout>

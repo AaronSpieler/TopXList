@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity
         //set up the repository
         myRep = new LocalDataRepository(this);
 
+        //ONCE PER APPSTART RELEVANT CODE START
+        //this is a configuration to enable drawing images dynamically from vectors
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        //ONCE PER APPSTART RELEVANT CODE END
+
         //ONCE IN A APPTIME CODE -- START
         onceInAnAppTimRelevantCode();
         //ONCE IN A LIFETIME CODE -- END
@@ -231,9 +236,6 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
         mboolean = settings.getBoolean("FIRST_RUN", false);
         if (!mboolean) {
-            //this is a configuration to enable drawing images dynamically from vectors
-            //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-
             //this is all related to the creation and insertion of the firsst card
             //Setting up a list and Card
             String introListTitle = "How to get started...";

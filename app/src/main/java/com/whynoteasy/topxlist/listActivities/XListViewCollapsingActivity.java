@@ -12,6 +12,8 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -82,7 +84,11 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         });
 
         //If the long description is too long not everything is shown, only 7 lines
-        collapsingText.setText(currentList.getXListLongDescription());
+        if (currentList.getXListLongDescription().trim().length() == 0) {
+            collapsingText.setText("Edit List to add long description here.");
+        } else {
+            collapsingText.setText(currentList.getXListLongDescription());
+        }
 
         //the collapsing toolbar
         CollapsingToolbarLayout collapsingTB = findViewById(R.id.xlist_view_collapsing_toolbar_layout);
@@ -107,5 +113,31 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         Intent viewIntent = new Intent(this.getApplicationContext(), XElemViewActivity.class);
         viewIntent.putExtra("X_ELEM_ID", item.getXElemID());
         startActivity(viewIntent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.collapsinng_toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.edit_action) {
+            //start list edit activity
+            Intent intent = new Intent(thisActivity , XListEditActivity.class);
+            intent.putExtra("X_LIST_ID", currentListID);
+            thisActivity.startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
