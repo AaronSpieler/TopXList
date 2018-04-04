@@ -135,8 +135,9 @@ public class XElemEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = titleEditView.getText().toString();
-                if (tempTitle.trim().length() == 0){
+                String tempTitle = titleEditView.getText().toString().trim();
+
+                if (tempTitle.length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
@@ -150,8 +151,8 @@ public class XElemEditActivity extends AppCompatActivity {
                     }
                 }
 
-                String tempDescription = descriptionEditView.getText().toString();
-                String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString();
+                String tempDescription = descriptionEditView.getText().toString().trim();
+                String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString().trim();
 
                 List<XTagModel> newTagList = new ArrayList<XTagModel>();
 
@@ -218,8 +219,8 @@ public class XElemEditActivity extends AppCompatActivity {
 
     private void returnToXListViewCollapsingActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = titleEditView.getText().toString();
-        String tempDescription = descriptionEditView.getText().toString();
+        String tempTitle = titleEditView.getText().toString().trim();
+        String tempDescription = descriptionEditView.getText().toString().trim();
 
         //if there is nothing entered so far
         if (!markWasEdited && currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){

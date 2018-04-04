@@ -212,7 +212,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             //We dont want duplicated and we want the set to be ordered by insertion order
             LinkedHashSet<XListTagsPojo> searchResults = new LinkedHashSet<>();
 
-            String query = constraint.toString().toLowerCase();
+            String query = constraint.toString().toLowerCase().trim();
 
             //use the query to search your data somehow
             if (query.startsWith("#") && !query.contains(" ")) {

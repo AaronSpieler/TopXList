@@ -71,12 +71,11 @@ public class XListCreateActivity extends AppCompatActivity {
         tagAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get the tagText
-                final String tempTagStr = tagEditText.getText().toString();
-                //if its not empty, add it to the temporary List
+                //get the tag text
+                final String tempTagStr = tagEditText.getText().toString().trim();
 
                 //only continue if everything checksout
-                if (tempTagStr.trim().length() == 0) {
+                if (tempTagStr.length() == 0) {
                     Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered.", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
@@ -95,7 +94,7 @@ public class XListCreateActivity extends AppCompatActivity {
 
                 //The TextView of the TagView is filled here
                 TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
-                tagTextView.setText("#"+tagEditText.getText().toString());
+                tagTextView.setText("#"+tagEditText.getText().toString().trim());
 
                 //This is, so when the X is clicked the tag is removed
                 ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
@@ -122,9 +121,10 @@ public class XListCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = titleEditText.getText().toString();
+                String tempTitle = titleEditText.getText().toString().trim();
+
                 //if there is only spaces
-                if (tempTitle.trim().length() == 0){
+                if (tempTitle.length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
@@ -134,8 +134,9 @@ public class XListCreateActivity extends AppCompatActivity {
                     mySnackbar.show();
                     return;
                 }
-                String tempShortDesc = shortDescEditText.getText().toString();
-                String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
+
+                String tempShortDesc = shortDescEditText.getText().toString().trim();
+                String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
                 List<XTagModel> tagList = new ArrayList<XTagModel>();
 
@@ -191,9 +192,9 @@ public class XListCreateActivity extends AppCompatActivity {
 
     private void returnToMainActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = titleEditText.getText().toString();
-        String tempShortDesc = shortDescEditText.getText().toString();
-        String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
+        String tempTitle = titleEditText.getText().toString().trim();
+        String tempShortDesc = shortDescEditText.getText().toString().trim();
+        String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
         //if there is nothing entered so far
         if (tempTitle.trim().length() == 0 && tempShortDesc.trim().length() == 0 && tempLongDesc.trim().length() == 0){

@@ -98,8 +98,9 @@ public class XElemCreateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //retrieving the inputs
-                String tempTitle = titleEditView.getText().toString();
-                if (tempTitle.trim().length() == 0){
+                String tempTitle = titleEditView.getText().toString().trim();
+
+                if (tempTitle.length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
@@ -109,11 +110,12 @@ public class XElemCreateActivity extends AppCompatActivity {
                     mySnackbar.show();
                     return;
                 }
-                String tempDescription = descriptionEditView.getText().toString();
+
+                String tempDescription = descriptionEditView.getText().toString().trim();
 
                 try {
                     //I dont know wheter parsing always works, dont think so
-                    Integer tempNum = Integer.parseInt(numView.getText().toString());
+                    Integer tempNum = Integer.parseInt(numView.getText().toString().trim());
 
                     //if number larger the elements list size +1 then elements list size is used
                     if (tempNum >= propableElemNum || tempNum < 1) {
@@ -162,11 +164,11 @@ public class XElemCreateActivity extends AppCompatActivity {
 
     private void returnToXListViewCollapsingActivity(){
         //retrieving the inputs from all the TextViews
-        String tempTitle = titleEditView.getText().toString();
-        String tempDescription = descriptionEditView.getText().toString();
+        String tempTitle = titleEditView.getText().toString().trim();
+        String tempDescription = descriptionEditView.getText().toString().trim();
 
         //if there is nothing entered so far
-        if (tempTitle.trim().length() == 0 && tempDescription.trim().length() == 0){
+        if (tempTitle.length() == 0 && tempDescription.length() == 0){
             //exit without saving anything
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
             intent.putExtra("X_LIST_ID", currentListID);
