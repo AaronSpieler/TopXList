@@ -62,6 +62,11 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
             holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left_green));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+        } else {
+            holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightBlue));
+            holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
         }
 
 

@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity
         mboolean = settings.getBoolean("FIRST_RUN", false);
         if (!mboolean) {
             //this is a configuration to enable drawing images dynamically from vectors
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+            //AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
             //this is all related to the creation and insertion of the firsst card
             //Setting up a list and Card
