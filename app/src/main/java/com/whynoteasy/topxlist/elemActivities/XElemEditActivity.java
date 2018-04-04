@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -46,8 +48,6 @@ public class XElemEditActivity extends AppCompatActivity {
 
     private CardView markCard;
     private boolean mMarked;
-
-    private CardView deleteCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,36 +129,6 @@ public class XElemEditActivity extends AppCompatActivity {
             }
         });
 
-        //delete Button
-        deleteCard = (CardView) findViewById(R.id.xelem_delet_button);
-        deleteCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder;
-                builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
-                builder.setTitle("Delete Element?");
-                builder.setMessage("Are you sure you want to delete: \n"+"\""+currentElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
-                        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-                        myRep.deleteElem(currentElement);
-
-                        //exit to listView
-                        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                        intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
-                        NavUtils.navigateUpTo(thisActivity,intent);
-                    }
-                });
-                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //do nothing
-                    }
-                });
-                builder.show();
-            }
-        });
-
         //The saveList Button
         Button elemSaveButton = findViewById(R.id.xelem_edit_save_button);
         elemSaveButton.setOnClickListener(new View.OnClickListener(){
@@ -171,6 +141,13 @@ public class XElemEditActivity extends AppCompatActivity {
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
+                } else if (!tempTitle.equals(currentElement.getXElemTitle())) {
+                    if (titleAlreadyExists(tempTitle)) {
+                        //alert user that no duplicate title was entered
+                        Snackbar mySnackbar = Snackbar.make(view, "This title already exists", LENGTH_SHORT);
+                        mySnackbar.show();
+                        return;
+                    }
                 }
 
                 String tempDescription = descriptionEditView.getText().toString();
@@ -215,12 +192,15 @@ public class XElemEditActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                //return to xListViewActivity
-                returnToXListViewCollapsingActivity();
-                return true;
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            //return to xListViewActivity
+            returnToXListViewCollapsingActivity();
+            return true;
+        } else if (id == R.id.delete_action_xelem) {
+            deleteElemIfConfirmed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -242,7 +222,7 @@ public class XElemEditActivity extends AppCompatActivity {
         String tempDescription = descriptionEditView.getText().toString();
 
         //if there is nothing entered so far
-        if (currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){
+        if (!markWasEdited && currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){
             //exit without saving anything
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
             intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
@@ -269,6 +249,49 @@ public class XElemEditActivity extends AppCompatActivity {
             });
             builder.show();
         }
+    }
+
+    private boolean titleAlreadyExists(String newTitle) {
+        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+        List<XElemModel> allElemInList = myRep.getElementsByListID(currentElement.getXListIDForeign());
+        for (XElemModel tempElem : allElemInList) {
+            if (tempElem.getXElemTitle().toLowerCase().equals(newTitle)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.edit_xelem_toolbar_menu, menu);
+        return true;
+    }
+
+    private void deleteElemIfConfirmed() {
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Delete Element?");
+        builder.setMessage("Are you sure you want to delete: \n"+"\""+currentElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+                myRep.deleteElem(currentElement);
+
+                //exit to listView
+                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+                NavUtils.navigateUpTo(thisActivity,intent);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+        builder.show();
     }
 
 }
