@@ -2,6 +2,7 @@ package com.whynoteasy.topxlist.listActivities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,8 +53,6 @@ public class XListEditActivity extends AppCompatActivity {
 
     private CardView markCard;
     private boolean mMarked;
-
-    private CardView deleteCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,35 +205,6 @@ public class XListEditActivity extends AppCompatActivity {
             }
         });
 
-        //delete Button
-        deleteCard = (CardView) findViewById(R.id.xlist_delet_button);
-        deleteCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder;
-                builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
-                builder.setTitle("Delete List?");
-                builder.setMessage("Are you sure you want to delete the list: \n"+"\""+currentList.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
-                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-                        myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
-                        myRep.deleteTags(currentList.getXTagModelList());
-                        myRep.deleteList(currentList.getXListModel());
-
-                        //return to activity
-                        NavUtils.navigateUpFromSameTask(thisActivity);
-                    }
-                });
-                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //do nothing
-                    }
-                });
-                builder.show();
-            }
-        });
-
         //The saveList Button
         Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
@@ -246,6 +217,13 @@ public class XListEditActivity extends AppCompatActivity {
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
+                } else if (!tempTitle.equals(currentList.getXListModel().getXListTitle())) {
+                    if (titleAlreadyExists(tempTitle)) {
+                        //alert user that no duplicate title was entered
+                        Snackbar mySnackbar = Snackbar.make(view, "This title already exists", LENGTH_SHORT);
+                        mySnackbar.show();
+                        return;
+                    }
                 }
 
                 String tempShortDesc = shortDescEditText.getText().toString();
@@ -285,12 +263,16 @@ public class XListEditActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                //return to mainActivity
-                returnToMainActivity();
-                return true;
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            //return to mainActivity
+            returnToMainActivity();
+            return true;
+        } else if (id == R.id.delete_action_xlist) {
+            //delete List if onfirmed
+            deleteListIfConfirmed();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -376,5 +358,36 @@ public class XListEditActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.edit_xlist_toolbar_menu, menu);
+        return true;
+    }
+
+    private void deleteListIfConfirmed(){
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle("Delete List?");
+        builder.setMessage("Are you sure you want to delete the list: \n"+"\""+currentList.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+                myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
+                myRep.deleteTags(currentList.getXTagModelList());
+                myRep.deleteList(currentList.getXListModel());
+
+                //return to activity
+                NavUtils.navigateUpFromSameTask(thisActivity);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //do nothing
+            }
+        });
+        builder.show();
     }
 }

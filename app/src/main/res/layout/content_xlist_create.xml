@@ -275,7 +275,7 @@
                             android:layout_height="0dp"
                             android:background="@drawable/create_and_edit_newtag_bottom_rounded"
                             android:text="@string/xList_tag_input_button_label_text"
-                            android:textColor="#ffffff"
+                            android:textColor="@color/lightBlue"
                             android:textSize="18sp"
                             android:textStyle="bold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -288,17 +288,17 @@
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/xlist_edit_save_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/darkBlue"
-            android:text="@string/edit_save_button"
-            android:textColor="#ffffff"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/xlist_edit_save_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/darkBlue"
+        android:text="@string/edit_save_button"
+        android:textColor="@color/lightBlue"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
