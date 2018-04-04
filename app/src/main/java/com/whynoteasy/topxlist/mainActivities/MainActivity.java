@@ -240,15 +240,15 @@ public class MainActivity extends AppCompatActivity
             //Setting up a list and Card
             String introListTitle = "How to get started...";
             String introListShortDesc = "Click on the Floating Button to create your first list.\n" +
-                    "YEdit lists by clicking on the pencil or check icon.\n" +
+                    "Edit lists by clicking on the pencil or check icon.\n" +
                     "Reorder lists via Drag & Drop.\n" +
-                    "Swipe Left to delete and right to mark list as done\n" +
-                    "Filter you lists through the search-field at the top.\n" +
-                    "Think of a number between 1 and 10 and then click me";
-            String introListLongDesc = "Long description can be really long...\n" +
-                    "So you will only see about the first 250 characters of them here.\n" +
+                    "Swipe Left to delete and Right to mark lists as done\n" +
+                    "Use the Search Field at the top to filter and find lists.\n" +
+                    "Think of a number between 1 and 10 and then click me.";
+            String introListLongDesc = "Long Descriptions can be really long.\n" +
+                    "So you will only see the first 7 lines of it here.\n" +
                     "Click this to see all of it.\n" +
-                    "This List is about the best features of this App...";
+                    "The following list is about the best features of this App.";
 
             int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1, false));
 
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity
             myRep.insertElem(new XElemModel(tempListID, "Drag and Drop", "Easy to reorder",4,false));
             myRep.insertElem(new XElemModel(tempListID, "Swipe left and right", "Its just fun",5,false));
             myRep.insertElem(new XElemModel(tempListID, "Edit", "Errare humanum est...",6,false));
-            myRep.insertElem(new XElemModel(tempListID, "Visually pleasing", "At least thats what I was aiming for...",7,false));
+            myRep.insertElem(new XElemModel(tempListID, "Visually pleasing", "At least that's what I was aiming for...",7,false));
 
             //Setting up done
             settings = getSharedPreferences("PREFS_NAME", 0);
