@@ -315,6 +315,12 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 notifyItemChanged(position);
             }
         });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                notifyItemChanged(position);
+            }
+        });
         builder.show();
     }
 }
