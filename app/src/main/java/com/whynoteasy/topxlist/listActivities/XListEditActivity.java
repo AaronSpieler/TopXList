@@ -131,11 +131,11 @@ public class XListEditActivity extends AppCompatActivity {
         tagAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get the tagText
-                final String tempTagStr = tagEditText.getText().toString();
+                //get the tag text
+                final String tempTagStr = tagEditText.getText().toString().trim();
 
                 //only continue if everything checksout
-                if (tagEditText.getText().toString().trim().length() == 0) {
+                if (tempTagStr.length() == 0) {
                     Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
@@ -155,7 +155,7 @@ public class XListEditActivity extends AppCompatActivity {
 
                 //The TextView of the TagView is filled here
                 TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
-                tagTextView.setText("#" + tagEditText.getText().toString());
+                tagTextView.setText("#" + tagEditText.getText().toString().trim());
 
                 //This is, so when the X is clicked the tag is removed
                 ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);
@@ -210,14 +210,14 @@ public class XListEditActivity extends AppCompatActivity {
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //retrieving the inputs
-                String tempTitle = titleEditText.getText().toString();
-                if (tempTitle.trim().length() == 0){
+                String tempTitle = titleEditText.getText().toString().trim();
+
+                if (tempTitle.length() == 0){
                     //alert user that no title was entered
                     Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
                     mySnackbar.show();
                     return;
-                } else if (!tempTitle.equals(currentList.getXListModel().getXListTitle())) {
+                } else if (!tempTitle.equals(currentList.getXListModel().getXListTitle().trim())) {
                     if (titleAlreadyExists(tempTitle)) {
                         //alert user that no duplicate title was entered
                         Snackbar mySnackbar = Snackbar.make(view, "This title already exists", LENGTH_SHORT);
@@ -226,8 +226,8 @@ public class XListEditActivity extends AppCompatActivity {
                     }
                 }
 
-                String tempShortDesc = shortDescEditText.getText().toString();
-                String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
+                String tempShortDesc = shortDescEditText.getText().toString().trim();
+                String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
                 List<XTagModel> newTagList = new ArrayList<XTagModel>();
 
@@ -290,9 +290,9 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     private void returnToMainActivity(){
-        String tempTitle = titleEditText.getText().toString();
-        String tempShortDesc = shortDescEditText.getText().toString();
-        String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString();
+        String tempTitle = titleEditText.getText().toString().trim();
+        String tempShortDesc = shortDescEditText.getText().toString().trim();
+        String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
         if (!markWasEdited && !tagWereEdited && currentList.getXListModel().getXListTitle().equals(tempTitle) && currentList.getXListModel().getXListShortDescription().equals(tempShortDesc) && currentList.getXListModel().getXListLongDescription().equals(tempLongDesc)) {
             //exit without saving anything and without promting

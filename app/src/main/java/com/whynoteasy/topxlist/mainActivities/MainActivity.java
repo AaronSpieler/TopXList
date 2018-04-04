@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                newText.trim();
                 LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
                     tempAdapter.getFilter().filter(newText);
