@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
-                    tempAdapter.setmValues(myRep.getListsWithTags());
+                    tempAdapter.setValues(myRep.getListsWithTags());
                 }
                 return true;
             }
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity
         LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
         //have to check if its null, because on first call it might not have been initialised yet
         if (tempAdapter != null) {
-            tempAdapter.setmValues(myRep.getListsWithTags());
+            tempAdapter.setValues(myRep.getListsWithTags());
         }
     }
 
