@@ -1,15 +1,12 @@
 package com.whynoteasy.topxlist.elemActivities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
@@ -19,7 +16,6 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
 
@@ -27,7 +23,6 @@ public class XElemViewActivity extends AppCompatActivity {
 
     private XElemModel currentElement;
     private int currentElementID;
-    private LocalDataRepository myRep;
 
     private Activity thisActivity;
 
@@ -54,14 +49,16 @@ public class XElemViewActivity extends AppCompatActivity {
             currentElementID= (int) savedInstanceState.getSerializable("X_ELEM_ID");
         }
         //get the List with its Tags
-        myRep = new LocalDataRepository(this);
+        LocalDataRepository myRep = new LocalDataRepository(this);
         currentElement = myRep.getElemByID(currentElementID);
 
         //set the title
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle(currentElement.getXElemTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle(currentElement.getXElemTitle());
+        }
 
         //set the description TextField
         TextView descView = findViewById(R.id.xelem_view_desc_input);

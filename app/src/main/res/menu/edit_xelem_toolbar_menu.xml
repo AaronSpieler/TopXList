@@ -7,7 +7,7 @@
     <item
         android:id="@+id/delete_action_xelem"
         android:orderInCategory="300"
-        android:title="Delete"
+        android:title="@string/delete_elem_icon_title"
         android:icon="@drawable/ic_delete_white_24dp"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom"/>
 </menu>

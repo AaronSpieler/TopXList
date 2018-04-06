@@ -8,9 +8,9 @@ import android.support.v7.widget.helper.ItemTouchHelper;
  * Created by Whatever on 29.03.2018.
  */
 
-public class ListTouchHelper extends ItemTouchHelper.Callback {
+class ListTouchHelper extends ItemTouchHelper.Callback {
 
-    private ActionCompletionContract contract;
+    private final ActionCompletionContract contract;
 
     public ListTouchHelper(ActionCompletionContract contract) {
         this.contract = contract;

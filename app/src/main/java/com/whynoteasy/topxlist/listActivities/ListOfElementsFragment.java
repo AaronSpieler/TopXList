@@ -30,10 +30,10 @@ public class ListOfElementsFragment extends Fragment {
     private static final String ARG_LIST_ID = "list-id";
 
     //repository Instance
-    LocalDataRepository myRep;
+    private LocalDataRepository myRep;
 
-    //the id of the lists whos elements are displayed
-    int theListID;
+    //the id of the lists who's elements are displayed
+    private int theListID;
 
     //List of the Elements
     //It is pulled onCreate, but should be updated every time it changes
@@ -66,7 +66,7 @@ public class ListOfElementsFragment extends Fragment {
             //this is where we get the listID from
             theListID = getArguments().getInt(ARG_LIST_ID);
         } else {
-            //because if we didnt get the list id its pointless to continue
+            //because if we didn't get the list id its pointless to continue
             System.err.println("The List of Elements Fragment did not get the List ID passed");
             System.exit(0);
         }
@@ -97,7 +97,7 @@ public class ListOfElementsFragment extends Fragment {
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
             touchHelper.attachToRecyclerView(recyclerView);
 
-            //For apperent smoothness, but it may make the recycler view unscrollable???
+            //For apparent smoothness, but it may make the recycler view uncrossable???
             //recyclerView.setNestedScrollingEnabled(false);
 
             return recyclerView;

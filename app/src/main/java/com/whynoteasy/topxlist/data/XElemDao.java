@@ -1,6 +1,5 @@
 package com.whynoteasy.topxlist.data;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -8,9 +7,7 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.arch.persistence.room.OnConflictStrategy.REPLACE;

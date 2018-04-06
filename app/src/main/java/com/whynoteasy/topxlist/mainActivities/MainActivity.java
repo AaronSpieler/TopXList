@@ -4,14 +4,12 @@ package com.whynoteasy.topxlist.mainActivities;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatDelegate;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.SearchView;
 import android.view.MenuInflater;
 import android.view.View;
@@ -27,12 +25,7 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
@@ -41,7 +34,7 @@ public class MainActivity extends AppCompatActivity
     private MainListOfListsFragment lolFragment;
 
     //the repository
-    LocalDataRepository myRep;
+    private LocalDataRepository myRep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +51,6 @@ public class MainActivity extends AppCompatActivity
 
         //set up the repository
         myRep = new LocalDataRepository(this);
-
-        //ONCE PER APPSTART RELEVANT CODE START
-        //this is a configuration to enable drawing images dynamically from vectors
-        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        //ONCE PER APPSTART RELEVANT CODE END
-
-        //ONCE IN A APPTIME CODE -- START
-        onceInAnAppTimRelevantCode();
-        //ONCE IN A LIFETIME CODE -- END
 
         //This floating action button is used to trigger the add list activity!!!
         FloatingActionButton fab = findViewById(R.id.fab_main);
@@ -94,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        lolFragment = new MainListOfListsFragment();
+        lolFragment = MainListOfListsFragment.newInstance(1);
         //very important, so the fragments dont stack
         if (savedInstanceState == null) {
             transaction.add(R.id.main_activity_fragment_placeholder, lolFragment);
@@ -122,22 +106,23 @@ public class MainActivity extends AppCompatActivity
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.search_main).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
 
         //this is to actually fire the quarries
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                //not neccessary to do anything, onQuerryTextChange is more than enough
+                //not necessary to do anything, onQuarryTextChange is more than enough
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText.trim();
                 LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
-                    tempAdapter.getFilter().filter(newText);
+                    tempAdapter.getFilter().filter(newText.trim());
                 }
                 return true;
             }
@@ -145,6 +130,7 @@ public class MainActivity extends AppCompatActivity
 
         //This is what is called when the back button is pressed in the searchView
         MenuItem searchItem = menu.findItem(R.id.search_main);
+        //noinspection deprecation
         MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -166,11 +152,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -184,7 +165,7 @@ public class MainActivity extends AppCompatActivity
     //I think this is the menu on the side, ITS NOT IN USE SO FAR
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -224,7 +205,7 @@ public class MainActivity extends AppCompatActivity
     //This IS BECAUSE OF THE SEARCH BAR
     private void handleIntent(Intent intent) {
         //this should always be called because if we return to this activity from some other activity
-        //like the add or edit activity the dataset may have changed
+        //like the add or edit activity the dadaist may have changed
         LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
         //have to check if its null, because on first call it might not have been initialised yet
         if (tempAdapter != null) {
@@ -232,44 +213,5 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void onceInAnAppTimRelevantCode() {
-        boolean mboolean = false;
-        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
-        mboolean = settings.getBoolean("FIRST_RUN", false);
-        if (!mboolean) {
-            //this is all related to the creation and insertion of the firsst card
-            //Setting up a list and Card
-            String introListTitle = "How to get started...";
-            String introListShortDesc = "Click on the Floating Button to create your first list.\n" +
-                    "Edit lists by clicking on the pencil or check icon.\n" +
-                    "Reorder lists via Drag & Drop.\n" +
-                    "Swipe Left to delete and Right to mark lists as done\n" +
-                    "Use the Search Field at the top to filter and find lists.\n" +
-                    "Think of a number between 1 and 10 and then click me.";
-            String introListLongDesc = "Long Descriptions can be really long.\n" +
-                    "So you will only see the first 7 lines of it here.\n" +
-                    "Click this to see all of it.\n" +
-                    "The following list is about the best features of this App.";
 
-            int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1, false));
-
-            ArrayList<XTagModel> introTags = new ArrayList<>();
-            introTags.add(new XTagModel(tempListID,"listsCanHaveTags"));
-            myRep.insertTags(introTags);
-
-            myRep.insertElem(new XElemModel(tempListID, "Intuitive", "To get started right away",1,false));
-            myRep.insertElem(new XElemModel(tempListID, "Simple", "Our lives are complicated enough",2,false));
-            myRep.insertElem(new XElemModel(tempListID, "Numbered", "Keep track of the best",3,false));
-            myRep.insertElem(new XElemModel(tempListID, "Drag and Drop", "Easy to reorder",4,false));
-            myRep.insertElem(new XElemModel(tempListID, "Swipe left and right", "Its just fun",5,false));
-            myRep.insertElem(new XElemModel(tempListID, "Edit", "Errare humanum est...",6,false));
-            myRep.insertElem(new XElemModel(tempListID, "Visually pleasing", "At least that's what I was aiming for...",7,false));
-
-            //Setting up done
-            settings = getSharedPreferences("PREFS_NAME", 0);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean("FIRST_RUN", true);
-            editor.commit();
-        }
-    }
 }

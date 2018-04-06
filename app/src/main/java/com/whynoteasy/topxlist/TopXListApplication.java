@@ -2,6 +2,8 @@ package com.whynoteasy.topxlist;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatDelegate;
 import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
@@ -9,63 +11,68 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.object.XTagModel;
+
+import java.util.ArrayList;
+
 /**
  * Created by Whatever on 04.04.2018.
+ * Just some General Initialisation
  */
 
 public class TopXListApplication extends Application {
 
-    public static EditText configureEditText(final EditText mContent, final View nextFocus, final Activity mContext){
-        mContent.setRawInputType(InputType.TYPE_CLASS_TEXT);
-        //dont know what string.done is supposed to be
-        //mContent.setImeActionLabel(mContent.getResources().getString(R.string.done), EditorInfo.IME_ACTION_DONE);
-        mContent.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    private LocalDataRepository myRep;
 
-        mContent.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (event == null) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        // Capture soft enters in a singleLine EditText that is the last EditText
-                        // This one is useful for the new list case, when there are no existing ListItems
-                        //mContent.clearFocus();
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
-                        //My addition
-                        nextFocus.requestFocus();
+        myRep = new LocalDataRepository(this);
 
-                        //I dont want to clear the sonftInputWindow
-                        //InputMethodManager inputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                        //inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                    } else if (actionId == EditorInfo.IME_ACTION_NEXT) {
-                        // Capture soft enters in other singleLine EditTexts
-                    } else if (actionId == EditorInfo.IME_ACTION_GO) {
-                    } else {
-                        // Let the system handle all other null KeyEvents
-                        return false;
-                    }
-                } else if (actionId == EditorInfo.IME_NULL) {
-                    // Capture most soft enters in multi-line EditTexts and all hard enters;
-                    // They supply a zero actionId and a valid keyEvent rather than
-                    // a non-zero actionId and a null event like the previous cases.
+        //ONCE PER APPSTART RELEVANT CODE START
+        //this is a configuration to enable drawing images dynamically from vectors
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        //ONCE PER APPSTART RELEVANT CODE END
 
-                    //My addition
-                    nextFocus.requestFocus();
+        //ONCE IN A APPTIME CODE -- START
+        onceInAnAppTimRelevantCode();
+        //ONCE IN A LIFETIME CODE -- END
 
-                    if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                        // We capture the event when the key is first pressed.
-                    } else {
-                        // We consume the event when the key is released.
-                        return true;
-                    }
-                } else {
-                    // We let the system handle it when the listener is triggered by something that
-                    // wasn't an enter.
-                    return false;
-                }
-                return true;
-            }
-        });
+    }
 
-        return mContent;
+    private void onceInAnAppTimRelevantCode() {
+        SharedPreferences settings = getSharedPreferences("PREFS_NAME", 0);
+        boolean mboolean = settings.getBoolean("FIRST_RUN", false);
+        if (!mboolean) {
+            //this is all related to the creation and insertion of the first card
+            //Setting up a list and Card
+            String introListTitle = getString(R.string.start_list_title);
+            String introListShortDesc = getString(R.string.start_list_short_desc);
+            String introListLongDesc = getString(R.string.start_list_long_desc);
+
+            int tempListID = (int) myRep.insertList(new XListModel(introListTitle,introListShortDesc,introListLongDesc, 1));
+
+            ArrayList<XTagModel> introTags = new ArrayList<>();
+            introTags.add(new XTagModel(tempListID,getString(R.string.start_list_start_tag)));
+            myRep.insertTags(introTags);
+
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_1_title), getString(R.string.start_list_1_desc),1));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_2_title), getString(R.string.start_list_2_desc),2));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_3_title), getString(R.string.start_list_3_desc),3));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_4_title), getString(R.string.start_list_4_desc),4));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_5_title), getString(R.string.start_list_5_desc),5));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_6_title), getString(R.string.start_list_6_desc),6));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_7_title), getString(R.string.start_list_7_desc),7));
+
+            //Setting up done
+            settings = getSharedPreferences("PREFS_NAME", 0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean("FIRST_RUN", true);
+            editor.apply();
+        }
     }
 }

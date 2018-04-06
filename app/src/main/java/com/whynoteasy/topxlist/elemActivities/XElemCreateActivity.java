@@ -1,11 +1,11 @@
 package com.whynoteasy.topxlist.elemActivities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -20,15 +20,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
@@ -37,13 +33,13 @@ public class XElemCreateActivity extends AppCompatActivity {
 
     private Activity thisActivity;
     private int currentListID;
-    private XListModel currentList;
     private LocalDataRepository myRep;
 
     private EditText titleEditView;
-    private int propableElemNum;
+    private int probableElemNum;
     private EditText descriptionEditView;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +65,20 @@ public class XElemCreateActivity extends AppCompatActivity {
 
         //get the List, its title is needed later
         myRep = new LocalDataRepository(this);
-        currentList = myRep.getListByID(currentListID);
+        XListModel currentList = myRep.getListByID(currentListID);
 
         //set the title of the activity
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle("Add Element to: " + currentList.getXListTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle("Add Element to: " + currentList.getXListTitle());
+        }
 
         //set the probable element number
-        propableElemNum = myRep.getElemCountByListID(currentListID)+1;
+        probableElemNum = myRep.getElemCountByListID(currentListID)+1;
         final TextView numView = findViewById(R.id.xelem_num_input);
-        numView.setText(Integer.toString(propableElemNum));
+        numView.setText(Integer.toString(probableElemNum));
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
@@ -90,7 +88,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         descriptionEditView = findViewById(R.id.xelem_desc_input);
 
         //configure the title so no manual newlines are entered
-        titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
+        //titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
 
         //The saveList Button
         Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
@@ -102,11 +100,11 @@ public class XElemCreateActivity extends AppCompatActivity {
 
                 if (tempTitle.length() == 0){
                     //alert user that no title was entered
-                    Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (titleAlreadyExists(tempTitle)) {
-                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -114,18 +112,18 @@ public class XElemCreateActivity extends AppCompatActivity {
                 String tempDescription = descriptionEditView.getText().toString().trim();
 
                 try {
-                    //I dont know wheter parsing always works, dont think so
+                    //I dont know whether parsing always works, dont think so
                     Integer tempNum = Integer.parseInt(numView.getText().toString().trim());
 
                     //if number larger the elements list size +1 then elements list size is used
-                    if (tempNum >= propableElemNum || tempNum < 1) {
-                        myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, propableElemNum, false));
+                    if (tempNum >= probableElemNum || tempNum < 1) {
+                        myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, probableElemNum));
                     } else {
-                        XElemModel tempElemRef = new XElemModel(currentListID, tempTitle, tempDescription, tempNum, false);
-                        myRep.inserElemAtPos(tempElemRef,tempNum);
+                        XElemModel tempElemRef = new XElemModel(currentListID, tempTitle, tempDescription, tempNum);
+                        myRep.insertElemAtPos(tempElemRef,tempNum);
                     }
                 } catch (Exception e) {
-                    Snackbar mySnackbar = Snackbar.make(view, "No proper number was entered for Element", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_proper_number_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -177,8 +175,8 @@ public class XElemCreateActivity extends AppCompatActivity {
             //FROM HERE ON ITS THE ALERT DIALOG
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle("Exit whitout saving?");
-            builder.setMessage("Are you sure you want to exit without saving the Element?");
+            builder.setTitle(R.string.alert_dialog_nosave_exit_title_element);
+            builder.setMessage(R.string.alert_dialog_nosave_exit_message_element);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //exit without saving anything

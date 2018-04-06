@@ -19,8 +19,7 @@
         app:cardUseCompatPadding="true"
         app:contentPadding="@dimen/negative_content_padding"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/xelem_name_text">
+        app:layout_constraintStart_toStartOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/xelem_view_desc_constraint"
@@ -34,8 +33,9 @@
                 android:background="@drawable/card_top_rounded"
                 android:lineSpacingExtra="0sp"
                 android:padding="@dimen/card_margins"
-                android:paddingStart="@dimen/round_edge_card_margins_start"
-                android:text="@string/elem_desc_title"
+                android:paddingStart="@dimen/round_edge_card_margins"
+                android:paddingEnd="@dimen/round_edge_card_margins"
+                android:text="@string/xelem_desc_title"
                 android:textAlignment="textStart"
                 android:textColor="@color/superDarkBlue"
                 android:textSize="18sp"
@@ -53,9 +53,10 @@
                 android:hint="@string/xelem_description_input_hint"
                 android:inputType="textMultiLine"
                 android:padding="@dimen/card_margins"
-                android:paddingStart="@dimen/round_edge_card_margins_start"
+                android:paddingStart="@dimen/round_edge_card_margins"
+                android:paddingEnd="@dimen/round_edge_card_margins"
                 android:textColor="@color/superDarkBlue"
-                android:textColorHint="@color/superDarkBlue"
+
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

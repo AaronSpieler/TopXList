@@ -1,6 +1,5 @@
 package com.whynoteasy.topxlist.data;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
@@ -16,14 +15,14 @@ import java.util.concurrent.ExecutionException;
 /**
  * Created by Whatever on 18.11.2017.
  * EVERYTHING IS WRAPPED IN ASYNC TASKS
- * HOWEVER THE QUERRIES ARE NOT REALLY ASYNC BECAUSE THE APPLICATION WAITS FOR THE RESULTS :/
+ * HOWEVER THE QUARRIES ARE NOT REALLY ASYNC BECAUSE THE APPLICATION WAITS FOR THE RESULTS :/
  * Main Purpose:    Handle granular communication between local database(s) and database access objects
  *                  Wrap everything necessary in Async Methods
  */
 
 public class LocalDataRepository{
 
-    private XRoomDatabase xRoomDatabase;
+    private final XRoomDatabase xRoomDatabase;
 
     public LocalDataRepository(@NonNull Context context) {
         this.xRoomDatabase = XRoomDatabase.getDatabase(context);
@@ -38,15 +37,17 @@ public class LocalDataRepository{
 
     //INSERT TAGS
     public void insertTags(List<XTagModel> xTagModelList) {
+        //noinspection unchecked
         new InsertTagsAsyncTask(xRoomDatabase).execute(xTagModelList);
     }
     private static class InsertTagsAsyncTask extends AsyncTask<List<XTagModel>, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         InsertTagsAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
+        @SafeVarargs
         @Override
-        protected Void doInBackground(final List<XTagModel>... params) {
+        protected final Void doInBackground(final List<XTagModel>... params) {
             db.xTagModel().insertTagList(params[0]);
             return null;
         }
@@ -54,15 +55,17 @@ public class LocalDataRepository{
 
     //DELETE TAGS
     public void deleteTags(List<XTagModel> xTagModelList) {
+        //noinspection unchecked
         new DeleteTagsAsyncTask(xRoomDatabase).execute(xTagModelList);
     }
     private static class DeleteTagsAsyncTask extends AsyncTask<List<XTagModel>, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         DeleteTagsAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
+        @SafeVarargs
         @Override
-        protected Void doInBackground(final List<XTagModel>... params) {
+        protected final Void doInBackground(final List<XTagModel>... params) {
             db.xTagModel().deleteTagList(params[0]);
             return null;
         }
@@ -70,15 +73,17 @@ public class LocalDataRepository{
 
     //DELETE TAGS BY ID
     public void deleteTagsByID(List<Integer> xTagIDList) {
+        //noinspection unchecked
         new DeleteTagByIDsAsyncTask(xRoomDatabase).execute(xTagIDList);
     }
     private static class DeleteTagByIDsAsyncTask extends AsyncTask<List<Integer>, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         DeleteTagByIDsAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
+        @SafeVarargs
         @Override
-        protected Void doInBackground(final List<Integer>... params) {
+        protected final Void doInBackground(final List<Integer>... params) {
             for (Integer tempID : params[0]) {
                 db.xTagModel().deleteTagByID(tempID.toString());
             }
@@ -88,15 +93,17 @@ public class LocalDataRepository{
 
     //UPDATE TAGS
     public void updateTags(List<XTagModel> xTagModelList) {
+        //noinspection unchecked
         new UpdateTagsAsyncTask(xRoomDatabase).execute(xTagModelList);
     }
     private static class UpdateTagsAsyncTask extends AsyncTask<List<XTagModel>, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         UpdateTagsAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
+        @SafeVarargs
         @Override
-        protected Void doInBackground(final List<XTagModel>... params) {
+        protected final Void doInBackground(final List<XTagModel>... params) {
             db.xTagModel().updateTagList(params[0]);
             return null;
         }
@@ -109,20 +116,18 @@ public class LocalDataRepository{
         return xRoomDatabase.xElementsModel().loadAllElements();
     }
 
-    //GET ELEMTS LIST CORRESPONDING TO SPECIFIC ID
+    //GET ELEMENTS LIST CORRESPONDING TO SPECIFIC ID
     public List<XElemModel> getElementsByListID(int listID) {
         try{
             //the rowId which is the primaryKey is returned
             return new GetElementsListByIDAsyncTask(xRoomDatabase).execute(listID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
     private static class GetElementsListByIDAsyncTask extends AsyncTask<Integer, Void, List<XElemModel>> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetElementsListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -136,15 +141,13 @@ public class LocalDataRepository{
     public XElemModel getElemByID(int elemID){
         try{
             return new GetElemByIDAsyncTask(xRoomDatabase).execute(elemID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
     private static class GetElemByIDAsyncTask extends AsyncTask<Integer, Void, XElemModel> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetElemByIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -155,11 +158,11 @@ public class LocalDataRepository{
 
     //CHANGE lIST NUMBERS AFTER MOVEMENT //ERROR PRONE !!!!
     private static class NumElemUpdateParameters {//needed to wrap async task parameter fon position updates of elements
-        XElemModel xElemModel;
-        int oldPos;
-        int newPos;
+        final XElemModel xElemModel;
+        final int oldPos;
+        final int newPos;
 
-        public NumElemUpdateParameters(XElemModel xElemModel, int newPos, int oldPos){
+        NumElemUpdateParameters(XElemModel xElemModel, int newPos, int oldPos){
             this.xElemModel = xElemModel;
             this.newPos = newPos;
             this.oldPos = oldPos;
@@ -169,7 +172,7 @@ public class LocalDataRepository{
         new UpdateElemNumAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, newPos, oldPos));
     }
     private static class UpdateElemNumAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         UpdateElemNumAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -188,12 +191,12 @@ public class LocalDataRepository{
     }
 
     //INSERT ELEMENT AT POS
-    public void inserElemAtPos(XElemModel xElemModel, int thePos){
-        new InserElemAtPosAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, thePos, thePos));
+    public void insertElemAtPos(XElemModel xElemModel, int thePos){
+        new InsertElemAtPosAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, thePos, thePos));
     }
-    private static class InserElemAtPosAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
-        private XRoomDatabase db;
-        InserElemAtPosAsyncTask(XRoomDatabase xRoomDatabase) {
+    private static class InsertElemAtPosAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
+        private final XRoomDatabase db;
+        InsertElemAtPosAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
         @Override
@@ -212,7 +215,7 @@ public class LocalDataRepository{
         new InsertElemAsyncTask(xRoomDatabase).execute(xElemModel);
     }
     private static class InsertElemAsyncTask extends AsyncTask<XElemModel, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         InsertElemAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -228,7 +231,7 @@ public class LocalDataRepository{
         new DeleteElemAsyncTask(xRoomDatabase).execute(xElemModel);
     }
     private static class DeleteElemAsyncTask extends AsyncTask<XElemModel, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         DeleteElemAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -247,7 +250,7 @@ public class LocalDataRepository{
         new DeleteElementsByListIDAsyncTask(xRoomDatabase).execute(listID);
     }
     private static class DeleteElementsByListIDAsyncTask extends AsyncTask<Integer, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         DeleteElementsByListIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -263,7 +266,7 @@ public class LocalDataRepository{
         new UpdateElemAsyncTask(xRoomDatabase).execute(xElemModel);
     }
     private static class UpdateElemAsyncTask extends AsyncTask<XElemModel, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         UpdateElemAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -278,15 +281,13 @@ public class LocalDataRepository{
     public int getElemCountByListID(int listID) {
         try{
             return new GetElemCountByListIDAsyncTask(xRoomDatabase).execute(listID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return 0;
     }
     private static class GetElemCountByListIDAsyncTask extends AsyncTask<Integer, Void, Integer> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetElemCountByListIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -308,15 +309,13 @@ public class LocalDataRepository{
         try{
             //the rowId which is the primaryKey is returned
             return new GetListByIDAsyncTask(xRoomDatabase).execute(listID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
     private static class GetListByIDAsyncTask extends AsyncTask<Integer, Void, XListModel> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -328,11 +327,11 @@ public class LocalDataRepository{
 
     //CHANGE lIST NUMBERS AFTER MOVEMENT //ERROR PRONE !!!!
     private static class NumListUpdateParameters {//needed to wrap async task parameter fon position updates of lists
-        XListModel xListModel;
-        int oldPos;
-        int newPos;
+        final XListModel xListModel;
+        final int oldPos;
+        final int newPos;
 
-        public NumListUpdateParameters(XListModel xListModel, int newPos, int oldPos){
+        NumListUpdateParameters(XListModel xListModel, int newPos, int oldPos){
             this.xListModel = xListModel;
             this.newPos = newPos;
             this.oldPos = oldPos;
@@ -342,7 +341,7 @@ public class LocalDataRepository{
         new UpdateListNumAsyncTask(xRoomDatabase).execute(new NumListUpdateParameters(xListModel, newPos, oldPos));
     }
     private static class UpdateListNumAsyncTask extends  AsyncTask<NumListUpdateParameters, Void, Void>{
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         UpdateListNumAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -365,15 +364,13 @@ public class LocalDataRepository{
         try{
             //the rowId which is the primaryKey is returned
             return new InsertListAsyncTask(xRoomDatabase).execute(xListModel).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return 0;
     }
     private static class InsertListAsyncTask extends AsyncTask<XListModel, Void, Long> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         InsertListAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -388,7 +385,7 @@ public class LocalDataRepository{
         new DeleteListAsyncTask(xRoomDatabase).execute(xListModel);
     }
     private static class DeleteListAsyncTask extends AsyncTask<XListModel, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         DeleteListAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -407,7 +404,7 @@ public class LocalDataRepository{
         new UpdateListAsyncTask(xRoomDatabase).execute(xListModel);
     }
     private static class UpdateListAsyncTask extends AsyncTask<XListModel, Void, Void> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         UpdateListAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -422,15 +419,13 @@ public class LocalDataRepository{
     public int getListCount() {
         try{
             return new GetListCountAsyncTask(xRoomDatabase).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return 0;
     }
     private static class GetListCountAsyncTask extends AsyncTask<Void, Void, Integer> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetListCountAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -438,7 +433,7 @@ public class LocalDataRepository{
         protected Integer doInBackground(Void... voids) {
             /*DEBUG
             System.out.println("Num of Lists" + db.xListModel().getNumberOfLists());
-            System.out.println("Num of Elems" + db.xElementsModel().getNumberOfElementsTotal());
+            System.out.println("Num of Elements" + db.xElementsModel().getNumberOfElementsTotal());
             System.out.println("Num of Tags" + db.xTagModel().getNumberOfTagsTotal());
             */
             return db.xListModel().getNumberOfLists();
@@ -452,15 +447,13 @@ public class LocalDataRepository{
     public List<XListTagsPojo> getListsWithTags() {
         try {
             return new GetListsWithTagsAsyncTask(xRoomDatabase).execute().get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
     private static class GetListsWithTagsAsyncTask extends AsyncTask<Void, Void, List<XListTagsPojo>> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetListsWithTagsAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
@@ -474,21 +467,19 @@ public class LocalDataRepository{
     public XListTagsPojo getListWithTagsByID(int listID) {
         try {
             return new GetListWithTagsByIDAsyncTask(xRoomDatabase).execute(listID).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
     private static class GetListWithTagsByIDAsyncTask extends AsyncTask<Integer, Void, XListTagsPojo> {
-        private XRoomDatabase db;
+        private final XRoomDatabase db;
         GetListWithTagsByIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
         @Override
         protected XListTagsPojo doInBackground(Integer... integers) {
-            return db.xListsAndTagsModel().loadListWithTagByID(Integer.toString(integers[0]));  //Querries only happen with Strings so casting is needed
+            return db.xListsAndTagsModel().loadListWithTagByID(Integer.toString(integers[0]));  //Quarries only happen with Strings so casting is needed
         }
     }
 }

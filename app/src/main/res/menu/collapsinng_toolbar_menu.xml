@@ -7,8 +7,8 @@
     <item
         android:id="@+id/edit_action"
         android:orderInCategory="300"
-        android:title="Edit"
+        android:title="@string/edit_list_icon_hint"
         android:icon="@drawable/ic_mode_edit_white_24dp"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom"/>
 
 </menu>

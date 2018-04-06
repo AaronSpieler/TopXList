@@ -1,5 +1,6 @@
 package com.whynoteasy.topxlist.listActivities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AlertDialog;
@@ -33,7 +34,7 @@ import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XListCreateActivity extends AppCompatActivity {
 
-    private List<String> tempTagList = new ArrayList<String>();
+    private final List<String> tempTagList = new ArrayList<>();
     private EditText tagEditText;
     private EditText titleEditText;
     private EditText shortDescEditText;
@@ -51,36 +52,39 @@ public class XListCreateActivity extends AppCompatActivity {
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
-        ab.setTitle("New List");
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
-
-        //the text typed in the addTag TextField
-        tagEditText = findViewById(R.id.xList_tag_input_field);
+        if (ab != null) {
+            ab.setTitle("New List");
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         //get the shortDescEditText to focus next
         shortDescEditText = findViewById(R.id.xlist_short_desc_input);
 
-        //set up the title edit text
+        //set up the title edit text so no new lines are entered
         titleEditText = findViewById(R.id.xlist_title_input);
-        titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
+        //titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
+
+        //set up the tag edit text so no new lines are entered
+        tagEditText = findViewById(R.id.xList_tag_input_field);
+        //tagEditText = TopXListApplication.configureEditText(tagEditText,titleEditText, thisActivity);
 
         //The Tag Add Button
         Button tagAddButton = findViewById(R.id.xList_tag_input_button);
         tagAddButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 //get the tag text
                 final String tempTagStr = tagEditText.getText().toString().trim();
 
-                //only continue if everything checksout
+                //only continue if everything checkout
                 if (tempTagStr.length() == 0) {
-                    Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered.", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_tag_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (tempTagStr.contains(" ")) {
-                    Snackbar mySnackbar = Snackbar.make(view, "No spaces allowed in tags.", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_spaces_allowed_in_tags, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (isTagDuplicate(view, tempTagStr)) {
@@ -90,7 +94,7 @@ public class XListCreateActivity extends AppCompatActivity {
                 tempTagList.add(tempTagStr);
 
                 //All this to put a visual representation of the tag in the view
-                final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
+                final View tagView = View.inflate(thisActivity, R.layout.tag_element, null);
 
                 //The TextView of the TagView is filled here
                 TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
@@ -126,11 +130,11 @@ public class XListCreateActivity extends AppCompatActivity {
                 //if there is only spaces
                 if (tempTitle.length() == 0){
                     //alert user that no title was entered
-                    Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (titleAlreadyExists(tempTitle)) {
-                    Snackbar mySnackbar = Snackbar.make(view, "Title already exists", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -138,16 +142,16 @@ public class XListCreateActivity extends AppCompatActivity {
                 String tempShortDesc = shortDescEditText.getText().toString().trim();
                 String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
-                List<XTagModel> tagList = new ArrayList<XTagModel>();
+                List<XTagModel> tagList = new ArrayList<>();
 
                 LocalDataRepository myRep = new LocalDataRepository(view.getContext());
 
-                long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1, false));
+                long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1));
 
                 //ATTENTION: THIS COULD BE A MAJOR MISTAKE CONVERTING LONG TO INT,
-                // however, the long value should be the primary key, thus it should not give a conversion problem since primary keyss are int
+                // however, the long value should be the primary key, thus it should not give a conversion problem since primary key's are int
                 if (Integer.MAX_VALUE < listID){
-                    System.err.println("The long value can apperently not be the listID, what happened?");
+                    System.err.println("The long value can apparently not be the listID, what happened?");
                     System.exit(0);
                 }
 
@@ -204,8 +208,8 @@ public class XListCreateActivity extends AppCompatActivity {
             //FROM HERE ON ITS THE ALERT DIALOG
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle("Exit whitout saving?");
-            builder.setMessage("Are you sure you want to exit without saving the list?");
+            builder.setTitle(R.string.alert_dialog_nosave_exit_title_list);
+            builder.setMessage(R.string.alert_dialog_nosave_exit_message_list);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //exit without saving anything
@@ -235,7 +239,7 @@ public class XListCreateActivity extends AppCompatActivity {
     private boolean isTagDuplicate(View view, String newTag){
         for (String tempTag : tempTagList) {
             if (newTag.equals(tempTag)) {
-                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }

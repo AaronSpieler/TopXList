@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/root_xList_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -40,9 +39,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_margins"
                     android:layout_marginEnd="@dimen/card_margins"
-                    android:layout_marginStart="@dimen/round_edge_card_margins_start"
+                    android:layout_marginStart="@dimen/round_edge_card_margins"
                     android:layout_marginTop="@dimen/card_margins"
-                    android:text="@string/xList_title_text"
+                    android:text="@string/test_title_text"
                     android:textColor="@color/superDarkBlue"
                     android:textSize="18sp"
                     android:textStyle="bold"
@@ -58,7 +57,7 @@
                     android:layout_height="38dp"
                     android:adjustViewBounds="true"
                     android:background="@null"
-                    android:contentDescription="@string/xList_popup_menu"
+                    android:contentDescription="@string/test_popup_menu"
                     android:padding="@dimen/card_defaults"
                     android:scaleType="fitXY"
                     android:visibility="visible"
@@ -83,11 +82,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_margins"
                     android:layout_marginEnd="@dimen/card_margins"
-                    android:layout_marginStart="@dimen/round_edge_card_margins_start"
+                    android:layout_marginStart="@dimen/round_edge_card_margins"
                     android:layout_marginTop="@dimen/card_margins"
                     android:ellipsize="end"
                     android:maxLines="7"
-                    android:text="@string/xList_short_description_text"
+                    android:text="@string/test_short_description_text"
                     android:textColor="@color/superDarkBlue"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -103,7 +102,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/xList_body"
-                android:background="@drawable/card_bottom_rounded_middle_ligth">
+                android:background="@drawable/card_bottom_rounded_middle_light">
 
                 <TextView
                     android:id="@+id/xList_tags"
@@ -111,9 +110,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/card_margins"
                     android:layout_marginEnd="@dimen/card_margins"
-                    android:layout_marginStart="@dimen/round_edge_card_margins_start"
+                    android:layout_marginStart="@dimen/round_edge_card_margins"
                     android:layout_marginTop="8dp"
-                    android:text="@string/xList_tag_text"
+                    android:text="@string/test_tag_text"
                     android:textColor="@color/superDarkBlue"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="parent"

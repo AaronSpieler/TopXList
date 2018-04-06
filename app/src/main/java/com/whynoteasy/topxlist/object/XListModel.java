@@ -35,13 +35,12 @@ public class XListModel implements Comparable<XListModel>{
     private int xListLanguageID
     */
 
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, boolean xListMarked) {
-        this.xListID = xListID;
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum) {
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
-        this.xListMarked = xListMarked;
+        this.xListMarked = false;
     }
 
     //Getters and Setters
