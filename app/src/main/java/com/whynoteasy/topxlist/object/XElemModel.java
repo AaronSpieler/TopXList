@@ -1,6 +1,5 @@
 package com.whynoteasy.topxlist.object;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
@@ -36,13 +35,12 @@ public class XElemModel implements Comparable<XElemModel>{
 
     //Constructor
 
-    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, boolean xElemMarked) {
-        this.xElemID = xElemID;
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
         this.xElemDescription = xElemDescription;
         this.xElemNum = xElemNum;
-        this.xElemMarked = xElemMarked;
+        this.xElemMarked = false;
     }
 
     //Getters and Setters

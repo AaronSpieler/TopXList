@@ -1,8 +1,8 @@
 package com.whynoteasy.topxlist.listActivities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -38,8 +38,8 @@ public class XListEditActivity extends AppCompatActivity {
     private int currentListID;
     private LocalDataRepository myRep;
 
-    private List<String> tempTagListNew = new ArrayList<String>();
-    private List<XTagModel> tempTagListDeleted = new ArrayList<XTagModel>();
+    private final List<String> tempTagListNew = new ArrayList<>();
+    private final List<XTagModel> tempTagListDeleted = new ArrayList<>();
 
     private ViewGroup insertPoint;
     private EditText tagEditText;
@@ -54,6 +54,7 @@ public class XListEditActivity extends AppCompatActivity {
     private CardView markCard;
     private boolean mMarked;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,16 +83,22 @@ public class XListEditActivity extends AppCompatActivity {
 
         //set the title
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle("Edit: " + currentList.getXListModel().getXListTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle("Edit: " + currentList.getXListModel().getXListTitle());
+        }
 
         //get the shortDescEditText to focus next
         shortDescEditText = findViewById(R.id.xlist_short_desc_input);
 
         //set up the title edit text
         titleEditText = findViewById(R.id.xlist_title_input);
-        titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
+        //titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
+
+        //set up the tag edit text so no new lines are entered
+        tagEditText = findViewById(R.id.xList_tag_input_field);
+        //tagEditText = TopXListApplication.configureEditText(tagEditText,titleEditText, thisActivity);
 
         //set the TextFields
         titleEditText.setText(currentList.getXListModel().getXListTitle());
@@ -102,7 +109,7 @@ public class XListEditActivity extends AppCompatActivity {
         //since everything is tied to the tagView, we can have different onClickListeners for different type of TagViews
         insertPoint = findViewById(R.id.xList_tags_tagsList_view);
         for (final XTagModel tempTag : currentList.getXTagModelList()){
-            final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
+            final View tagView = View.inflate(thisActivity, R.layout.tag_element, null);
 
             TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
             tagTextView.setText("#"+tempTag.getXTagName());
@@ -122,25 +129,23 @@ public class XListEditActivity extends AppCompatActivity {
             insertPoint.addView(tagView, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
-        //the text typed in the addTag TextField
-        tagEditText = findViewById(R.id.xList_tag_input_field);
-
         //what happens to newly inserted Tags
         //The Tag Add Button
         Button tagAddButton = findViewById(R.id.xList_tag_input_button);
         tagAddButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 //get the tag text
                 final String tempTagStr = tagEditText.getText().toString().trim();
 
-                //only continue if everything checksout
+                //only continue if everything checkout
                 if (tempTagStr.length() == 0) {
-                    Snackbar mySnackbar = Snackbar.make(view, "No tag name was entered", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_tag_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (tempTagStr.contains(" ")) {
-                    Snackbar mySnackbar = Snackbar.make(view, "No spaces allowed in tags.", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_spaces_allowed_in_tags, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (isTagDuplicate(view, tempTagStr)) {
@@ -151,7 +156,7 @@ public class XListEditActivity extends AppCompatActivity {
                 tagWereEdited = true;
 
                 //All this to put a visual representation of the tag in the view
-                final View tagView = getLayoutInflater().inflate(R.layout.tag_element, null);
+                final View tagView = View.inflate(thisActivity, R.layout.tag_element, null);
 
                 //The TextView of the TagView is filled here
                 TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
@@ -178,14 +183,14 @@ public class XListEditActivity extends AppCompatActivity {
         //MARK BUTTON
         mMarked = currentList.getXListModel().isXListMarked();
         //This is, so when the X is clicked the tag is removed
-        markCard = (CardView) findViewById(R.id.xlist_mark_button);
+        markCard = findViewById(R.id.xlist_mark_button);
 
-        if (mMarked == false) {
+        if (!mMarked) {
             markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
-            ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Done");
+            ((TextView) findViewById(R.id.xlist_mark_title)).setText(R.string.mark_done);
         } else {
             markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
-            ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Not Done");
+            ((TextView) findViewById(R.id.xlist_mark_title)).setText(R.string.mark_not_done);
         }
 
         markCard.setOnClickListener(new View.OnClickListener() {
@@ -193,14 +198,14 @@ public class XListEditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 markWasEdited = true;
 
-                if (mMarked == true) {
+                if (mMarked) {
                     mMarked = false;
                     markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
-                    ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Done");
+                    ((TextView) findViewById(R.id.xlist_mark_title)).setText(R.string.mark_done);
                 } else {
                     mMarked = true;
                     markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
-                    ((TextView) findViewById(R.id.xlist_mark_title)).setText("Mark Not Done");
+                    ((TextView) findViewById(R.id.xlist_mark_title)).setText(R.string.mark_not_done);
                 }
             }
         });
@@ -214,13 +219,13 @@ public class XListEditActivity extends AppCompatActivity {
 
                 if (tempTitle.length() == 0){
                     //alert user that no title was entered
-                    Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (!tempTitle.equals(currentList.getXListModel().getXListTitle().trim())) {
                     if (titleAlreadyExists(tempTitle)) {
                         //alert user that no duplicate title was entered
-                        Snackbar mySnackbar = Snackbar.make(view, "This title already exists", LENGTH_SHORT);
+                        Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                         mySnackbar.show();
                         return;
                     }
@@ -229,7 +234,7 @@ public class XListEditActivity extends AppCompatActivity {
                 String tempShortDesc = shortDescEditText.getText().toString().trim();
                 String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
-                List<XTagModel> newTagList = new ArrayList<XTagModel>();
+                List<XTagModel> newTagList = new ArrayList<>();
 
                 //update the necessary values
                 currentList.getXListModel().setXListTitle(tempTitle);
@@ -270,7 +275,7 @@ public class XListEditActivity extends AppCompatActivity {
             returnToMainActivity();
             return true;
         } else if (id == R.id.delete_action_xlist) {
-            //delete List if onfirmed
+            //delete List if confirmed
             deleteListIfConfirmed();
             return true;
         }
@@ -295,7 +300,7 @@ public class XListEditActivity extends AppCompatActivity {
         String tempLongDesc = ((TextView)findViewById(R.id.xlist_long_desc_input)).getText().toString().trim();
 
         if (!markWasEdited && !tagWereEdited && currentList.getXListModel().getXListTitle().equals(tempTitle) && currentList.getXListModel().getXListShortDescription().equals(tempShortDesc) && currentList.getXListModel().getXListLongDescription().equals(tempLongDesc)) {
-            //exit without saving anything and without promting
+            //exit without saving anything and without promoting
             NavUtils.navigateUpFromSameTask(thisActivity);
             return;
         }
@@ -303,8 +308,8 @@ public class XListEditActivity extends AppCompatActivity {
         //FROM HERE ON ITS THE ALERT DIALOG
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Exit whitout saving changes?");
-        builder.setMessage("Are you sure you want to exit without saving the the changes to your list?");
+        builder.setTitle(R.string.alert_dialog_nosave_edit_exit_title_list);
+        builder.setMessage(R.string.alert_dialog_nosave_edit_exit_message_list);
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //exit without saving anything
@@ -337,7 +342,7 @@ public class XListEditActivity extends AppCompatActivity {
                 //its just removed from the temporarily deleted tag list and will thus not be deleted
                 tempTagListDeleted.remove(tempTag);
 
-                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }
@@ -345,14 +350,14 @@ public class XListEditActivity extends AppCompatActivity {
         for (XTagModel tempTag : currentList.getXTagModelList()) {
             //if the tags match, and the tag has not been deleted temporarily so far
             if (tempTag.getXTagName().equals(newTag) && !(tempTagListDeleted.contains(tempTag))) {
-                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }
         }
         for (String tempTag : tempTagListNew) {
             if (tempTag.equals(newTag)) {
-                Snackbar mySnackbar = Snackbar.make(view, "Duplicate Tag", LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }
@@ -370,8 +375,8 @@ public class XListEditActivity extends AppCompatActivity {
     private void deleteListIfConfirmed(){
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Delete List?");
-        builder.setMessage("Are you sure you want to delete the list: \n"+"\""+currentList.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setTitle(thisActivity.getString(R.string.alert_dialog_delete_list_title));
+        builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 LocalDataRepository myRep = new LocalDataRepository(thisActivity);

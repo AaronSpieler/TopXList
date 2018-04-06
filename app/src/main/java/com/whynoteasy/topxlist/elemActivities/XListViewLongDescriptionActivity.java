@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,14 +18,12 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
 
 public class XListViewLongDescriptionActivity extends AppCompatActivity {
 
     private XListModel currentList;
     private int currentListID;
-    private LocalDataRepository myRep;
 
     private Activity thisActivity;
 
@@ -36,8 +33,6 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_xlist_view_long_description);
         Toolbar toolbar = findViewById(R.id.toolbar_xlist_long_desc_view);
         setSupportActionBar(toolbar);
-
-        System.out.println("I definitely come this far");
 
         thisActivity = this;
 
@@ -55,14 +50,16 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
             currentListID= (int) savedInstanceState.getSerializable("X_LIST_ID");
         }
         //get the List with its Tags
-        myRep = new LocalDataRepository(this);
+        LocalDataRepository myRep = new LocalDataRepository(this);
         currentList = myRep.getListByID(currentListID);
 
         //set the title
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle(currentList.getXListTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle(currentList.getXListTitle());
+        }
 
         //set the description TextField
         TextView descView = findViewById(R.id.xlist_view_long_desc_input);
@@ -78,7 +75,9 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
                 thisActivity.startActivity(intent);
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

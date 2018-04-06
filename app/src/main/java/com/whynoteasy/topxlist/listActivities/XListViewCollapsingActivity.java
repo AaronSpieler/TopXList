@@ -8,7 +8,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -27,9 +26,7 @@ import com.whynoteasy.topxlist.object.XListModel;
 
 public class XListViewCollapsingActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
 
-    private LocalDataRepository myRep;
     private int currentListID;
-    private XListModel currentList;
     private Activity thisActivity;
 
     @Override
@@ -64,16 +61,18 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         });
 
         //get the List with its Tags
-        myRep = new LocalDataRepository(this);
-        currentList = myRep.getListByID(currentListID);
+        LocalDataRepository myRep = new LocalDataRepository(this);
+        XListModel currentList = myRep.getListByID(currentListID);
 
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle(currentList.getXListTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle(currentList.getXListTitle());
+        }
 
         //the long description is clickable
-        TextView collapsingText = findViewById(R.id.collapsing_toolbar_textview);
+        TextView collapsingText = findViewById(R.id.collapsing_toolbar_text_view);
         collapsingText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +84,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
 
         //If the long description is too long not everything is shown, only 7 lines
         if (currentList.getXListLongDescription().trim().length() == 0) {
-            collapsingText.setText("Edit List to add long description here.");
+            collapsingText.setText(R.string.collapsing_toolbar_long_description_empty_tip);
         } else {
             collapsingText.setText(currentList.getXListLongDescription());
         }

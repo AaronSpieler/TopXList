@@ -1,5 +1,6 @@
 package com.whynoteasy.topxlist.elemActivities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,14 +22,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
@@ -49,6 +46,7 @@ public class XElemEditActivity extends AppCompatActivity {
     private CardView markCard;
     private boolean mMarked;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +54,9 @@ public class XElemEditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_xelem_edit);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         thisActivity = this;
 
@@ -92,7 +92,7 @@ public class XElemEditActivity extends AppCompatActivity {
         descriptionEditView = findViewById(R.id.xelem_desc_input);
 
         //configure the title so no manual newlines are entered
-        titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
+        //titleEditView = TopXListApplication.configureEditText(titleEditView,descriptionEditView, thisActivity);
 
         //set the TextFields
         titleEditView.setText(currentElement.getXElemTitle());
@@ -102,14 +102,14 @@ public class XElemEditActivity extends AppCompatActivity {
         //MARK BUTTON
         mMarked = currentElement.isXElemMarked();
         //This is, so when the X is clicked the tag is removed
-        markCard = (CardView) findViewById(R.id.xelem_mark_button);
+        markCard = findViewById(R.id.xelem_mark_button);
 
-        if (mMarked == false) {
+        if (!mMarked) {
             markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
-            ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Done");
+            ((TextView) findViewById(R.id.xelem_mark_title)).setText(R.string.mark_done);
         } else {
             markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
-            ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Not Done");
+            ((TextView) findViewById(R.id.xelem_mark_title)).setText(R.string.mark_not_done);
         }
 
         markCard.setOnClickListener(new View.OnClickListener() {
@@ -117,14 +117,14 @@ public class XElemEditActivity extends AppCompatActivity {
             public void onClick(View view) {
                 markWasEdited = true;
 
-                if (mMarked == true) {
+                if (mMarked) {
                     mMarked = false;
                     markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkBlue));
-                    ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Done");
+                    ((TextView) findViewById(R.id.xelem_mark_title)).setText(R.string.mark_done);
                 } else {
                     mMarked = true;
                     markCard.setCardBackgroundColor(thisActivity.getResources().getColor(R.color.darkGreen));
-                    ((TextView) findViewById(R.id.xelem_mark_title)).setText("Mark Not Done");
+                    ((TextView) findViewById(R.id.xelem_mark_title)).setText(R.string.mark_not_done);
                 }
             }
         });
@@ -139,13 +139,13 @@ public class XElemEditActivity extends AppCompatActivity {
 
                 if (tempTitle.length() == 0){
                     //alert user that no title was entered
-                    Snackbar mySnackbar = Snackbar.make(view, "Not title was entered", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 } else if (!tempTitle.equals(currentElement.getXElemTitle())) {
                     if (titleAlreadyExists(tempTitle)) {
                         //alert user that no duplicate title was entered
-                        Snackbar mySnackbar = Snackbar.make(view, "This title already exists", LENGTH_SHORT);
+                        Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
                         mySnackbar.show();
                         return;
                     }
@@ -154,15 +154,13 @@ public class XElemEditActivity extends AppCompatActivity {
                 String tempDescription = descriptionEditView.getText().toString().trim();
                 String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString().trim();
 
-                List<XTagModel> newTagList = new ArrayList<XTagModel>();
-
                 //update the necessary values
                 try {
                     int tempIntNum = Integer.parseInt(tempNum);
                     int lastPossibleNum = myRep.getElemCountByListID(currentElement.getXListIDForeign())+1;
 
                     if (tempIntNum < 1) {
-                        Snackbar mySnackbar = Snackbar.make(view, "No proper number was entered for Element", LENGTH_SHORT);
+                        Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
                         mySnackbar.show();
                         return;
                     } else {
@@ -178,7 +176,7 @@ public class XElemEditActivity extends AppCompatActivity {
                         myRep.changeAllListNumbersElem(currentElement, tempIntNum, oldPos);
                     }
                 }catch (Exception e){
-                    Snackbar mySnackbar = Snackbar.make(view, "No proper number was entered for Element", LENGTH_SHORT);
+                    Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
                     mySnackbar.show();
                     return;
                 }
@@ -228,13 +226,12 @@ public class XElemEditActivity extends AppCompatActivity {
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
             intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
             NavUtils.navigateUpTo(thisActivity,intent);
-            return;
         } else {
             //FROM HERE ON ITS THE ALERT DIALOG
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle("Exit whitout saving?");
-            builder.setMessage("Are you sure you want to exit without saving the Element?");
+            builder.setTitle(R.string.alert_dialog_nosave_exit_title_element);
+            builder.setMessage(R.string.alert_dialog_nosave_exit_message_element);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //exit without saving anything
@@ -273,11 +270,11 @@ public class XElemEditActivity extends AppCompatActivity {
     private void deleteElemIfConfirmed() {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Delete Element?");
-        builder.setMessage("Are you sure you want to delete: \n"+"\""+currentElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setTitle(thisActivity.getString(R.string.alert_dialog_delete_element_title));
+        builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\"+"+currentElement.getXElemTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
                 LocalDataRepository myRep = new LocalDataRepository(thisActivity);
                 myRep.deleteElem(currentElement);
 

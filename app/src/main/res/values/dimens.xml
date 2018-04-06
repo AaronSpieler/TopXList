@@ -8,10 +8,7 @@
 
     <dimen name="card_defaults">8dp</dimen>
     <dimen name="card_margins">8dp</dimen>
-    <dimen name="text_margin">16dp</dimen>
     <dimen name="negative_content_padding">-3dp</dimen>
-    <dimen name="app_bar_height">180dp</dimen>
-    <dimen name="round_edge_card_margins_start">12dp</dimen>
+    <dimen name="round_edge_card_margins">12dp</dimen>
 
-    <dimen name="max_description_lines">7</dimen>
 </resources>

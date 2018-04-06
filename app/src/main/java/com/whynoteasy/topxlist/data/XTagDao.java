@@ -1,6 +1,5 @@
 package com.whynoteasy.topxlist.data;
 
-import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -45,11 +44,11 @@ public interface XTagDao {
     @Update
     void updateTag(XTagModel xTagModel);
 
-    //will have to check wheter this works, but maybe I dont use it at all
+    //will have to check whether this works, but maybe I dont use it at all
     @Update
     void updateTagList(List<XTagModel> xTagModelList);
 
-    //delte Querries: delete Tags by ID
+    //delete Quarries: delete Tags by ID
     @Query("DELETE FROM XTagModel WHERE xTagID = :xTagIDInp")
     void deleteTagByID(String xTagIDInp);
 

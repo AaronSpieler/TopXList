@@ -51,10 +51,10 @@ public class XListTagsPojo implements Comparable<XListTagsPojo>{ //no constructo
     }
 
     public String tagsToString(){
-        String temp = "";
+        StringBuilder temp = new StringBuilder();
         for (XTagModel elm : xTagModelList) {
-            temp = temp + "#"+elm.getXTagName()+" ";
+            temp.append("#").append(elm.getXTagName()).append(" ");
         }
-        return temp;
+        return temp.toString();
     }
 }

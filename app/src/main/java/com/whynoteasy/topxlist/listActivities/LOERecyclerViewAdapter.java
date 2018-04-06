@@ -1,15 +1,14 @@
 package com.whynoteasy.topxlist.listActivities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
 import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
 
 import java.util.List;
 
@@ -34,7 +32,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     private final List<XElemModel> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Context activityContext;
+    private final Context activityContext;
 
     public LOERecyclerViewAdapter(List<XElemModel> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
@@ -49,13 +47,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
-        //Xlist_card, set backcround color if marked
-        //Xlist_card, set backcround color if marked
+        //Xlist_card, set background color if marked
         if (holder.mItem.isXElemMarked()) {
             System.out.println("Now marked positive");
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
@@ -91,7 +89,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                 intent.putExtra("X_ELEM_ID", holder.mItem.getXElemID());
                 activityContext.startActivity(intent);
 
-                /*THIS IS THE OLND VERSION WITH THE POPUP MENU
+                /*THIS IS THE OLD VERSION WITH THE POPUP MENU
                 //This is to style tme Popup menu
                 Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
                 PopupMenu popup = new PopupMenu(wrapper, v);
@@ -111,19 +109,19 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
 
     public class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
-        public final View mView;
-        public final CardView elemCard;
-        public final TextView elemNum;
-        public final TextView elemTitle;
-        public final TextView elemDescription;
+        final View mView;
+        final CardView elemCard;
+        final TextView elemNum;
+        final TextView elemTitle;
+        final TextView elemDescription;
 
         //possibly useful to have a reference to the object itself later on
-        public XElemModel mItem;
+        XElemModel mItem;
 
         //the button which when clicked opens menu
-        public final ImageButton imgButton;
+        final ImageButton imgButton;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             mView = itemView;
@@ -169,7 +167,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         notifyItemMoved(oldPosition, newPosition);
         LocalDataRepository myRep = new LocalDataRepository(activityContext);
         myRep.changeAllListNumbersElem(tempElem,newPosition+1,oldPosition+1);
-        this.changeNumbersVisbly(newPosition, oldPosition);
+        this.changeNumbersVisibly(newPosition, oldPosition);
     }
 
     @Override
@@ -190,7 +188,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         this.notifyItemChanged(position);
     }
 
-    private void changeNumbersVisbly(int newPos, int oldPos){
+    private void changeNumbersVisibly(int newPos, int oldPos){
         if (newPos >= oldPos) {
             for (int i = oldPos; i <= newPos; i++){
                 mValues.get(i).setXElemNum(i+1);
@@ -215,11 +213,11 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         final XElemModel theElement = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Delete Element?");
-        builder.setMessage("Are you sure you want to delete: \n"+"\""+theElement.getXElemTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setTitle(activityContext.getString(R.string.alert_dialog_delete_element_title));
+        builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreigKeyCascade on delete)
+                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
                 LocalDataRepository myRep = new LocalDataRepository(activityContext);
                 myRep.deleteElem(theElement);
                 //remove the List from the activity cache and notify the adapter

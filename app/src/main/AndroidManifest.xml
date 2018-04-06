@@ -3,14 +3,16 @@
     package="com.whynoteasy.topxlist">
 
     <application
-        android:allowBackup="true"
+        android:name="com.whynoteasy.topxlist.TopXListApplication"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
-            android:name=".mainActivities.MainActivity"
+            android:name="com.whynoteasy.topxlist.mainActivities.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher"
@@ -31,15 +33,15 @@
 
         </activity>
         <activity
-            android:name=".listActivities.XListCreateActivity"
+            android:name="com.whynoteasy.topxlist.listActivities.XListCreateActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:parentActivityName=".mainActivities.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.mainActivities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".listActivities.XListEditActivity"
+            android:name="com.whynoteasy.topxlist.listActivities.XListEditActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:parentActivityName=".mainActivities.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.mainActivities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -47,9 +49,9 @@
                 android:value="com.whynoteasy.topxlist.mainActivities.MainActivity" />
         </activity>
         <activity
-            android:name=".elemActivities.XElemCreateActivity"
+            android:name="com.whynoteasy.topxlist.elemActivities.XElemCreateActivity"
             android:label="@string/title_activity_xelem_create"
-            android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -57,9 +59,9 @@
                 android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
-            android:name=".elemActivities.XElemEditActivity"
+            android:name="com.whynoteasy.topxlist.elemActivities.XElemEditActivity"
             android:label="@string/title_activity_xelem_edit"
-            android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -67,9 +69,9 @@
                 android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
-            android:name=".elemActivities.XElemViewActivity"
+            android:name="com.whynoteasy.topxlist.elemActivities.XElemViewActivity"
             android:label="@string/title_activity_xelem_view"
-            android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -77,9 +79,9 @@
                 android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
-            android:name=".listActivities.XListViewCollapsingActivity"
+            android:name="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
             android:label="@string/title_activity_scrolling"
-            android:parentActivityName=".mainActivities.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.mainActivities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
@@ -87,9 +89,9 @@
                 android:value="com.whynoteasy.topxlist.mainActivities.MainActivity" />
         </activity>
         <activity
-            android:name=".elemActivities.XListViewLongDescriptionActivity"
+            android:name="com.whynoteasy.topxlist.elemActivities.XListViewLongDescriptionActivity"
             android:label="@string/title_activity_xlist_view_long_description"
-            android:parentActivityName=".listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data

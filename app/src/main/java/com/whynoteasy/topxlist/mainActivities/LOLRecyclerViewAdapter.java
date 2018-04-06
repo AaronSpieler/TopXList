@@ -6,11 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,8 +37,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
     private List<XListTagsPojo> mValues;
     private final OnListFragmentInteractionListener mListener;
-    private Context activityContext;
-    private CustomListFilter mFilter = new CustomListFilter();
+    private final Context activityContext;
+    private final CustomListFilter mFilter = new CustomListFilter();
 
     public LOLRecyclerViewAdapter(List<XListTagsPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
         mValues = items;
@@ -60,7 +58,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
-        //Xlist_card, set backcround color if marked
+        //xlist_card, set background color if marked
         if (holder.mItem.getXListModel().isXListMarked()) {
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
@@ -94,7 +92,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 intent.putExtra("X_LIST_ID", holder.mItem.getXListModel().getXListID());
                 activityContext.startActivity(intent);
 
-                /*THIS IS THE OLD IMPLEMENTIATION WITH THE POPUP MENU
+                /*THIS IS THE OLD IMPLEMENTATION WITH THE POPUP MENU
                 //This is to style tme Popup menu
                 Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
                 PopupMenu popup = new PopupMenu(wrapper, v);
@@ -113,19 +111,19 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     //It must be the ViewHolder that implements the MenuClickListener because
-    //this it the best way to get a refrence of the XList that is relevant to the menu
+    //this it the best way to get a reference of the XList that is relevant to the menu
     public class XListViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
-        public final View mView;
-        public final CardView listCard;
-        public final TextView listTitle;
-        public final TextView listShortDesc;
-        public final TextView listTags;
+        final View mView;
+        final CardView listCard;
+        final TextView listTitle;
+        final TextView listShortDesc;
+        final TextView listTags;
 
         //possibly useful to have a reference to the object itself later on
-        public XListTagsPojo mItem;
+        XListTagsPojo mItem;
 
         //the button which when clicked opens menu
-        public final ImageButton imgButton;
+        final ImageButton imgButton;
 
         XListViewHolder(View itemView) {
             super(itemView);
@@ -196,7 +194,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
 
-    //important so that an ancivity can tell the adapter what to show
+    //important so that an acclivity can tell the adapter what to show
     public void setmValues (List<XListTagsPojo> newValues) {
         mValues = newValues;
         notifyDataSetChanged();
@@ -216,7 +214,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
             //use the query to search your data somehow
             if (query.startsWith("#") && !query.contains(" ")) {
-                //Filter results based on a sigle hashtag
+                //Filter results based on a single hashtag
                 for (XListTagsPojo tempList : allLists) {
                     if (tempList.tagsToString().toLowerCase().contains(query)) {
                         searchResults.add(tempList);
@@ -269,7 +267,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 }
             }
             //Convert the LinkedHashset to ArrayList
-            ArrayList<XListTagsPojo> tempResult = new ArrayList<XListTagsPojo>();
+            ArrayList<XListTagsPojo> tempResult = new ArrayList<>();
             tempResult.addAll(0,searchResults);
 
             //set the results
@@ -296,8 +294,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         final XListTagsPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
-        builder.setTitle("Delete List?");
-        builder.setMessage("Are you sure you want to delete the list: \n"+"\""+tempPojo.getXListModel().getXListTitle()+"\"?"+"\nThis cannot be undone!");
+        builder.setTitle(activityContext.getString(R.string.alert_dialog_delete_list_title));
+        builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+tempPojo.getXListModel().getXListTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 LocalDataRepository myRep = new LocalDataRepository(activityContext);

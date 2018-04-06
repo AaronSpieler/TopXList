@@ -41,7 +41,8 @@
                     android:background="@drawable/card_top_rounded"
                     android:lineSpacingExtra="0sp"
                     android:padding="@dimen/card_margins"
-                    android:paddingStart="@dimen/round_edge_card_margins_start"
+                    android:paddingStart="@dimen/round_edge_card_margins"
+                    android:paddingEnd="@dimen/round_edge_card_margins"
                     android:text="@string/xlist_long_desc_view_label"
                     android:textAlignment="textStart"
                     android:textColor="@color/superDarkBlue"
@@ -49,7 +50,8 @@
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                     />
 
                 <EditText
                     android:id="@+id/xlist_view_long_desc_input"
@@ -57,17 +59,19 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/create_and_edit_card_bottom_rounded"
                     android:ems="10"
-                    android:hint="Dont leave me empty, please..."
+                    android:hint="@string/long_desc_view_activity_empty_hint"
                     android:inputType="textMultiLine"
                     android:padding="@dimen/card_margins"
-                    android:paddingStart="@dimen/round_edge_card_margins_start"
+                    android:paddingStart="@dimen/round_edge_card_margins"
+                    android:paddingEnd="@dimen/round_edge_card_margins"
                     android:textColor="@color/superDarkBlue"
-                    android:textColorHint="@color/superDarkBlue"
+
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/xlist_view_long_desc_label" />
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_view_long_desc_label"
+                     />
             </android.support.constraint.ConstraintLayout>
         </android.support.v7.widget.CardView>
     </ScrollView>

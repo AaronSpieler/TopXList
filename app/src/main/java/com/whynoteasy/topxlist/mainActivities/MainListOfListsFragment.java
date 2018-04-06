@@ -22,13 +22,12 @@ import java.util.List;
  */
 public class MainListOfListsFragment extends Fragment {
 
-    //columncount could be used so that on larger devices the cards arent stretched too wide
+    //column count could be used so that on larger devices the cards are not stretched too wide
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
     private OnListFragmentInteractionListener mListener;
 
-    private LocalDataRepository myRep;
     private List<XListTagsPojo> listOfListWithTags;
 
     private LOLRecyclerViewAdapter adapterRef;
@@ -49,7 +48,7 @@ public class MainListOfListsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myRep = new LocalDataRepository(getActivity());
+        LocalDataRepository myRep = new LocalDataRepository(getActivity());
 
         //get the ListsWithTags for the Adapter
         listOfListWithTags = myRep.getListsWithTags();
@@ -74,7 +73,7 @@ public class MainListOfListsFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            //Instanciate and set the adapter
+            //Instantiate and set the adapter
             adapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
             recyclerView.setAdapter(adapterRef);
 
@@ -108,7 +107,7 @@ public class MainListOfListsFragment extends Fragment {
         void onListFragmentInteraction(XListTagsPojo item);
     }
 
-    //This is to get the adapter refrence through the fragment: needed so the main view can tell the adapter to redraw
+    //This is to get the adapter reference through the fragment: needed so the main view can tell the adapter to redraw
     public LOLRecyclerViewAdapter getAdapterRef(){
         return adapterRef;
     }
