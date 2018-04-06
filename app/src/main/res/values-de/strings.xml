@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">TopXList</string>
+    <string name="app_name">Top X List</string>
 
     <string name="search_title_main">Listen Filter</string>
     <string name="search_hint">Filtere Listen durch #tags oder Schhlüsselwörter</string>
 
     <!--Activity names-->
-    <string name="title_activity_main">TopXList</string>
+    <string name="title_activity_main">Top X List</string>
     <string name="title_activity_xlist_edit">Liste Bearbeiten</string>
     <string name="title_activity_xelem_create">Element Erstellen</string>
     <string name="title_activity_xlist_create">Liste Erstellen</string>

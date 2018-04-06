@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">TopXList</string>
+    <string name="app_name">Top X List</string>
 
     <string name="search_title_main">List Filter</string>
     <string name="search_hint">Filter lists by #tags or keywords</string>
 
     <!--Activity names-->
-    <string name="title_activity_main">TopXList</string>
+    <string name="title_activity_main">Top X List</string>
     <string name="title_activity_xlist_edit">Edit List</string>
     <string name="title_activity_xelem_create">Create Element</string>
     <string name="title_activity_xlist_create">Create List</string>
