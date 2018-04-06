@@ -198,7 +198,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XElemModel> allListElements = myRep.getElementsByListID(currentListID);
         for (XElemModel tempElem : allListElements) {
-            if (tempElem.getXElemTitle().toLowerCase().equals(tempTitle)) {
+            if (tempElem.getXElemTitle().toLowerCase().equals(tempTitle.toLowerCase())) {
                 return true;
             }
         }

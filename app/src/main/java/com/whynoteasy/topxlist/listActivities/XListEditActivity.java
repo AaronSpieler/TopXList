@@ -23,7 +23,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
@@ -328,7 +327,7 @@ public class XListEditActivity extends AppCompatActivity {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XListTagsPojo> allLists = myRep.getListsWithTags();
         for (XListTagsPojo tempList : allLists) {
-            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle)) {
+            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
                 return true;
             }
         }
@@ -336,28 +335,29 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     private Boolean isTagDuplicate(View view, String newTag) {
+        newTag = newTag.toLowerCase();
         for (XTagModel tempTag : tempTagListDeleted) {
-            if (tempTag.getXTagName().equals(newTag)) {
+            if (tempTag.getXTagName().toLowerCase().equals(newTag)) {
                 //If a tag is added that was temporarily deleted, than
                 //its just removed from the temporarily deleted tag list and will thus not be deleted
                 tempTagListDeleted.remove(tempTag);
 
-                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.tag_title_already_exists_for_list, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }
         }
         for (XTagModel tempTag : currentList.getXTagModelList()) {
             //if the tags match, and the tag has not been deleted temporarily so far
-            if (tempTag.getXTagName().equals(newTag) && !(tempTagListDeleted.contains(tempTag))) {
-                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
+            if (tempTag.getXTagName().toLowerCase().equals(newTag) && !(tempTagListDeleted.toString().toLowerCase().contains(tempTag.toString().toLowerCase()))) {
+                Snackbar mySnackbar = Snackbar.make(view, R.string.tag_title_already_exists_for_list, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }
         }
         for (String tempTag : tempTagListNew) {
-            if (tempTag.equals(newTag)) {
-                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
+            if (tempTag.toLowerCase().equals(newTag)) {
+                Snackbar mySnackbar = Snackbar.make(view, R.string.tag_title_already_exists_for_list, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }

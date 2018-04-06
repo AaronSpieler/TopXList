@@ -145,7 +145,7 @@ public class XElemEditActivity extends AppCompatActivity {
                 } else if (!tempTitle.equals(currentElement.getXElemTitle())) {
                     if (titleAlreadyExists(tempTitle)) {
                         //alert user that no duplicate title was entered
-                        Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
+                        Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
                         mySnackbar.show();
                         return;
                     }
@@ -230,8 +230,8 @@ public class XElemEditActivity extends AppCompatActivity {
             //FROM HERE ON ITS THE ALERT DIALOG
             AlertDialog.Builder builder;
             builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle(R.string.alert_dialog_nosave_exit_title_element);
-            builder.setMessage(R.string.alert_dialog_nosave_exit_message_element);
+            builder.setTitle(R.string.alert_dialog_nosave_edit_exit_title_element);
+            builder.setMessage(R.string.alert_dialog_nosave_edit_exit_message_element);
             builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     //exit without saving anything
@@ -253,7 +253,7 @@ public class XElemEditActivity extends AppCompatActivity {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XElemModel> allElemInList = myRep.getElementsByListID(currentElement.getXListIDForeign());
         for (XElemModel tempElem : allElemInList) {
-            if (tempElem.getXElemTitle().toLowerCase().equals(newTitle)) {
+            if (tempElem.getXElemTitle().toLowerCase().equals(newTitle.toLowerCase())) {
                 return true;
             }
         }

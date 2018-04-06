@@ -6,12 +6,13 @@
 
     <!--Activity names-->
     <string name="title_activity_main">TopXList</string>
-    <string name="title_activity_xlist_edit">XListEditActivity</string>
-    <string name="title_activity_xlist_view">XListViewActivity</string>
-    <string name="title_activity_xelem_create">XElemCreateActivity</string>
-    <string name="title_activity_xelem_edit">XElemEditActivity</string>
-    <string name="title_activity_xelem_view">XElemViewActivity</string>
-    <string name="title_activity_scrolling">XListViewCollapsingActivity</string>
+    <string name="title_activity_xlist_edit">Edit List</string>
+    <string name="title_activity_xelem_create">Create Element</string>
+    <string name="title_activity_xlist_create">Create List</string>
+    <string name="title_activity_xelem_edit">Edit Element</string>
+    <string name="title_activity_xelem_view">View Element</string>
+    <string name="title_activity_scrolling">View List</string>
+    <string name="title_activity_xlist_view_long_description">View List Long Description</string>
 
     <!--Not in Use currently-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -48,7 +49,7 @@
     <string name="mark_done">Mark Done</string>
 
     <!--List Create and Edit Hint Text-->
-    <string name="xlist_title_input_hint">My favorite Movies</string>
+    <string name="xlist_title_input_hint">Best Quotes</string>
     <string name="xlist_short_desc_input_hint">Just a few words so I remember what this list is for…</string>
     <string name="xlist_long_desc_input_hint">This should contain a thorough explanation of the List and its Purpose…</string>
     <string name="edit_list_icon_hint">Edit List</string>
@@ -56,13 +57,12 @@
     <!--Elem Create and Edit Hint Text-->
     <string name="xelem_description_input_hint">Here you can explain everything regarding this element in your list…</string>
     <string name="xelem_title_input_hint">5th favorite icecream</string>
-    <string name="xelem_num_input_hint">default number is last one</string>
+    <string name="xelem_num_input_hint">default is: last one</string>
 
     <!--List View Collapsing Toolbar Stuff-->
-    <string name="title_activity_xlist_view_long_description">XListViewLongDescription</string>
     <string name="xlist_long_desc_view_label">Long Description:</string>
     <string name="topxlist_name_logo">App Name Logo</string>
-    <string name="collapsing_toolbar_long_description_empty_tip">Edit List to add long description here.</string>
+    <string name="collapsing_toolbar_long_description_empty_tip">Edit List to display long description here.</string>
 
 
     <!--Icon Titles-->
@@ -119,7 +119,7 @@
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_list">Exit without saving?</string>
-    <string name="alert_dialog_nosave_exit_message_list">Are you sure you want to exit without saving the Element?</string>
+    <string name="alert_dialog_nosave_exit_message_list">Are you sure you want to exit without saving the List?</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_element">Exit without saving changes?</string>
@@ -128,11 +128,12 @@
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_list">Exit without saving changes?</string>
     <string name="alert_dialog_nosave_edit_exit_message_list">Are you sure you want to exit without saving changes to List?</string>
+
     <string name="no_title_entered">Not title was entered.</string>
     <string name="title_already_exists">Title already exists.</string>
     <string name="no_tag_title_entered">No tag name was entered.</string>
     <string name="no_spaces_allowed_in_tags">No spaces allowed in tags.</string>
-    <string name="duplicate_tag_text">Duplicate Tag</string>
+    <string name="tag_title_already_exists_for_list">Duplicate Tag</string>
     <string name="no_proper_number_entered">No proper number was entered for Element</string>
 
 </resources>

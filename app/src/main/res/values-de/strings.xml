@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TopXList</string>
+
+    <string name="search_title_main">Listen Filter</string>
+    <string name="search_hint">Filtere Listen durch #tags oder Schhlüsselwörter</string>
+
+    <!--Activity names-->
+    <string name="title_activity_main">TopXList</string>
+    <string name="title_activity_xlist_edit">Liste Bearbeiten</string>
+    <string name="title_activity_xelem_create">Element Erstellen</string>
+    <string name="title_activity_xlist_create">Liste Erstellen</string>
+    <string name="title_activity_xelem_edit">Element bearbeiten</string>
+    <string name="title_activity_xelem_view">Element Ansicht</string>
+    <string name="title_activity_scrolling">Listen Ansicht</string>
+    <string name="title_activity_xlist_view_long_description">Listen Lange Beschreibung Ansicht</string>
+
+    <!--Not in Use currently-->
+    <string name="navigation_drawer_open">Öffne navigations Menu</string>
+    <string name="navigation_drawer_close">Schließe navigations Menu</string>
+    <string name="action_settings">Settings</string>
+
+    <!--These are just to see how the cards would look with text-->
+    <string name="test_tag_text">#cool #lahm #wenJuckts #gleiche</string>
+    <string name="test_short_description_text">Some interesting fact just occurred to me so I write it down before I forget it so everything is cool, yeah!</string>
+    <string name="test_title_text">This is a great Title</string>
+    <string name="test_popup_menu">List options</string>
+    <string name="test_elem_card_num">11.</string>
+
+    <!--Popup Menu Names-->
+    <string name="xList_edit">Bearbeiten</string>
+    <string name="xList_delete">Löschen</string>
+    <string name="xList_view">Ansehen</string>
+
+    <!--List and Elem Create & Edit Labels-->
+    <string name="edit_save_button">Speichern</string>
+    <string name="xlist_edit_title_label">Titel:</string>
+    <string name="xlist_short_desc_title">Kurze Beschreibung:</string>
+    <string name="xlist_long_desc_title">Lange Beschreibung</string>
+    <string name="xlist_tags_editor_title">Tags:</string>
+    <string name="xlist_tag_add_text_name">Neuer Tag:</string>
+    <string name="xlist_newtag_input_hint">neuerTagName</string>
+    <string name="xList_tag_input_button_label_text">OK</string>
+    <string name="tag_content_desc_delete_button">Tag Löschen</string>
+    <string name="xelem_delete_text">Löschen</string>
+    <string name="xelem_create_and_edit_num_label">Nummer:</string>
+    <string name="xelem_desc_title">Beschreibung:</string>
+    <string name="xelem_mark_text">Markiere Erledigt</string>
+    <string name="mark_not_done">Markiere Nicht Erledigt</string>
+    <string name="mark_done">Markiere Erledigt</string>
+
+    <!--List Create and Edit Hint Text-->
+    <string name="xlist_title_input_hint">Besten Zitate</string>
+    <string name="xlist_short_desc_input_hint">Nur ein paar Worte, damit ich weiß worums geht…</string>
+    <string name="xlist_long_desc_input_hint">Hier sollte eine ausführliche Beschreibung der Liste und ihres Sinnes stehen…</string>
+    <string name="edit_list_icon_hint">Liste Bearbeiten</string>
+
+    <!--Elem Create and Edit Hint Text-->
+    <string name="xelem_description_input_hint">Hier kannst du alles bezüglich deines Listen-Elementes schreiben…</string>
+    <string name="xelem_title_input_hint">Es ist wie es ist…</string>
+    <string name="xelem_num_input_hint">Standard ist: letzte Element</string>
+
+    <!--List View Collapsing Toolbar Stuff-->
+    <string name="xlist_long_desc_view_label">Lange Beschreibung:</string>
+    <string name="topxlist_name_logo">App Names Logo</string>
+    <string name="collapsing_toolbar_long_description_empty_tip">Bearbeite die Liste um die lange Beschreibung hier anzeigenzulassen.</string>
+
+
+    <!--Icon Titles-->
+    <string name="delete_list_icon_title">Liste Löschen</string>
+    <string name="delete_elem_icon_title">Element Löschen</string>
+
+    <!--Long Desc Activity Hints-->
+    <string name="long_desc_view_activity_empty_hint">Lass mich nicht leer, bitte…</string>
+
+    <string name="test_text_tag_layout">#tugendenSchaffen</string>
+    <string name="test_collapsing_toolbar_text_view">Collapsing Toolbar Test Text. Is this working or does this look stupid? Please tell me and be honest!</string>
+
+    <!--Start List Strings-->
+    <string name="start_list_title">So fängst du an…</string>
+    <string name="start_list_short_desc"><![CDATA[Tippe den schwebenden Knopf an um eine Liste zu erstellen.
+        \nBearbeite Listen indem du den Stift oder das Häkchen antippst.
+        \nOrdne die Listen neu durch Drag & Drop.
+        \nWische nach Links um zu löschen und Rechts um die Liste zu markieren.
+        \nMit der oberen Suchzeile kannst du deine Listen filtern und finden.
+        \nDenk an eine Zahl zwische 1 und 10 und dann click mich.]]></string>
+    <string name="start_list_long_desc">Lange Beschreibungen können ziehmlich lang sein.
+        \nAlso wirst du nur die ersten 7 Zeilen hier sehen.
+        \nTippe dieses Feld um die komplette Beschreibung zu sehen.
+        \nDie folgende Liste handelt über die besten Eigenschaften dieser App.</string>
+    <string name="start_list_start_tag">listenKönnenTagsHaben</string>
+    <string name="start_list_1_title">Intuitiv</string>
+    <string name="start_list_2_title">Simpel</string>
+    <string name="start_list_3_title">Nummeriert</string>
+    <string name="start_list_4_title">Drag and Drop</string>
+    <string name="start_list_5_title">Nach links und rechts wischen</string>
+    <string name="start_list_6_title">Bearbeiten</string>
+    <string name="start_list_7_title">Visuell ansprechen</string>
+    <string name="start_list_1_desc">Um sofort anzufangen</string>
+    <string name="start_list_2_desc">Unsere Leben sind kopliziert genug</string>
+    <string name="start_list_3_desc">Zum organisieren</string>
+    <string name="start_list_4_desc">Einfach umzuordnen</string>
+    <string name="start_list_5_desc">Es macht einfach Spaß</string>
+    <string name="start_list_6_desc">Errare humanum est…</string>
+    <string name="start_list_7_desc">Zumindest war das meine Absicht…</string>
+
+    <!--Alert Dialog Delete List-->
+    <string name="alert_dialog_delete_list_title">Liste Löschen?</string>
+    <string name="alert_dialog_delete_list_message_pre">Sicher, dass sie die Liste löschen wollen:</string>
+    <string name="alert_dialog_delete_list_message_post">Dies kann nicht rückgängig gemacht werden!</string>
+
+    <!--Alert Dialog Delete Element-->
+    <string name="alert_dialog_delete_element_title">Element Löschen?</string>
+    <string name="alert_dialog_delete_element_message_pre">Sicher, dass sie das Element löschen wollen:</string>
+    <string name="alert_dialog_delete_element_message_post">This cannot be undone!</string>
+
+    <!--Alert Dialog Exit NoSave Element-->
+    <string name="alert_dialog_nosave_exit_title_element">Verlassen ohne zu speichern?</string>
+    <string name="alert_dialog_nosave_exit_message_element">Sicher, dass sie ohne das Element zu speichern verlassen wollen?</string>
+
+    <!--Alert Dialog Exit NoSave Element-->
+    <string name="alert_dialog_nosave_exit_title_list">Verlassen ohne zu speichern?</string>
+    <string name="alert_dialog_nosave_exit_message_list">Sicher, dass sie ohne die Liste zu speichern verlassen wollen?</string>
+
+    <!--Alert Dialog Exit NoSave Edit Element-->
+    <string name="alert_dialog_nosave_edit_exit_title_element">Verlassen ohne die Veränderungen zu speichern?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_element">Sicher, dass sie ohne die Änderungen am Element zu speichern verlassen wollen?</string>
+
+    <!--Alert Dialog Exit NoSave Edit Element-->
+    <string name="alert_dialog_nosave_edit_exit_title_list">Verlassen ohne die Veränderungen zu speichern?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">Sicher, dass sie ohne die Änderungen an der Liste zu speichern verlassen wollen?</string>
+
+    <string name="no_title_entered">Es wurde kein Titel eingegeben.</string>
+    <string name="title_already_exists">Titel existiert bereits.</string>
+    <string name="no_tag_title_entered">Es wurde kein Tag-Name eingegeben.</string>
+    <string name="no_spaces_allowed_in_tags">Keine Leerzeichen in Tags erlaubt.</string>
+    <string name="tag_title_already_exists_for_list">Doppelter Tag</string>
+    <string name="no_proper_number_entered">Es wurde keine gültige Nummer eingegeben.</string>
+</resources>

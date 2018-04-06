@@ -195,7 +195,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
 
     //important so that an acclivity can tell the adapter what to show
-    public void setmValues (List<XListTagsPojo> newValues) {
+    public void setValues(List<XListTagsPojo> newValues) {
         mValues = newValues;
         notifyDataSetChanged();
     }

@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsPojo;
@@ -229,7 +228,7 @@ public class XListCreateActivity extends AppCompatActivity {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XListTagsPojo> allLists = myRep.getListsWithTags();
         for (XListTagsPojo tempList : allLists) {
-            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle)) {
+            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
                 return true;
             }
         }
@@ -238,8 +237,8 @@ public class XListCreateActivity extends AppCompatActivity {
 
     private boolean isTagDuplicate(View view, String newTag){
         for (String tempTag : tempTagList) {
-            if (newTag.equals(tempTag)) {
-                Snackbar mySnackbar = Snackbar.make(view, R.string.duplicate_tag_text, LENGTH_SHORT);
+            if (newTag.toLowerCase().equals(tempTag.toLowerCase())) {
+                Snackbar mySnackbar = Snackbar.make(view, R.string.tag_title_already_exists_for_list, LENGTH_SHORT);
                 mySnackbar.show();
                 return true;
             }

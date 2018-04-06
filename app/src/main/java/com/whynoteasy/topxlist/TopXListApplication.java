@@ -1,15 +1,8 @@
 package com.whynoteasy.topxlist;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatDelegate;
-import android.text.InputType;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XElemModel;
