@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar_main);
-        toolbar.setTitle("TopXList");
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
