@@ -6,9 +6,11 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <dimen name="card_defaults">8dp</dimen>
-    <dimen name="card_margins">8dp</dimen>
+    <dimen name="card_defaults">4dp</dimen>
+    <dimen name="card_margins">6dp</dimen>
     <dimen name="negative_content_padding">-3dp</dimen>
     <dimen name="round_edge_card_margins">12dp</dimen>
+    <dimen name="card_margin_in_between">3dp</dimen>
+    <dimen name="recycler_margins">8dp</dimen>
 
 </resources>
