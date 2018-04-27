@@ -16,7 +16,7 @@
         android:background="@color/middleLightBlue"
         android:contentDescription="@string/tag_content_desc_delete_button"
         android:padding="@dimen/card_defaults"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
