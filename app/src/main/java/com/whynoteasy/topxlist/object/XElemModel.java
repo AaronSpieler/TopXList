@@ -10,23 +10,27 @@ import android.support.annotation.NonNull;
  * Created by Whatever on 15.11.2017.
  * Main Purpose: Represents Lists Elements, Defines through Room database tables
  */
+
+/*/*TODO: Fix this at some point
+*@Entity(@ForeignKey(entity = XListModel.class,
+                parentColumns = "xListID",
+                childColumns = "xElemID",
+                onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
+         )
+*/
 @Entity
 public class XElemModel implements Comparable<XElemModel>{
     //Constants
 
     @Ignore
-    public final int xETlength = 255; //title length
+    public static final int xETlength = 255; //title length
     @Ignore
-    public final int xEDlength = 8192; //description/Body length
+    public static final int xEDlength = 8192; //description/Body length
 
     //Attributes
 
     @PrimaryKey(autoGenerate = true)
     private int xElemID;
-    @ForeignKey(entity = XListModel.class,
-            parentColumns = "xListID",
-            childColumns = "xElemID",
-            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
     private int xListIDForeign;
     private String xElemTitle;
     private String xElemDescription;

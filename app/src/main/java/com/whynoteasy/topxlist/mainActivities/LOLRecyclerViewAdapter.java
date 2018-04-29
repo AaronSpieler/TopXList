@@ -23,24 +23,24 @@ import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link XListTagsPojo} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link XListTagsSharesPojo} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  */
 public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.XListViewHolder> implements ListTouchHelper.ActionCompletionContract, Filterable {
 
-    private List<XListTagsPojo> mValues;
+    private List<XListTagsSharesPojo> mValues;
     private final OnListFragmentInteractionListener mListener;
     private final Context activityContext;
     private final CustomListFilter mFilter = new CustomListFilter();
 
-    public LOLRecyclerViewAdapter(List<XListTagsPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
+    public LOLRecyclerViewAdapter(List<XListTagsSharesPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
         mValues = items;
         mListener = listener;
         this.activityContext = activityContext;
@@ -120,7 +120,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         final TextView listTags;
 
         //possibly useful to have a reference to the object itself later on
-        XListTagsPojo mItem;
+        XListTagsSharesPojo mItem;
 
         //the button which when clicked opens menu
         final ImageButton imgButton;
@@ -166,7 +166,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
     @Override
     public void onViewMoved(int oldPosition, int newPosition) {
-        XListTagsPojo tempPojo = mValues.get(oldPosition);
+        XListTagsSharesPojo tempPojo = mValues.get(oldPosition);
         //User user = new User(targetUser);
         mValues.remove(oldPosition);
         mValues.add(newPosition, tempPojo);
@@ -182,7 +182,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
     @Override
     public void onViewSwipedRight(int position) {
-        XListTagsPojo tempPojo = mValues.get(position);
+        XListTagsSharesPojo tempPojo = mValues.get(position);
         this.mValues.remove(tempPojo);
 
         tempPojo.getXListModel().negateMarked();
@@ -195,7 +195,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
 
     //important so that an acclivity can tell the adapter what to show
-    public void setValues(List<XListTagsPojo> newValues) {
+    public void setValues(List<XListTagsSharesPojo> newValues) {
         mValues = newValues;
         notifyDataSetChanged();
     }
@@ -206,16 +206,16 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
             LocalDataRepository myRep = new LocalDataRepository(activityContext);
-            List<XListTagsPojo> allLists = myRep.getListsWithTags();
+            List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
             //We dont want duplicated and we want the set to be ordered by insertion order
-            LinkedHashSet<XListTagsPojo> searchResults = new LinkedHashSet<>();
+            LinkedHashSet<XListTagsSharesPojo> searchResults = new LinkedHashSet<>();
 
             String query = constraint.toString().toLowerCase().trim();
 
             //use the query to search your data somehow
             if (query.startsWith("#") && !query.contains(" ")) {
                 //Filter results based on a single hashtag
-                for (XListTagsPojo tempList : allLists) {
+                for (XListTagsSharesPojo tempList : allLists) {
                     if (tempList.tagsToString().toLowerCase().contains(query)) {
                         searchResults.add(tempList);
                     }
@@ -232,7 +232,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
                 //priority one: hashtag
                 for (String token : searchTokens) {
-                    for (XListTagsPojo tempList : allLists) {
+                    for (XListTagsSharesPojo tempList : allLists) {
                         if (tempList.tagsToString().toLowerCase().contains(query)) {
                             searchResults.add(tempList);
                         }
@@ -241,7 +241,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
                 //priority two: title
                 for (String token : searchTokens) {
-                    for (XListTagsPojo tempList : allLists) {
+                    for (XListTagsSharesPojo tempList : allLists) {
                         if (tempList.getXListModel().getXListTitle().toLowerCase().contains(token)) {
                             searchResults.add(tempList);
                         }
@@ -250,7 +250,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
                 //priority three: short description
                 for (String token : searchTokens) {
-                    for (XListTagsPojo tempList : allLists) {
+                    for (XListTagsSharesPojo tempList : allLists) {
                         if (tempList.getXListModel().getXListShortDescription().toLowerCase().contains(token)) {
                             searchResults.add(tempList);
                         }
@@ -259,7 +259,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
                 //priority four: long description
                 for (String token : searchTokens) {
-                    for (XListTagsPojo tempList : allLists) {
+                    for (XListTagsSharesPojo tempList : allLists) {
                         if (tempList.getXListModel().getXListLongDescription().toLowerCase().contains(token)) {
                             searchResults.add(tempList);
                         }
@@ -267,7 +267,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 }
             }
             //Convert the LinkedHashset to ArrayList
-            ArrayList<XListTagsPojo> tempResult = new ArrayList<>();
+            ArrayList<XListTagsSharesPojo> tempResult = new ArrayList<>();
             tempResult.addAll(0,searchResults);
 
             //set the results
@@ -280,7 +280,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            mValues = (List<XListTagsPojo>) results.values;
+            mValues = (List<XListTagsSharesPojo>) results.values;
             notifyDataSetChanged();
         }
     }
@@ -291,7 +291,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     private void deleteAtPositionIfConfirmed(final int position) {
-        final XListTagsPojo tempPojo = mValues.get(position);
+        final XListTagsSharesPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(activityContext.getString(R.string.alert_dialog_delete_list_title));

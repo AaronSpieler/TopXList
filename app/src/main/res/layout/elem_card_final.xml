@@ -14,7 +14,7 @@
         app:cardPreventCornerOverlap="true"
         app:cardBackgroundColor="@color/middleLightBlue"
         app:cardCornerRadius="@dimen/card_defaults"
-        app:cardElevation="@dimen/card_defaults"
+        app:cardElevation="@dimen/card_elevation_defaults"
         app:cardUseCompatPadding="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

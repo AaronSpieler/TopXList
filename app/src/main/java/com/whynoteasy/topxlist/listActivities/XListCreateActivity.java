@@ -23,7 +23,7 @@ import android.widget.TextView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -226,8 +226,8 @@ public class XListCreateActivity extends AppCompatActivity {
 
     private boolean titleAlreadyExists(String newTitle) {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-        List<XListTagsPojo> allLists = myRep.getListsWithTags();
-        for (XListTagsPojo tempList : allLists) {
+        List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
+        for (XListTagsSharesPojo tempList : allLists) {
             if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
                 return true;
             }

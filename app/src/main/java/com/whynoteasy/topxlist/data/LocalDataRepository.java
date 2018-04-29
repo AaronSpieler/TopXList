@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.List;
@@ -444,42 +444,42 @@ public class LocalDataRepository{
     //---------------------------------ListTagPojo-----------------------
 
     //GET THE LIST OF LISTS
-    public List<XListTagsPojo> getListsWithTags() {
+    public List<XListTagsSharesPojo> getListsWithTagsShares() {
         try {
-            return new GetListsWithTagsAsyncTask(xRoomDatabase).execute().get();
+            return new GetListsWithTagsSharesAsyncTask(xRoomDatabase).execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
-    private static class GetListsWithTagsAsyncTask extends AsyncTask<Void, Void, List<XListTagsPojo>> {
+    private static class GetListsWithTagsSharesAsyncTask extends AsyncTask<Void, Void, List<XListTagsSharesPojo>> {
         private final XRoomDatabase db;
-        GetListsWithTagsAsyncTask(XRoomDatabase xRoomDatabase) {
+        GetListsWithTagsSharesAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
         @Override
-        protected List<XListTagsPojo> doInBackground(Void... voids) {
-            return db.xListsAndTagsModel().loadAllListsWithTags();
+        protected List<XListTagsSharesPojo> doInBackground(Void... voids) {
+            return db.xListsAndTagsAndSharesModel().loadAllListsWithTagsAndShares();
         }
     }
 
     //GET LIST BY ID
-    public XListTagsPojo getListWithTagsByID(int listID) {
+    public XListTagsSharesPojo getListWithTagsSharesByID(int listID) {
         try {
-            return new GetListWithTagsByIDAsyncTask(xRoomDatabase).execute(listID).get();
+            return new GetListWithTagsSharesByIDAsyncTask(xRoomDatabase).execute(listID).get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         return null;
     }
-    private static class GetListWithTagsByIDAsyncTask extends AsyncTask<Integer, Void, XListTagsPojo> {
+    private static class GetListWithTagsSharesByIDAsyncTask extends AsyncTask<Integer, Void, XListTagsSharesPojo> {
         private final XRoomDatabase db;
-        GetListWithTagsByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+        GetListWithTagsSharesByIDAsyncTask(XRoomDatabase xRoomDatabase) {
             db = xRoomDatabase;
         }
         @Override
-        protected XListTagsPojo doInBackground(Integer... integers) {
-            return db.xListsAndTagsModel().loadListWithTagByID(Integer.toString(integers[0]));  //Quarries only happen with Strings so casting is needed
+        protected XListTagsSharesPojo doInBackground(Integer... integers) {
+            return db.xListsAndTagsAndSharesModel().loadListWithTagAndSharesByID(Integer.toString(integers[0]));  //Quarries only happen with Strings so casting is needed
         }
     }
 }

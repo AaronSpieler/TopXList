@@ -4,7 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 
 import java.util.List;
 
@@ -16,15 +16,15 @@ import java.util.List;
  */
 
 @Dao
-public interface XListTagsDao {
+public interface XListTagsSharesDao {
 
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Transaction
     @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
-    List<XListTagsPojo> loadAllListsWithTags();
+    List<XListTagsSharesPojo> loadAllListsWithTagsAndShares();
 
     @Transaction
     @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
-    XListTagsPojo loadListWithTagByID(String xListIDInp);
+    XListTagsSharesPojo loadListWithTagAndSharesByID(String xListIDInp);
 
 }

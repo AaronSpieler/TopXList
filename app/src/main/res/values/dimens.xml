@@ -13,5 +13,6 @@
     <dimen name="round_edge_card_margins">12dp</dimen>
     <dimen name="card_margin_in_between">3dp</dimen>
     <dimen name="recycler_margins">8dp</dimen>
+    <dimen name="card_elevation_defaults">2dp</dimen>
 
 </resources>

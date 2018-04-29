@@ -23,9 +23,10 @@ import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.importExport.HTMLExporter;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
                 if (tempAdapter != null) {
-                    tempAdapter.setValues(myRep.getListsWithTags());
+                    tempAdapter.setValues(myRep.getListsWithTagsShares());
                 }
                 return true;
             }
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(XListTagsPojo item) {
+    public void onListFragmentInteraction(XListTagsSharesPojo item) {
         //Start XListViewCollapsingActivity
         Intent intent = new Intent(this.getApplicationContext(), XListViewCollapsingActivity.class);
         intent.putExtra("X_LIST_ID", item.getXListModel().getXListID());
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity
         LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
         //have to check if its null, because on first call it might not have been initialised yet
         if (tempAdapter != null) {
-            tempAdapter.setValues(myRep.getListsWithTags());
+            tempAdapter.setValues(myRep.getListsWithTagsShares());
         }
     }
 
