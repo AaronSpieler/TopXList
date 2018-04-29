@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.whynoteasy.topxlist">
+    <!--Request permission so im able to export to to html-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--Request permission so im able to save file to download folder & sharing functions-->
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name="com.whynoteasy.topxlist.TopXListApplication"

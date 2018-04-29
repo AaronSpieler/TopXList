@@ -14,6 +14,16 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="popupMenuStyle">@style/PopupMenu</item>
 
+        <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
+        <item name="android:buttonStyle">@style/OpenSansButtonStyle</item>
+    </style>
+
+    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+
+    <style name="OpenSansButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/open_sans</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

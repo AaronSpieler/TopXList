@@ -136,4 +136,9 @@
     <string name="tag_title_already_exists_for_list">Duplicate Tag</string>
     <string name="no_proper_number_entered">No proper number was entered for Element</string>
 
+    <string name="html_export_title">My Top X List Lists:</string>
+    <string name="html_file_creation_failed">File Creation Failed</string>
+    <string name="html_external_storage_not_accessible">External storage not accessible</string>
+    <string name="html_export_success">HTML export successfully completed.</string>
+
 </resources>

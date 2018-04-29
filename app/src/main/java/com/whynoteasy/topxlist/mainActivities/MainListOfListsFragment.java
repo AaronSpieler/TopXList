@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class MainListOfListsFragment extends Fragment {
 
     private OnListFragmentInteractionListener mListener;
 
-    private List<XListTagsPojo> listOfListWithTags;
+    private List<XListTagsSharesPojo> listOfListWithTags;
 
     private LOLRecyclerViewAdapter adapterRef;
 
@@ -51,7 +51,7 @@ public class MainListOfListsFragment extends Fragment {
         LocalDataRepository myRep = new LocalDataRepository(getActivity());
 
         //get the ListsWithTags for the Adapter
-        listOfListWithTags = myRep.getListsWithTags();
+        listOfListWithTags = myRep.getListsWithTagsShares();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -104,7 +104,7 @@ public class MainListOfListsFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(XListTagsPojo item);
+        void onListFragmentInteraction(XListTagsSharesPojo item);
     }
 
     //This is to get the adapter reference through the fragment: needed so the main view can tell the adapter to redraw

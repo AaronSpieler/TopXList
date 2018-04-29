@@ -2,9 +2,12 @@ package com.whynoteasy.topxlist;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.v7.app.AppCompatDelegate;
+import android.view.View;
 
 import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.importExport.HTMLExporter;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XTagModel;
@@ -34,6 +37,11 @@ public class TopXListApplication extends Application {
         //ONCE IN A APPTIME CODE -- START
         onceInAnAppTimRelevantCode();
         //ONCE IN A LIFETIME CODE -- END
+
+        if (Build.VERSION.SDK_INT <= 19) {
+            System.out.println("SDK Version: "+ (Build.VERSION.SDK_INT));
+            //TODO: set negative_content_padding to -3
+        }
 
     }
 

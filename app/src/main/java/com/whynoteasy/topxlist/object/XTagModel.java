@@ -10,16 +10,20 @@ import android.arch.persistence.room.PrimaryKey;
  * Main Purpose: Represents Tags, Defines through Room database tables
  */
 
+/*TODO: Fix this at some point
+@Entity(foreignKeys = @ForeignKey(entity = XListModel.class,
+        parentColumns = "xListID",
+        childColumns = "xTagID",
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.NO_ACTION))
+*/
+
 @Entity
 public class XTagModel {
     //Attributes
 
     @PrimaryKey(autoGenerate = true)
     private int xTagID;
-    @ForeignKey(entity = XListModel.class,
-            parentColumns = "xListID",
-            childColumns = "xTagID",
-            onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
     private int xListIDForeign;
     private String xTagName;
 

@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListTagsPojo;
+import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ import java.util.List;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XListEditActivity extends AppCompatActivity {
-    private XListTagsPojo currentList;
+    private XListTagsSharesPojo currentList;
     private int currentListID;
     private LocalDataRepository myRep;
 
@@ -78,7 +78,7 @@ public class XListEditActivity extends AppCompatActivity {
 
         //get the List with its Tags
         myRep = new LocalDataRepository(this);
-        currentList = myRep.getListWithTagsByID(currentListID);
+        currentList = myRep.getListWithTagsSharesByID(currentListID);
 
         //set the title
         ActionBar ab = getSupportActionBar();
@@ -325,8 +325,8 @@ public class XListEditActivity extends AppCompatActivity {
 
     private boolean titleAlreadyExists(String newTitle) {
         LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-        List<XListTagsPojo> allLists = myRep.getListsWithTags();
-        for (XListTagsPojo tempList : allLists) {
+        List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
+        for (XListTagsSharesPojo tempList : allLists) {
             if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
                 return true;
             }
