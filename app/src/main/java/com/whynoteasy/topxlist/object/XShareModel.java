@@ -11,12 +11,12 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 @Entity(tableName = "share_rules",
-        indices = @Index(value = "list_id", name = "idx"), //foreign keys should be indexed
+        indices = @Index(value = "list_id", name = "shares_list_idx"), //foreign keys should be indexed
         foreignKeys = @ForeignKey(entity = XListModel.class,
             parentColumns = "xListID",
             childColumns = "list_id",
             onDelete = ForeignKey.NO_ACTION,  //not useful to use cascade here, only when server confirms rule deletion should the rule be deleted
-                onUpdate = ForeignKey.NO_ACTION
+            onUpdate = ForeignKey.NO_ACTION
         ))
 
 public class XShareModel {
@@ -49,7 +49,7 @@ public class XShareModel {
     //attributes
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "_id")
+    @ColumnInfo(name = "rule_id")
     private final int xShareID;
 
     @ColumnInfo(name = "owner_id")

@@ -21,6 +21,9 @@ import java.util.ArrayList;
 
 public class TopXListApplication extends Application {
 
+    //Debugging:
+    public static final boolean DEBUG_APPLICATION = true;
+
     private LocalDataRepository myRep;
 
     @Override

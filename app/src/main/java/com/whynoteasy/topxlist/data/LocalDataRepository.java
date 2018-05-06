@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
@@ -431,11 +432,11 @@ public class LocalDataRepository{
         }
         @Override
         protected Integer doInBackground(Void... voids) {
-            /*DEBUG
-            System.out.println("Num of Lists" + db.xListModel().getNumberOfLists());
-            System.out.println("Num of Elements" + db.xElementsModel().getNumberOfElementsTotal());
-            System.out.println("Num of Tags" + db.xTagModel().getNumberOfTagsTotal());
-            */
+            if (TopXListApplication.DEBUG_APPLICATION) {
+                System.out.println("Num of Lists" + db.xListModel().getNumberOfLists());
+                System.out.println("Num of Elements" + db.xElementsModel().getNumberOfElementsTotal());
+                System.out.println("Num of Tags" + db.xTagModel().getNumberOfTagsTotal());
+            }
             return db.xListModel().getNumberOfLists();
         }
     }

@@ -1,7 +1,9 @@
 package com.whynoteasy.topxlist.object;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
 /**
@@ -10,21 +12,26 @@ import android.arch.persistence.room.PrimaryKey;
  * Main Purpose: Represents Tags, Defines through Room database tables
  */
 
-/*TODO: Fix this at some point
-@Entity(foreignKeys = @ForeignKey(entity = XListModel.class,
-        parentColumns = "xListID",
-        childColumns = "xTagID",
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.NO_ACTION))
-*/
+@Entity(tableName = "tags",
+        indices = @Index(value = "list_id", name = "tags_list_idx"), //foreign keys should be indexed
+        foreignKeys = @ForeignKey(entity = XListModel.class,
+            parentColumns = "xListID",
+            childColumns = "list_id",
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.NO_ACTION
+        ))
 
-@Entity
 public class XTagModel {
     //Attributes
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "tag_id")
     private int xTagID;
+
+    @ColumnInfo(name = "list_id")
     private int xListIDForeign;
+
+    @ColumnInfo(name = "tag_name")
     private String xTagName;
 
     //Constructor

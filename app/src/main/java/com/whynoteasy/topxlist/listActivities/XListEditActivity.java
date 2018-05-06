@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.object.XTagModel;
@@ -259,6 +260,10 @@ public class XListEditActivity extends AppCompatActivity {
                 }
                 myRep.deleteTagsByID(deleteTagIDList);
 
+                if (TopXListApplication.DEBUG_APPLICATION) {
+                    myRep.getListCount();
+                }
+
                 //return to parent activity
                 NavUtils.navigateUpFromSameTask(thisActivity);
             }
@@ -381,8 +386,11 @@ public class XListEditActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 LocalDataRepository myRep = new LocalDataRepository(thisActivity);
                 myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
-                myRep.deleteTags(currentList.getXTagModelList());
                 myRep.deleteList(currentList.getXListModel());
+
+                if (TopXListApplication.DEBUG_APPLICATION) {
+                    myRep.getListCount();
+                }
 
                 //return to activity
                 NavUtils.navigateUpFromSameTask(thisActivity);

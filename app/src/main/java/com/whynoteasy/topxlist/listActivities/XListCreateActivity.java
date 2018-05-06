@@ -21,6 +21,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.TopXListApplication;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
@@ -161,6 +162,10 @@ public class XListCreateActivity extends AppCompatActivity {
 
                 //inserting the created tag list
                 myRep.insertTags(tagList);
+
+                if (TopXListApplication.DEBUG_APPLICATION) {
+                    myRep.getListCount();
+                }
 
                 //return to parent activity
                 NavUtils.navigateUpFromSameTask(thisActivity);

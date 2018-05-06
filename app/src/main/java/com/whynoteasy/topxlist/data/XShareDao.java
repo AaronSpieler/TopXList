@@ -21,7 +21,7 @@ public interface XShareDao {
     @Query("SELECT * FROM share_rules WHERE list_id = :xListIDInp")
     List<XElemModel> loadShareRuleByListID(String xListIDInp);
 
-    @Query("SELECT * FROM share_rules WHERE  _id = :xShareIDInp")
+    @Query("SELECT * FROM share_rules WHERE  rule_id = :xShareIDInp")
     XElemModel loadShareRuleByID(String xShareIDInp);
 
     @Insert(onConflict = REPLACE)

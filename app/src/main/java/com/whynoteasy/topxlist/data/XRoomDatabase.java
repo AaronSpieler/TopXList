@@ -35,14 +35,23 @@ public abstract class XRoomDatabase extends RoomDatabase{
     public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            database.execSQL("CREATE TABLE `share_rules` (`_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL," +
+            //create the share_rules table
+            database.execSQL("CREATE TABLE `share_rules` (`rule_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL," +
                     "`list_id` INTEGER NOT NULL,`share_type_num` INTEGER NOT NULL,`shared_with_id` INTEGER NOT NULL," +
                     "`sync_status` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL, " +
-                    "PRIMARY KEY(`_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE NO ACTION ON UPDATE NO ACTION)");
-            database.execSQL("CREATE INDEX `idx` ON `share_rules` (`list_id`)");
+                    "PRIMARY KEY(`rule_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+            database.execSQL("CREATE INDEX `shares_list_idx` ON `share_rules` (`list_id`)");
+            //TODO: why is expected indeces[] and foung indeces=null
+
+            //Migrate Tag Table
+            database.execSQL("CREATE TABLE `tags`(`tag_id` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, `tag_name` TEXT," +
+                    "PRIMARY KEY(`tag_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE CASCADE ON UPDATE NO ACTION)");
+            database.execSQL("CREATE INDEX `tags_list_idx` ON `tags` (`list_id`)");
+            database.execSQL("INSERT INTO `tags` (`tag_id`, `list_id`, `tag_name`) SELECT`xTagID`, `xListIDForeign`, `xTagName` FROM XTagModel");
+            database.execSQL("DROP TABLE XTagModel");
+
         }
-        //TODO: why is expected indeces[] and foung indeces=null
-        //indices = arrayOf(Index(value = "authorid", unique = true) ???
+
     };
 
     public abstract XElemDao xElementsModel();

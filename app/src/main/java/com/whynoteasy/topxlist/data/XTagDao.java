@@ -20,13 +20,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 
 @Dao
 public interface XTagDao {
-    @Query("SELECT * FROM XTagModel")
+    @Query("SELECT * FROM tags")
     List<XTagModel> loadAllTags();
 
-    @Query("SELECT * FROM XTagModel WHERE xTagID = :xTagIDInp")
+    @Query("SELECT * FROM tags WHERE tag_id = :xTagIDInp")
     XTagModel loadTagByID(String xTagIDInp);
 
-    @Query("SELECT * FROM XTagModel WHERE xListIDForeign = :xListIDInp")
+    @Query("SELECT * FROM tags WHERE list_id = :xListIDInp")
     List<XTagModel> loadTagsByListID(String xListIDInp);
 
     @Insert(onConflict = REPLACE)
@@ -49,10 +49,10 @@ public interface XTagDao {
     void updateTagList(List<XTagModel> xTagModelList);
 
     //delete Quarries: delete Tags by ID
-    @Query("DELETE FROM XTagModel WHERE xTagID = :xTagIDInp")
+    @Query("DELETE FROM tags WHERE tag_id = :xTagIDInp")
     void deleteTagByID(String xTagIDInp);
 
     //how many tags are there so far in total
-    @Query("SELECT COUNT(*) FROM XTagModel")
+    @Query("SELECT COUNT(*) FROM tags")
     int getNumberOfTagsTotal();
 }
