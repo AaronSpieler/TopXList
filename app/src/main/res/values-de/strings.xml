@@ -140,5 +140,7 @@
     <string name="html_export_title">Meine Top X List Listen:</string>
     <string name="html_file_creation_failed">Document konnte nicht kreiert werden</string>
     <string name="html_external_storage_not_accessible">Kein zugriff auf externen Speicher vorhanden</string>
-    <string name="html_export_success">HTML export erfolgreich abgeschlossen.</string>
+    <string name="html_export_success">HTML export erfolgreich abgeschlossen:</string>
+    <string name="html_export_failure">HTML export gescheitert; konnte Dokument nicht erstellen.</string>
+
 </resources>
