@@ -139,6 +139,7 @@
     <string name="html_export_title">My Top X List Lists:</string>
     <string name="html_file_creation_failed">File Creation Failed</string>
     <string name="html_external_storage_not_accessible">External storage not accessible</string>
-    <string name="html_export_success">HTML export successfully completed.</string>
+    <string name="html_export_success">HTML export successfully completed:</string>
+    <string name="html_export_failure">HTML export failed; could\'nt create File.</string>
 
 </resources>
