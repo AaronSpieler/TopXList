@@ -385,7 +385,8 @@ public class XListEditActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-                myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
+                //TODO: CHeck wheter it worked
+                //myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
                 myRep.deleteList(currentList.getXListModel());
 
                 if (TopXListApplication.DEBUG_APPLICATION) {

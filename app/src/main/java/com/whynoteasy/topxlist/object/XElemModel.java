@@ -1,8 +1,10 @@
 package com.whynoteasy.topxlist.object;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
@@ -11,14 +13,15 @@ import android.support.annotation.NonNull;
  * Main Purpose: Represents Lists Elements, Defines through Room database tables
  */
 
-/*/*TODO: Fix this at some point
-*@Entity(@ForeignKey(entity = XListModel.class,
+@Entity(tableName = "elements",
+        indices = @Index(value = "list_id", name = "elements_list_idx"),
+        foreignKeys = @ForeignKey(entity = XListModel.class,
                 parentColumns = "xListID",
-                childColumns = "xElemID",
-                onDelete = ForeignKey.CASCADE) //notify all children to execute onDelete
-         )
-*/
-@Entity
+                childColumns = "list_id",
+                onDelete = ForeignKey.CASCADE,
+                onUpdate = ForeignKey.NO_ACTION
+        ))
+
 public class XElemModel implements Comparable<XElemModel>{
     //Constants
 
@@ -30,21 +33,46 @@ public class XElemModel implements Comparable<XElemModel>{
     //Attributes
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "element_id")
     private int xElemID;
+
+    @ColumnInfo(name = "list_id")
     private int xListIDForeign;
+
+    @ColumnInfo(name = "element_name")
     private String xElemTitle;
+
+    @ColumnInfo(name = "element_desc")
     private String xElemDescription;
+
+    @ColumnInfo(name = "element_num")
     private int xElemNum;
+
+    @ColumnInfo(name = "marked_status")
     private boolean xElemMarked;
 
-    //Constructor
+    //so far not in use
+    @ColumnInfo(name = "media_id")
+    private int xMediaID;
 
+    //Constructor
+    @Ignore
     public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
         this.xElemDescription = xElemDescription;
         this.xElemNum = xElemNum;
         this.xElemMarked = false;
+        this.xMediaID = 0;
+    }
+
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, int xMediaID) {
+        this.xListIDForeign = xListIDForeign;
+        this.xElemTitle = xElemTitle;
+        this.xElemDescription = xElemDescription;
+        this.xElemNum = xElemNum;
+        this.xElemMarked = false;
+        this.xMediaID = xMediaID;
     }
 
     //Getters and Setters
@@ -95,6 +123,14 @@ public class XElemModel implements Comparable<XElemModel>{
 
     public void setXElemMarked(boolean xElemMarked) {
         this.xElemMarked = xElemMarked;
+    }
+
+    public int getXMediaID() {
+        return xMediaID;
+    }
+
+    public void setXMediaID(int xMediaID) {
+        this.xMediaID = xMediaID;
     }
 
     //Other Methods
