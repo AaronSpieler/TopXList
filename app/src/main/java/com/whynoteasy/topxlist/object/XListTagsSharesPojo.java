@@ -15,9 +15,9 @@ public class XListTagsSharesPojo implements Comparable<XListTagsSharesPojo>{ //n
     @Embedded
     private XListModel xListModel;
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
-    @Relation(parentColumn = "xListID", entityColumn = "list_id", entity = XTagModel.class)
+    @Relation(parentColumn = "list_id", entityColumn = "list_id", entity = XTagModel.class)
     private List<XTagModel> xTagModelList;
-    @Relation(parentColumn = "xListID", entityColumn = "list_id", entity = XShareModel.class)
+    @Relation(parentColumn = "list_id", entityColumn = "list_id", entity = XShareModel.class)
     private List<XShareModel> xShareModelList;
 
     //CONSTRUCTOR

@@ -13,7 +13,7 @@ import java.util.TimeZone;
 @Entity(tableName = "share_rules",
         indices = @Index(value = "list_id", name = "shares_list_idx"), //foreign keys should be indexed
         foreignKeys = @ForeignKey(entity = XListModel.class,
-            parentColumns = "xListID",
+            parentColumns = "list_id",
             childColumns = "list_id",
             onDelete = ForeignKey.NO_ACTION,  //not useful to use cascade here, only when server confirms rule deletion should the rule be deleted
             onUpdate = ForeignKey.NO_ACTION
@@ -50,7 +50,7 @@ public class XShareModel {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "rule_id")
-    private final int xShareID;
+    private int xShareID;
 
     @ColumnInfo(name = "owner_id")
     private final int xOwnerID;
@@ -76,8 +76,7 @@ public class XShareModel {
     @ColumnInfo(name = "modified_date")
     private long xShareDateModifiedMillis;
 
-    public XShareModel(int xShareID, int xOwnerID, int xListIDForeign, int xShareType, int xSharedWithID, long xShareDateModifiedMillis) {
-        this.xShareID = xShareID;
+    public XShareModel(int xOwnerID, int xListIDForeign, int xShareType, int xSharedWithID, long xShareDateModifiedMillis) {
         this.xOwnerID = xOwnerID;
         this.xListIDForeign = xListIDForeign;
         this.xShareType = xShareType;
@@ -88,6 +87,10 @@ public class XShareModel {
 
     public int getXShareID() {
         return xShareID;
+    }
+
+    public void setXShareID(int xShareID) {
+        this.xShareID = xShareID;
     }
 
     public int getXOwnerID() {
@@ -122,12 +125,4 @@ public class XShareModel {
         //always get the time for UTC so everything is consistent
         this.xShareDateModifiedMillis = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
     }
-
-    //because we have composit primary key
-    /* not the way to go!
-    String[] primaryKeys () {
-        String[] temp = {"xShareID","xOwnerID"};
-        return temp;}
-    }
-    */
 }

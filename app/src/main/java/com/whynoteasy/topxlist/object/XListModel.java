@@ -1,16 +1,20 @@
 package com.whynoteasy.topxlist.object;
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
+
+import java.util.Locale;
 
 /**
  * Created by Whatever on 15.11.2017.
  * To use with the VMMV pattern
  * Main Purpose: Represents Lists, Defines through Room database tables
  */
-@Entity
+
+@Entity(tableName = "lists")
 public class XListModel implements Comparable<XListModel>{
     //Constants
     @Ignore
@@ -23,23 +27,50 @@ public class XListModel implements Comparable<XListModel>{
     //Attributes
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "list_id")
     private int xListID;
+
+    @ColumnInfo(name = "list_name")
     private String xListTitle;
+
+    @ColumnInfo(name = "list_desc")
     private String xListShortDescription;
+
+    @ColumnInfo(name = "list_long_desc")
     private String xListLongDescription;
+
+    @ColumnInfo(name = "list_num")
     private int xListNum;
+
+    @ColumnInfo(name = "marked_status")
     private boolean xListMarked;
 
-    /*possible future Attributes
-    private int xListLanguageID
-    */
+    @ColumnInfo(name = "language")
+    private String xListLanguage;
 
+    //so far not in use
+    @ColumnInfo(name = "media_id")
+    private int xMediaID;
+
+    @Ignore
     public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum) {
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
         this.xListMarked = false;
+        this.xMediaID = 0;
+        this.xListLanguage = Locale.getDefault().getLanguage();
+    }
+
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, int xMediaID, String xListLanguage) {
+        this.xListTitle = xListTitle;
+        this.xListShortDescription = xListShortDescription;
+        this.xListLongDescription = xListLongDescription;
+        this.xListNum = xListNum;
+        this.xListMarked = false;
+        this.xMediaID = xMediaID;
+        this.xListLanguage = xListLanguage;
     }
 
     //Getters and Setters
@@ -90,6 +121,22 @@ public class XListModel implements Comparable<XListModel>{
 
     public void setXListMarked(boolean xListMarked) {
         this.xListMarked = xListMarked;
+    }
+
+    public String getXListLanguage() {
+        return xListLanguage;
+    }
+
+    public void setXListLanguage(String xListLanguage) {
+        this.xListLanguage = xListLanguage;
+    }
+
+    public int getXMediaID() {
+        return xMediaID;
+    }
+
+    public void setXMediaID(int xMediaID) {
+        this.xMediaID = xMediaID;
     }
 
     //Other Methods

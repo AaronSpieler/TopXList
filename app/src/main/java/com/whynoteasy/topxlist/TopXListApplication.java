@@ -4,10 +4,8 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatDelegate;
-import android.view.View;
 
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.importExport.HTMLExporter;
 import com.whynoteasy.topxlist.object.XElemModel;
 import com.whynoteasy.topxlist.object.XListModel;
 import com.whynoteasy.topxlist.object.XTagModel;
