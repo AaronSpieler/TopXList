@@ -20,13 +20,13 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface XElemDao {
 
-    @Query("SELECT * FROM XElemModel ORDER BY xElemNum ASC")
+    @Query("SELECT * FROM elements ORDER BY element_num ASC")
     List<XElemModel> loadAllElements();
 
-    @Query("SELECT * FROM XElemModel WHERE xListIDForeign = :xListIDInp ORDER BY xElemNum ASC")
+    @Query("SELECT * FROM elements WHERE list_id = :xListIDInp ORDER BY element_num ASC")
     List<XElemModel> loadElementsByListID(String xListIDInp);
 
-    @Query("SELECT * FROM xElemModel WHERE  xElemID = :xElemIDInp")
+    @Query("SELECT * FROM elements WHERE  element_id = :xElemIDInp")
     XElemModel loadElemByID(String xElemIDInp);
 
     @Insert(onConflict = REPLACE)
@@ -41,22 +41,22 @@ public interface XElemDao {
     //LOGIC FOR UPDATEING ALL OTHER LIST NUMBERS AFTER LIST ITEM HAS BEEN MOVED
 
     //from should be the new position of the element list item, to should be the old position, In the case the new position < old position
-    @Query("UPDATE XElemModel SET xElemNum = xElemNum + 1 WHERE xElemNum >= :newPos AND xElemNum < :oldPos AND xListIDForeign == :listID")
+    @Query("UPDATE elements SET element_num = element_num + 1 WHERE element_num >= :newPos AND element_num < :oldPos AND list_id == :listID")
     void updateIncrementNumOfeElemFromToSmallerPos(String listID, String newPos, String oldPos);
 
     //from should be the old position of the element list item, to should be the new position, In the case the new position > old position
-    @Query("UPDATE XElemModel SET xElemNum = xElemNum - 1 WHERE xElemNum > :oldPos AND xElemNum <= :newPos AND xListIDForeign == :listID")
+    @Query("UPDATE elements SET element_num = element_num - 1 WHERE element_num > :oldPos AND element_num <= :newPos AND list_id == :listID")
     void updateIncrementNumOfElemFromToHigherPos(String listID, String newPos, String oldPos);
 
     //DELETE ALL ELEMENTS ASSOCIATED WITH A LIST
-    @Query("DELETE FROM XElemModel WHERE xListIDForeign = :xListIDInp")
+    @Query("DELETE FROM elements WHERE list_id = :xListIDInp")
     void deleteElementsByListsID(String xListIDInp);
 
     //how many elements does the list have?
-    @Query("SELECT COUNT(*) FROM XElemModel WHERE xListIDForeign = :xListIDInp")
+    @Query("SELECT COUNT(*) FROM elements WHERE list_id = :xListIDInp")
     int getNumberOfElementsOfList(String xListIDInp);
 
     //how many elements are there so far in total
-    @Query("SELECT COUNT(*) FROM XElemModel")
+    @Query("SELECT COUNT(*) FROM elements")
     int getNumberOfElementsTotal();
 }
