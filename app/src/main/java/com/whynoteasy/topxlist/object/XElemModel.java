@@ -16,7 +16,7 @@ import android.support.annotation.NonNull;
 @Entity(tableName = "elements",
         indices = @Index(value = "list_id", name = "elements_list_idx"),
         foreignKeys = @ForeignKey(entity = XListModel.class,
-                parentColumns = "xListID",
+                parentColumns = "list_id",
                 childColumns = "list_id",
                 onDelete = ForeignKey.CASCADE,
                 onUpdate = ForeignKey.NO_ACTION
@@ -37,7 +37,7 @@ public class XElemModel implements Comparable<XElemModel>{
     private int xElemID;
 
     @ColumnInfo(name = "list_id")
-    private int xListIDForeign;
+    private final int xListIDForeign;
 
     @ColumnInfo(name = "element_name")
     private String xElemTitle;
@@ -111,10 +111,6 @@ public class XElemModel implements Comparable<XElemModel>{
 
     public int getXListIDForeign() {
         return xListIDForeign;
-    }
-
-    public void setXListIDForeign(int xListIDForeign) {
-        this.xListIDForeign = xListIDForeign;
     }
 
     public boolean isXElemMarked() {

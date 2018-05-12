@@ -23,7 +23,6 @@ import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.importExport.HTMLExporter;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.object.XListTagsSharesPojo;

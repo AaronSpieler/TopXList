@@ -20,11 +20,11 @@ public interface XListTagsSharesDao {
 
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Transaction
-    @Query("SELECT * FROM XListModel ORDER BY xListNum ASC")
+    @Query("SELECT * FROM lists ORDER BY list_id ASC")
     List<XListTagsSharesPojo> loadAllListsWithTagsAndShares();
 
     @Transaction
-    @Query("SELECT * FROM XListModel WHERE xListID = :xListIDInp")
+    @Query("SELECT * FROM lists WHERE list_id = :xListIDInp")
     XListTagsSharesPojo loadListWithTagAndSharesByID(String xListIDInp);
 
 }

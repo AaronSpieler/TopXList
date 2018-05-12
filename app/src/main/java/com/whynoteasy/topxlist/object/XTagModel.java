@@ -15,7 +15,7 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "tags",
         indices = @Index(value = "list_id", name = "tags_list_idx"), //foreign keys should be indexed
         foreignKeys = @ForeignKey(entity = XListModel.class,
-            parentColumns = "xListID",
+            parentColumns = "list_id",
             childColumns = "list_id",
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.NO_ACTION
@@ -29,10 +29,10 @@ public class XTagModel {
     private int xTagID;
 
     @ColumnInfo(name = "list_id")
-    private int xListIDForeign;
+    private final int xListIDForeign;
 
     @ColumnInfo(name = "tag_name")
-    private String xTagName;
+    private final String xTagName;
 
     //Constructor
 
@@ -47,10 +47,6 @@ public class XTagModel {
         return xTagName;
     }
 
-    public void setXTagName(String xTagName) {
-        this.xTagName = xTagName;
-    }
-
     public int getXTagID() {
         return xTagID;
     }
@@ -63,7 +59,4 @@ public class XTagModel {
         return xListIDForeign;
     }
 
-    public void setXListIDForeign(int xListIDForeign) {
-        this.xListIDForeign = xListIDForeign;
-    }
 }

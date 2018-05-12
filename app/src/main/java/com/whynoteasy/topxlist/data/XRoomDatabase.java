@@ -4,7 +4,6 @@ import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
-import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -35,29 +34,39 @@ public abstract class XRoomDatabase extends RoomDatabase{
     public static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            //Migrate Elem Table
-            database.execSQL("CREATE TABLE `elements`(`element_id` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, `element_name` TEXT," +
-                    "`element_desc` TEXT,`element_num` INTEGER NOT NULL, `marked_status` BOOLEAN NOT NULL," +
-                    "PRIMARY KEY(`element_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE CASCADE ON UPDATE NO ACTION)");
-            database.execSQL("INSERT INTO `elements` (`element_id`, `list_id`, `element_name`, `element_desc`, `element_num`, `marked_status`) " +
-                    "SELECT `xElemID`, `xListIDForeign`, `xElemTitle`, `xElemDescription`, `xElemNum`, `xElemMarked` FROM XElemModel");
-            database.execSQL("ALTER TABLE elements ADD media_id INTEGER DEFAULT 0 NOT NULL");
-            database.execSQL("DROP TABLE XElemModel");
-            database.execSQL("CREATE INDEX `elements_list_idx` ON `elements` (`list_id`)");
+            //Migrate List Table
+            database.execSQL("CREATE TABLE `lists`(`list_id` INTEGER NOT NULL, `list_name` TEXT, `list_desc` TEXT," +
+                    "`list_long_desc` TEXT,`list_num` INTEGER NOT NULL, `marked_status` BOOLEAN NOT NULL," +
+                    "PRIMARY KEY (`list_id`))");
+            database.execSQL("INSERT INTO `lists` (`list_id`, `list_name`, `list_desc`, `list_long_desc`, `list_num`, `marked_status`) " +
+                    "SELECT `xListID`, `xListTitle`, `xListShortDescription`, `xListLongDescription`, `xListNum`, `xListMarked` FROM XListModel");
+            database.execSQL("ALTER TABLE lists ADD media_id INTEGER DEFAULT 0 NOT NULL"); //default media id = 0
+            database.execSQL("ALTER TABLE lists ADD language TEXT DEFAULT \"en\" "); //default language english
+            database.execSQL("DROP TABLE XListModel");
 
             //create the share_rules table
             database.execSQL("CREATE TABLE `share_rules` (`rule_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL," +
                     "`list_id` INTEGER NOT NULL,`share_type_num` INTEGER NOT NULL,`shared_with_id` INTEGER NOT NULL," +
                     "`sync_status` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL, " +
-                    "PRIMARY KEY(`rule_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE NO ACTION ON UPDATE NO ACTION)");
+                    "PRIMARY KEY(`rule_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE NO ACTION ON UPDATE NO ACTION)");
             database.execSQL("CREATE INDEX `shares_list_idx` ON `share_rules` (`list_id`)");
 
             //Migrate Tag Table
             database.execSQL("CREATE TABLE `tags`(`tag_id` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, `tag_name` TEXT," +
-                    "PRIMARY KEY(`tag_id`), FOREIGN KEY(`list_id`) REFERENCES `XListModel`(`xListID`) ON DELETE CASCADE ON UPDATE NO ACTION)");
+                    "PRIMARY KEY(`tag_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE CASCADE ON UPDATE NO ACTION)");
             database.execSQL("INSERT INTO `tags` (`tag_id`, `list_id`, `tag_name`) SELECT`xTagID`, `xListIDForeign`, `xTagName` FROM XTagModel");
             database.execSQL("DROP TABLE XTagModel");
             database.execSQL("CREATE INDEX `tags_list_idx` ON `tags` (`list_id`)");
+
+            //Migrate Elem Table
+            database.execSQL("CREATE TABLE `elements`(`element_id` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, `element_name` TEXT," +
+                    "`element_desc` TEXT,`element_num` INTEGER NOT NULL, `marked_status` BOOLEAN NOT NULL," +
+                    "PRIMARY KEY(`element_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE CASCADE ON UPDATE NO ACTION)");
+            database.execSQL("INSERT INTO `elements` (`element_id`, `list_id`, `element_name`, `element_desc`, `element_num`, `marked_status`) " +
+                    "SELECT `xElemID`, `xListIDForeign`, `xElemTitle`, `xElemDescription`, `xElemNum`, `xElemMarked` FROM XElemModel");
+            database.execSQL("ALTER TABLE elements ADD media_id INTEGER DEFAULT 0 NOT NULL"); //default media id = 0 meaning no media file
+            database.execSQL("DROP TABLE XElemModel");
+            database.execSQL("CREATE INDEX `elements_list_idx` ON `elements` (`list_id`)"); //seems to be non deterministic? sometimes sql doesnt creste the index??
         }
 
     };
