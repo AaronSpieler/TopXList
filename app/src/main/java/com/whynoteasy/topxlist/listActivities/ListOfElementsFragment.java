@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XElemModel;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class ListOfElementsFragment extends Fragment {
     private static final String ARG_LIST_ID = "list-id";
 
     //repository Instance
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
 
     //the id of the lists who's elements are displayed
     private int theListID;
@@ -59,7 +59,7 @@ public class ListOfElementsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myRep = new LocalDataRepository(getActivity());
+        myRep = DataRepository.getRepository();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

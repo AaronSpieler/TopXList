@@ -1,14 +1,16 @@
-package com.whynoteasy.topxlist;
+package com.whynoteasy.topxlist.general;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XTagModel;
+import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.objects.XListModel;
+import com.whynoteasy.topxlist.objects.XTagModel;
 
 import java.util.ArrayList;
 
@@ -19,16 +21,21 @@ import java.util.ArrayList;
 
 public class TopXListApplication extends Application {
 
-    //Debugging:
+    //Debugging output?:
     public static final boolean DEBUG_APPLICATION = true;
 
-    private LocalDataRepository myRep;
+    private static Context appContext;
+    private DataRepository myRep;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        myRep = new LocalDataRepository(this);
+        if (appContext == null) {
+            appContext = this.getApplicationContext();
+        }
+
+        myRep = DataRepository.getRepository();
 
         //ONCE PER APPSTART RELEVANT CODE START
         //this is a configuration to enable drawing images dynamically from vectors
@@ -76,5 +83,9 @@ public class TopXListApplication extends Application {
             editor.putBoolean("FIRST_RUN", true);
             editor.apply();
         }
+    }
+
+    public static Context getAppContext() {
+        return appContext;
     }
 }

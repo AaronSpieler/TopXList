@@ -1,17 +1,18 @@
 package com.whynoteasy.topxlist.data;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 
-import com.whynoteasy.topxlist.TopXListApplication;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
+import com.whynoteasy.topxlist.general.TopXListApplication;
+import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.objects.XListModel;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.objects.XTagModel;
+import com.whynoteasy.topxlist.roomData.XRoomDatabase;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import javax.inject.Singleton;
 
 /**
  * Created by Whatever on 18.11.2017.
@@ -19,14 +20,25 @@ import java.util.concurrent.ExecutionException;
  * HOWEVER THE QUARRIES ARE NOT REALLY ASYNC BECAUSE THE APPLICATION WAITS FOR THE RESULTS :/
  * Main Purpose:    Handle granular communication between local database(s) and database access objects
  *                  Wrap everything necessary in Async Methods
+ *                  Manage whether Firebase or Offline Room database is uset
  */
 
-public class LocalDataRepository{
+@Singleton
+public class DataRepository implements DatabaseSpecification {
+
+    private static DataRepository sInstance;
 
     private final XRoomDatabase xRoomDatabase;
 
-    public LocalDataRepository(@NonNull Context context) {
-        this.xRoomDatabase = XRoomDatabase.getDatabase(context);
+    public synchronized static DataRepository getRepository(){
+        if (sInstance == null){
+            sInstance = new DataRepository();
+        }
+        return sInstance;
+    }
+
+    private DataRepository() {
+        this.xRoomDatabase = XRoomDatabase.getDatabase();
     }
 
     //--------------------------Tags------------------------------
@@ -157,7 +169,7 @@ public class LocalDataRepository{
             return db.xElementsModel().loadElemByID(Integer.toString(params[0]));        }
     }
 
-    //CHANGE lIST NUMBERS AFTER MOVEMENT //ERROR PRONE !!!!
+    //CHANGE lIST NUMBERS AFTER MOVEMENT
     private static class NumElemUpdateParameters {//needed to wrap async task parameter fon position updates of elements
         final XElemModel xElemModel;
         final int oldPos;
@@ -169,6 +181,7 @@ public class LocalDataRepository{
             this.oldPos = oldPos;
         }
     }
+
     public void changeAllListNumbersElem(XElemModel xElemModel, int newPos, int oldPos){
         new UpdateElemNumAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, newPos, oldPos));
     }

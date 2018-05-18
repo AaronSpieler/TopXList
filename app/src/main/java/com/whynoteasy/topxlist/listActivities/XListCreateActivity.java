@@ -21,11 +21,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListModel;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
+import com.whynoteasy.topxlist.general.TopXListApplication;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XListModel;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.objects.XTagModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,8 @@ public class XListCreateActivity extends AppCompatActivity {
     private EditText shortDescEditText;
     private Activity thisActivity;
 
+    private DataRepository myRep;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,9 @@ public class XListCreateActivity extends AppCompatActivity {
 
         //get the reference to itself (activity)
         thisActivity = this;
+
+        //get repository
+        myRep = DataRepository.getRepository();
 
         // Get a support ActionBar corresponding to this toolbar
         ActionBar ab = getSupportActionBar();
@@ -144,8 +149,6 @@ public class XListCreateActivity extends AppCompatActivity {
 
                 List<XTagModel> tagList = new ArrayList<>();
 
-                LocalDataRepository myRep = new LocalDataRepository(view.getContext());
-
                 long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1));
 
                 //ATTENTION: THIS COULD BE A MAJOR MISTAKE CONVERTING LONG TO INT,
@@ -230,7 +233,6 @@ public class XListCreateActivity extends AppCompatActivity {
     }
 
     private boolean titleAlreadyExists(String newTitle) {
-        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
         for (XListTagsSharesPojo tempList : allLists) {
             if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {

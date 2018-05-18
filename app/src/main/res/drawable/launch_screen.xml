@@ -10,7 +10,7 @@
     <item>
         <bitmap
             android:src="@drawable/topxlist_name_small"
-            android:gravity="center"/>
+            android:gravity="center" />
     </item>
 
 </layer-list>

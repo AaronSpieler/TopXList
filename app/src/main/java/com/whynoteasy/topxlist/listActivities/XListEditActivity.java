@@ -23,10 +23,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.TopXListApplication;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
-import com.whynoteasy.topxlist.object.XTagModel;
+import com.whynoteasy.topxlist.general.TopXListApplication;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.objects.XTagModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 public class XListEditActivity extends AppCompatActivity {
     private XListTagsSharesPojo currentList;
     private int currentListID;
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
 
     private final List<String> tempTagListNew = new ArrayList<>();
     private final List<XTagModel> tempTagListDeleted = new ArrayList<>();
@@ -64,6 +64,8 @@ public class XListEditActivity extends AppCompatActivity {
 
         thisActivity = this;
 
+        myRep = DataRepository.getRepository();
+
         //Get the List that is relevant
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -78,7 +80,6 @@ public class XListEditActivity extends AppCompatActivity {
         }
 
         //get the List with its Tags
-        myRep = new LocalDataRepository(this);
         currentList = myRep.getListWithTagsSharesByID(currentListID);
 
         //set the title
@@ -329,7 +330,6 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     private boolean titleAlreadyExists(String newTitle) {
-        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
         for (XListTagsSharesPojo tempList : allLists) {
             if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
@@ -384,15 +384,12 @@ public class XListEditActivity extends AppCompatActivity {
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                LocalDataRepository myRep = new LocalDataRepository(thisActivity);
-                //TODO: CHeck wheter it worked
-                //myRep.deleteElementsByListID(currentList.getXListModel().getXListID());
+
                 myRep.deleteList(currentList.getXListModel());
 
                 if (TopXListApplication.DEBUG_APPLICATION) {
                     myRep.getListCount();
                 }
-
                 //return to activity
                 NavUtils.navigateUpFromSameTask(thisActivity);
             }

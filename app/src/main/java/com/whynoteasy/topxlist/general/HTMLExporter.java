@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.importExport;
+package com.whynoteasy.topxlist.general;
 
 import android.content.Context;
 import android.os.Environment;
@@ -7,9 +7,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -21,7 +21,7 @@ import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class HTMLExporter {
     private Context activityContext;
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
     private View myView;
 
     static final String LOG_TAG = "EXPORT_FAILURE";
@@ -29,7 +29,7 @@ public class HTMLExporter {
     public HTMLExporter(View view){
         this.myView = view;
         this.activityContext = view.getContext();
-        myRep = new LocalDataRepository(activityContext.getApplicationContext());
+        this.myRep = DataRepository.getRepository();
     }
 
     @SuppressWarnings("StringConcatenationInLoop")

@@ -1,10 +1,10 @@
-package com.whynoteasy.topxlist.data;
+package com.whynoteasy.topxlist.roomData;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Transaction;
 
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
 
 import java.util.List;
 

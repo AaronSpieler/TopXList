@@ -17,11 +17,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
 import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.objects.XElemModel;
 
 import java.util.List;
 
@@ -58,12 +58,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             System.out.println("Now marked positive");
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
-            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left_green));
-            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded_green));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_card_tick));
         } else {
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightBlue));
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
-            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_number_rounded_top_left));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
         }
 
@@ -165,7 +165,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         mValues.remove(oldPosition);
         mValues.add(newPosition, tempElem);
         notifyItemMoved(oldPosition, newPosition);
-        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        DataRepository myRep = DataRepository.getRepository();
         myRep.changeAllListNumbersElem(tempElem,newPosition+1,oldPosition+1);
         this.changeNumbersVisibly(newPosition, oldPosition);
     }
@@ -181,7 +181,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         this.mValues.remove(tempElem);
 
         tempElem.negateMarked();
-        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        DataRepository myRep = DataRepository.getRepository();
         myRep.updateElem(tempElem);
 
         this.mValues.add(position,tempElem);
@@ -218,7 +218,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
-                LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                DataRepository myRep = DataRepository.getRepository();
                 myRep.deleteElem(theElement);
                 //remove the List from the activity cache and notify the adapter
                 //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!

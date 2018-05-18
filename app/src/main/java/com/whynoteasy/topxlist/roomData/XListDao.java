@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.data;
+package com.whynoteasy.topxlist.roomData;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -6,7 +6,7 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
-import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.objects.XListModel;
 
 import java.util.List;
 

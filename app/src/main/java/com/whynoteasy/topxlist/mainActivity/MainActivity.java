@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.mainActivities;
+package com.whynoteasy.topxlist.mainActivity;
 
 
 import android.app.SearchManager;
@@ -10,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.view.MenuInflater;
 import android.view.View;
@@ -22,10 +23,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.general.HTMLExporter;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     private MainListOfListsFragment lolFragment;
 
     //the repository
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         //set up the repository
-        myRep = new LocalDataRepository(this);
+        myRep = DataRepository.getRepository();
 
         //This floating action button is used to trigger the add list activity!!!
         FloatingActionButton fab = findViewById(R.id.fab_main);
@@ -62,19 +65,16 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        /*NAVIGATION DRAWER AND OPTIONS MENU COULD BE IMPLEMENTED AT A LATER TIME
-
+        //Side Navigation Drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        */
-
+        //Set up the LOL Fragment
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         lolFragment = MainListOfListsFragment.newInstance(1);
@@ -161,24 +161,26 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    //I think this is the menu on the side, ITS NOT IN USE SO FAR
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_all_lists) {
+            //start main activity and clear activities on stack
+            Intent returnHome = new Intent(this, MainActivity.class);
+            returnHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(returnHome);
+        } else if (id == R.id.nav_browse_lists) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_export_to_html) {
+            HTMLExporter htmlExporter = new HTMLExporter(this.getCurrentFocus());
+            htmlExporter.exportToHTML();
+        } else if (id == R.id.nav_settings) {
+            //deal with the activity_settings
+            Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(openSettings);
 
         }
 

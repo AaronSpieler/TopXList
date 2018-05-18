@@ -1,12 +1,13 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
+        <!--changes color of all kinds of text but also some background colors-->
         <item name="colorPrimary">@color/middleBlue</item>
         <item name="colorPrimaryDark">@color/darkBlue</item>
         <item name="colorAccent">#fff</item>
 
+        <!--hint text color-->
         <item name="android:textColorHint">@color/middleDarkBlue</item>
 
         <!-- Change Overflow Menu ListView Property -->
@@ -14,47 +15,34 @@
         <item name="android:popupMenuStyle">@style/PopupMenu</item>
         <item name="popupMenuStyle">@style/PopupMenu</item>
 
+        <!--Chante text font to open sans-->
         <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
         <item name="android:buttonStyle">@style/OpenSansButtonStyle</item>
-    </style>
-
-    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/open_sans</item>
-    </style>
-
-    <style name="OpenSansButtonStyle" parent="android:Widget.Holo.Button">
-        <item name="android:fontFamily">@font/open_sans</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <!-- OWN SHIT FROM HERE ON -->
-
-    <!--This Actually Works-->
-    <!-- Change Overflow Menu ListView Divider Property -->
-    <style name="PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
-        <item name="android:popupBackground">@color/middleLightBlue</item>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Change Overflow Menu ListView Text Size and Text Size -->
-    <style name="PopupMenuTextView" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:textColor">@color/superDarkBlue</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">bold</item>
+    <!--Styling the settings fragment-->
+    <style name="SettingsFragmentStyle">
+        <item name="android:textColorSecondary">#000</item>
+        <item name="android:textColor">#000</item>
+        <!--TODO: ist there a way to fix this?-->
+        <item name="android:colorAccent" tools:targetApi="lollipop">#000</item>
     </style>
 
-    <!--This Actually Works-->
-    <!-- Change Overflow Menu ListView Divider Property -->
-    <style name="PopupMenuListView" parent="@android:style/Widget.Holo.ListView.DropDown">
-        <item name="android:divider">@color/middleBlue</item>
-        <item name="android:dividerHeight">2dp</item>
+    <!--Chante text font to open sans-->
+    <style name="OpenSansTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/open_sans</item>
+    </style>
+    <style name="OpenSansButtonStyle" parent="android:Widget.Holo.Button">
+        <item name="android:fontFamily">@font/open_sans</item>
     </style>
 
     <!--this is for the Alert Dialog-->
@@ -72,6 +60,27 @@
         <item name="android:windowBackground">@drawable/launch_screen</item>
         <!-- Optional, on Android 5+ you can modify the colorPrimaryDark color to match the windowBackground color for further branding-->
         <!-- <item name="colorPrimaryDark">@android:color/white</item> -->
+    </style>
+
+    <!-- THESE things are all for the popup menu stuff-->
+
+    <!--This Actually Works-->
+    <style name="PopupMenu" parent="android:Widget.Holo.Light.ListPopupWindow">
+        <item name="android:popupBackground">@color/middleLightBlue</item>
+    </style>
+
+    <!-- Change Overflow Menu ListView Text Size and Text Size -->
+    <style name="PopupMenuTextView" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/superDarkBlue</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--This Actually Works-->
+    <!-- Change Overflow Menu ListView Divider Property -->
+    <style name="PopupMenuListView" parent="@android:style/Widget.Holo.ListView.DropDown">
+        <item name="android:divider">@color/middleBlue</item>
+        <item name="android:dividerHeight">2dp</item>
     </style>
 
 </resources>
