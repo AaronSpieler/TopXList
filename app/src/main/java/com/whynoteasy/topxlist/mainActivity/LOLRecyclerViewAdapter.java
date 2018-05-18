@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.mainActivities;
+package com.whynoteasy.topxlist.mainActivity;
 
 
 import android.content.Context;
@@ -19,11 +19,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.mainActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.mainActivity.MainListOfListsFragment.OnListFragmentInteractionListener;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -62,7 +62,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         if (holder.mItem.getXListModel().isXListMarked()) {
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
-            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.check_white_picture));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_card_tick));
         } else {
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleBlue));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
@@ -171,7 +171,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         mValues.remove(oldPosition);
         mValues.add(newPosition, tempPojo);
         notifyItemMoved(oldPosition, newPosition);
-        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        DataRepository myRep = DataRepository.getRepository();
         myRep.changeAllListNumbersList(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
     }
 
@@ -186,7 +186,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         this.mValues.remove(tempPojo);
 
         tempPojo.getXListModel().negateMarked();
-        LocalDataRepository myRep = new LocalDataRepository(activityContext);
+        DataRepository myRep = DataRepository.getRepository();
         myRep.updateList(tempPojo.getXListModel());
 
         this.mValues.add(position,tempPojo);
@@ -205,7 +205,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
-            LocalDataRepository myRep = new LocalDataRepository(activityContext);
+            DataRepository myRep = DataRepository.getRepository();
             List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
             //We dont want duplicated and we want the set to be ordered by insertion order
             LinkedHashSet<XListTagsSharesPojo> searchResults = new LinkedHashSet<>();
@@ -298,7 +298,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+tempPojo.getXListModel().getXListTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                LocalDataRepository myRep = new LocalDataRepository(activityContext);
+                DataRepository myRep = DataRepository.getRepository();
                 myRep.deleteElementsByListID(tempPojo.getXListModel().getXListID());
                 myRep.deleteTags(tempPojo.getXTagModelList());
                 myRep.deleteList(tempPojo.getXListModel());

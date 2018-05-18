@@ -14,6 +14,7 @@
     <string name="title_activity_xelem_view">Element Ansicht</string>
     <string name="title_activity_scrolling">Listen Ansicht</string>
     <string name="title_activity_xlist_view_long_description">Listen Lange Beschreibung Ansicht</string>
+    <string name="title_activity_settings">Einstellungen</string>
 
     <!--Not in Use currently-->
     <string name="navigation_drawer_open">Öffne navigations Menu</string>
@@ -78,16 +79,17 @@
 
     <!--Start List Strings-->
     <string name="start_list_title">So fängst du an…</string>
-    <string name="start_list_short_desc"><![CDATA[Tippe den schwebenden Knopf an um eine Liste zu erstellen.
-        \nBearbeite Listen indem du den Stift oder das Häkchen antippst.
-        \nOrdne die Listen neu durch Drag & Drop.
-        \nWische nach Links um zu löschen und Rechts um die Liste zu markieren.
-        \nMit der oberen Suchzeile kannst du deine Listen filtern und finden.
-        \nDenk an eine Zahl zwische 1 und 10 und dann click mich.]]></string>
+    <string name="start_list_short_desc"><![CDATA[Tippe den \"+\" Knopf im rechten unteren Teil deines Bildschirmes an um eine Liste zu erstellen.
+        Bearbeite Listen indem du den Stift oder das Häkchen antippst.
+        Ordne deine Listen neu durch Drag & Drop.
+        Wische nach Links um zu löschen und Rechts um die Liste zu markieren.
+        Mit der oberen Suchzeile kannst du deine Listen filtern und finden.
+        Denk an eine Zahl zwische 1 und 10 und dann click mich.]]></string>
     <string name="start_list_long_desc">Lange Beschreibungen können ziehmlich lang sein.
-        \nAlso wirst du nur die ersten 7 Zeilen hier sehen.
-        \nTippe dieses Feld um die komplette Beschreibung zu sehen.
-        \nDie folgende Liste handelt über die besten Eigenschaften dieser App.</string>
+        Also wirst du nur die ersten 7 Zeilen hier sehen.
+        Tippe dieses Feld um die komplette Beschreibung zu sehen.
+        Tippe den \"+\" Knopf in der rechten unteren Ecke an um neue Listenelemente zu erstellen.
+        Die folgende Liste handelt über die besten Eigenschaften dieser App.</string>
     <string name="start_list_start_tag">listenKönnenTagsHaben</string>
     <string name="start_list_1_title">Intuitiv</string>
     <string name="start_list_2_title">Simpel</string>
@@ -142,5 +144,17 @@
     <string name="html_external_storage_not_accessible">Kein zugriff auf externen Speicher vorhanden</string>
     <string name="html_export_success">HTML export erfolgreich abgeschlossen:</string>
     <string name="html_export_failure">HTML export gescheitert; konnte Dokument nicht erstellen.</string>
+
+    <string name="sidemenu_all_lists">Alle Listen</string>
+    <string name="sidemenu_public_lists">Öffentliche Listen stöbern</string>
+    <string name="sidemenu_export">Exportieren (HTML)</string>
+
+    <string name="sidemenu_settings">Einstellungen</string>
+    <string name="store_setting_title">Kopien Online Speichern</string>
+    <string name="autosave_setting_title">Automatisch Änderungen speichern</string>
+    <string name="store_category_title">Datenspeicherungs Einstellungen:</string>
+    <string name="usability_category_title">Nutzbarkeit Einstellungen:</string>
+    <string name="store_setting_summary">Eine Kopie aller Listen wird online gespeichert. Dies ist notwendig um kompliziertere Teilungsoptionen zu ermäglichen. Sie müssen eingeloggt sein, um diese Einstellung zu aktivieren.</string>
+    <string name="autosave_setting_summary">Sie müssen nicht mehr \'Änderungen Speichern\' klicken. Dies geschieht nun automatisch.</string>
 
 </resources>

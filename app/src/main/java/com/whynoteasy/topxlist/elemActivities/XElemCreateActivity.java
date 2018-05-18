@@ -20,10 +20,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.objects.XListModel;
 
 import java.util.List;
 
@@ -33,7 +33,7 @@ public class XElemCreateActivity extends AppCompatActivity {
 
     private Activity thisActivity;
     private int currentListID;
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
 
     private EditText titleEditView;
     private int probableElemNum;
@@ -64,7 +64,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         }
 
         //get the List, its title is needed later
-        myRep = new LocalDataRepository(this);
+        myRep = DataRepository.getRepository();
         XListModel currentList = myRep.getListByID(currentListID);
 
         //set the title of the activity
@@ -195,7 +195,6 @@ public class XElemCreateActivity extends AppCompatActivity {
     }
 
     private boolean titleAlreadyExists(String tempTitle) {
-        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XElemModel> allListElements = myRep.getElementsByListID(currentListID);
         for (XElemModel tempElem : allListElements) {
             if (tempElem.getXElemTitle().toLowerCase().equals(tempTitle.toLowerCase())) {

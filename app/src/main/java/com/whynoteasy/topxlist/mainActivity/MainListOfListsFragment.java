@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.mainActivities;
+package com.whynoteasy.topxlist.mainActivity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
-import com.whynoteasy.topxlist.object.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
 
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class MainListOfListsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        LocalDataRepository myRep = new LocalDataRepository(getActivity());
+        DataRepository myRep = DataRepository.getRepository();
 
         //get the ListsWithTags for the Adapter
         listOfListWithTags = myRep.getListsWithTagsShares();

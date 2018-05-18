@@ -17,12 +17,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.XElemCreateActivity;
 import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
 import com.whynoteasy.topxlist.elemActivities.XListViewLongDescriptionActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
-import com.whynoteasy.topxlist.object.XListModel;
+import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.objects.XListModel;
 
 public class XListViewCollapsingActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
 
@@ -61,7 +61,7 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         });
 
         //get the List with its Tags
-        LocalDataRepository myRep = new LocalDataRepository(this);
+        DataRepository myRep = DataRepository.getRepository();
         XListModel currentList = myRep.getListByID(currentListID);
 
         ActionBar ab = getSupportActionBar();

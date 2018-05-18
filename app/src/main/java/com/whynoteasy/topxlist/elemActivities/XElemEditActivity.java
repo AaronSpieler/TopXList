@@ -22,9 +22,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.objects.XElemModel;
 
 import java.util.List;
 
@@ -34,7 +34,7 @@ public class XElemEditActivity extends AppCompatActivity {
 
     private XElemModel currentElement;
     private int currentElementID;
-    private LocalDataRepository myRep;
+    private DataRepository myRep;
 
     private Activity thisActivity;
 
@@ -54,11 +54,8 @@ public class XElemEditActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar_xelem_edit);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-
         thisActivity = this;
+        myRep = DataRepository.getRepository();
 
         //Get the List that is relevant
         if (savedInstanceState == null) {
@@ -71,18 +68,19 @@ public class XElemEditActivity extends AppCompatActivity {
             }
         } else {
             //this will crash
-            currentElementID= (int) savedInstanceState.getSerializable("X_ELEM_ID");
+            currentElementID = (int) savedInstanceState.getSerializable("X_ELEM_ID");
         }
 
         //get the List with its Tags
-        myRep = new LocalDataRepository(this);
         currentElement = myRep.getElemByID(currentElementID);
 
         //set the title
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
-        ab.setTitle("Edit: " + currentElement.getXElemTitle());
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
+            ab.setTitle("Edit: " + currentElement.getXElemTitle());
+        }
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
@@ -250,7 +248,6 @@ public class XElemEditActivity extends AppCompatActivity {
     }
 
     private boolean titleAlreadyExists(String newTitle) {
-        LocalDataRepository myRep = new LocalDataRepository(thisActivity);
         List<XElemModel> allElemInList = myRep.getElementsByListID(currentElement.getXListIDForeign());
         for (XElemModel tempElem : allElemInList) {
             if (tempElem.getXElemTitle().toLowerCase().equals(newTitle.toLowerCase())) {
@@ -275,7 +272,7 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
-                LocalDataRepository myRep = new LocalDataRepository(thisActivity);
+                myRep = DataRepository.getRepository();
                 myRep.deleteElem(currentElement);
 
                 //exit to listView

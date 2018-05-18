@@ -13,6 +13,7 @@
     <string name="title_activity_xelem_view">View Element</string>
     <string name="title_activity_scrolling">View List</string>
     <string name="title_activity_xlist_view_long_description">View List Long Description</string>
+    <string name="title_activity_settings">Settings</string>
 
     <!--Not in Use currently-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -77,16 +78,17 @@
 
     <!--Start List Strings-->
     <string name="start_list_title">How to get started…</string>
-    <string name="start_list_short_desc"><![CDATA[Click on the Floating Button to create your first list.
-        \nEdit lists by clicking on the pencil or check icon.
-        \nReorder lists via Drag & Drop.
-        \nSwipe Left to delete and Right to mark lists as done.
-        \nUse the Search Field at the top to filter and find lists.
-        \nThink of a number between 1 and 10 and then click me.]]></string>
+    <string name="start_list_short_desc"><![CDATA[Click on the \"+\" Button in the bottom right of your screen to create your first list.
+        Edit lists by clicking on the pencil or check icon.
+        Reorder your lists via Drag & Drop.
+        Swipe Left to delete and Right to mark lists as done.
+        Use the Search Field at the top to filter and find lists.
+        Think of a number between 1 and 10 and then click me.]]></string>
     <string name="start_list_long_desc">Long Descriptions can be really long.
-        \nSo you will only see the first 7 lines of it here.
-        \nClick this to see all of it.
-        \nThe following list is about the best features of this App.</string>
+        So you will only see the first 7 lines of it here.
+        Click this to see all of the long description.
+        Tap on the \"+\" button in the bottom right corner to add a new list element.
+        The following list is about the best features of this App.</string>
     <string name="start_list_start_tag">listsCanHaveTags</string>
     <string name="start_list_1_title">Intuitive</string>
     <string name="start_list_2_title">Simple</string>
@@ -141,5 +143,17 @@
     <string name="html_external_storage_not_accessible">External storage not accessible</string>
     <string name="html_export_success">HTML export successfully completed:</string>
     <string name="html_export_failure">HTML export failed; could\'nt create File.</string>
+
+    <string name="sidemenu_all_lists">All Lists</string>
+    <string name="sidemenu_public_lists">Browse Public Lists</string>
+    <string name="sidemenu_export">Export (HTML)</string>
+
+    <string name="sidemenu_settings">Settings</string>
+    <string name="store_setting_title">Store Copy Online</string>
+    <string name="autosave_setting_title">Automatically save changes</string>
+    <string name="store_category_title">Storage Settings:</string>
+    <string name="usability_category_title">Usability Settings:</string>
+    <string name="store_setting_summary">A copy of all lists is stored online. This is necessary to enable more sophisticated sharing. You need to be logged in to activate this setting.</string>
+    <string name="autosave_setting_summary">Dont need to click \'Save Changes\' to actually save changes.</string>
 
 </resources>

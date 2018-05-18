@@ -13,15 +13,15 @@
         android:layout_width="38dp"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:background="@color/middleLightBlue"
         android:contentDescription="@string/tag_content_desc_delete_button"
         android:padding="@dimen/card_defaults"
-        android:scaleType="fitCenter"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/delete_tag_icon_dark_blue" />
+        app:srcCompat="@drawable/ic_delete_x_dark_blue" />
 
     <TextView
         android:id="@+id/tag_name_text"

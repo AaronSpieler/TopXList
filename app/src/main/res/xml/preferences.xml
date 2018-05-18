@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/store_category_title"
+        android:key="pref_storage_settings">
+        <SwitchPreference
+            android:key="pref_store_online"
+            android:title="@string/store_setting_title"
+            android:summary="@string/store_setting_summary"
+            android:defaultValue="false"
+            >
+            <!-- IF THIS WAS FALSE BEFORE I SHOULD FIRE A LOGIN INTENT
+            <intent android:action="android.intent.action.VIEW"
+                android:data="http://www.example.com" />
+            -->
+        </SwitchPreference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/usability_category_title"
+        android:key="pref_usability_settings">
+        <SwitchPreference
+            android:key="pref_easy_saving"
+            android:title="@string/autosave_setting_title"
+            android:summary="@string/autosave_setting_summary"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

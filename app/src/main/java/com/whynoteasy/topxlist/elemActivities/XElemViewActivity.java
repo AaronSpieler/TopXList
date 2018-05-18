@@ -15,9 +15,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.LocalDataRepository;
+import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.object.XElemModel;
+import com.whynoteasy.topxlist.objects.XElemModel;
 
 public class XElemViewActivity extends AppCompatActivity {
 
@@ -49,7 +49,7 @@ public class XElemViewActivity extends AppCompatActivity {
             currentElementID= (int) savedInstanceState.getSerializable("X_ELEM_ID");
         }
         //get the List with its Tags
-        LocalDataRepository myRep = new LocalDataRepository(this);
+        DataRepository myRep = DataRepository.getRepository();
         currentElement = myRep.getElemByID(currentElementID);
 
         //set the title
