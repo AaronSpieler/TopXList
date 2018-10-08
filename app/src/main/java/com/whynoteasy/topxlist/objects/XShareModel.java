@@ -67,21 +67,28 @@ public class XShareModel {
     private final int xSharedWithID;
 
     //how is the sync status of the rule with the server
-    //this is the only changable attribut
+    //this is the only changeable attribute
     @ColumnInfo(name = "sync_status")
     private int xSharedStatus;
+
+    //TODO: add share LINK string attribute
+    //the Firebase dynamic link
+    @ColumnInfo(name = "firebase_url")
+    private String xShareFireURL;
 
     //number of milliseconds since January 1, 1970, 00:00:00 GMT!
     //Yes, converted & standardized to GMT
     @ColumnInfo(name = "modified_date")
     private long xShareDateModifiedMillis;
 
-    public XShareModel(int xOwnerID, int xListIDForeign, int xShareType, int xSharedWithID, long xShareDateModifiedMillis) {
+
+    public XShareModel(int xOwnerID, int xListIDForeign, int xShareType, int xSharedWithID, long xShareDateModifiedMillis, String xShareFireURL) {
         this.xOwnerID = xOwnerID;
         this.xListIDForeign = xListIDForeign;
         this.xShareType = xShareType;
         this.xSharedWithID = xSharedWithID;
         this.xShareDateModifiedMillis = xShareDateModifiedMillis;
+        this.xShareFireURL = xShareFireURL;
         xSharedStatus = SHARE_RULE_NEW;
     }
 
@@ -119,6 +126,10 @@ public class XShareModel {
 
     public long getXShareDateModifiedMillis() {
         return xShareDateModifiedMillis;
+    }
+
+    public String getXShareFireURL() {
+        return xShareFireURL;
     }
 
     public void updateDateModifiedMillis() {
