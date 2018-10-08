@@ -22,7 +22,6 @@ import com.whynoteasy.topxlist.objects.XListModel;
 
 public class XListViewLongDescriptionActivity extends AppCompatActivity {
 
-    private XListModel currentList;
     private int currentListID;
 
     private Activity thisActivity;
@@ -51,7 +50,7 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         }
         //get the List with its Tags
         DataRepository myRep = DataRepository.getRepository();
-        currentList = myRep.getListByID(currentListID);
+        XListModel currentList = myRep.getListByID(currentListID);
 
         //set the title
         ActionBar ab = getSupportActionBar();

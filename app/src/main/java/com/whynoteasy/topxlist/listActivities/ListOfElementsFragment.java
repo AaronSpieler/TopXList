@@ -29,9 +29,6 @@ public class ListOfElementsFragment extends Fragment {
 
     private static final String ARG_LIST_ID = "list-id";
 
-    //repository Instance
-    private DataRepository myRep;
-
     //the id of the lists who's elements are displayed
     private int theListID;
 
@@ -59,7 +56,7 @@ public class ListOfElementsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myRep = DataRepository.getRepository();
+        DataRepository myRep = DataRepository.getRepository();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);

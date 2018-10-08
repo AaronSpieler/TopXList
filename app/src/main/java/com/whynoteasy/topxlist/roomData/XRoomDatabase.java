@@ -54,7 +54,7 @@ public abstract class XRoomDatabase extends RoomDatabase{
             //create the share_rules table
             database.execSQL("CREATE TABLE `share_rules` (`rule_id` INTEGER NOT NULL, `owner_id` INTEGER NOT NULL," +
                     "`list_id` INTEGER NOT NULL,`share_type_num` INTEGER NOT NULL,`shared_with_id` INTEGER NOT NULL," +
-                    "`sync_status` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL, " +
+                    "`sync_status` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL, `firebase_url` TEXT," +
                     "PRIMARY KEY(`rule_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE NO ACTION ON UPDATE NO ACTION)");
             database.execSQL("CREATE INDEX `shares_list_idx` ON `share_rules` (`list_id`)");
 
