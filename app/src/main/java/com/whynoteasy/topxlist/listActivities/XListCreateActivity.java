@@ -1,14 +1,11 @@
 package com.whynoteasy.topxlist.listActivities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
@@ -134,9 +131,10 @@ public class XListCreateActivity extends AppCompatActivity {
                 //start selection and crop
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setMaxCropResultSize(1280,720)
-                        .setAspectRatio(16,9)
+                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
                         .setFixAspectRatio(true)
+                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
+                        .setOutputCompressQuality(90)
                         .start(thisActivity);
             }
         });
@@ -316,6 +314,7 @@ public class XListCreateActivity extends AppCompatActivity {
         builder.show();
     }
 
+    @SuppressLint("SetTextI18n")
     private void insertAppropriateTag(View view) {
         //get the tag text
         final String tempTagStr = tagEditText.getText().toString().trim();
@@ -340,7 +339,7 @@ public class XListCreateActivity extends AppCompatActivity {
 
         //The TextView of the TagView is filled here
         TextView tagTextView = tagView.findViewById(R.id.tag_name_text);
-        tagTextView.setText("#"+tagEditText.getText().toString().trim());
+        tagTextView.setText("#" + tagEditText.getText().toString().trim());
 
         //This is, so when the X is clicked the tag is removed
         ImageButton tagImgButton = tagView.findViewById(R.id.tag_delete_button);

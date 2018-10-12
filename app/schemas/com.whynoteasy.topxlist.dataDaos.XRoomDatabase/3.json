@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 3,
-    "identityHash": "c2713fe889b9904599c206b176a9b4d5",
+    "identityHash": "eebdda360c01ec7664170056982d74bb",
     "entities": [
       {
         "tableName": "tags",
@@ -59,7 +59,7 @@
       },
       {
         "tableName": "elements",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`element_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_id` INTEGER NOT NULL, `element_name` TEXT, `element_desc` TEXT, `element_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `image_loc` TEXT, FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`element_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_id` INTEGER NOT NULL, `element_name` TEXT, `element_desc` TEXT, `element_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `image_loc` TEXT, `trashed` INTEGER NOT NULL, FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "xElemID",
@@ -102,6 +102,12 @@
             "columnName": "image_loc",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "xElemTrashed",
+            "columnName": "trashed",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -136,7 +142,7 @@
       },
       {
         "tableName": "lists",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_name` TEXT, `list_desc` TEXT, `list_long_desc` TEXT, `list_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `language` TEXT, `image_loc` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_name` TEXT, `list_desc` TEXT, `list_long_desc` TEXT, `list_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `language` TEXT, `image_loc` TEXT, `trashed` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "xListID",
@@ -185,6 +191,12 @@
             "columnName": "image_loc",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "xListTrashed",
+            "columnName": "trashed",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -282,7 +294,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c2713fe889b9904599c206b176a9b4d5\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"eebdda360c01ec7664170056982d74bb\")"
     ]
   }
 }

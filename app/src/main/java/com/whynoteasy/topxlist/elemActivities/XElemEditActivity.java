@@ -176,9 +176,10 @@ public class XElemEditActivity extends AppCompatActivity {
                 //start selection and crop
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setMaxCropResultSize(1280,720)
-                        .setAspectRatio(16,9)
+                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
                         .setFixAspectRatio(true)
+                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
+                        .setOutputCompressQuality(90)
                         .start(thisActivity);
             }
         });

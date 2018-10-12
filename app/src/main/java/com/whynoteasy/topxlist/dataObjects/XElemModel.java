@@ -54,17 +54,12 @@ public class XElemModel implements Comparable<XElemModel>{
     @ColumnInfo(name = "image_loc")
     private String xImageLoc;
 
+    //is the element temporarily deleted
+    @ColumnInfo(name = "trashed")
+    private boolean xElemTrashed;
+
     //Constructor
     @Ignore
-    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum) {
-        this.xListIDForeign = xListIDForeign;
-        this.xElemTitle = xElemTitle;
-        this.xElemDescription = xElemDescription;
-        this.xElemNum = xElemNum;
-        this.xElemMarked = false;
-        this.xImageLoc = null;
-    }
-
     public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, String xImageLoc) {
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
@@ -72,6 +67,17 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemNum = xElemNum;
         this.xElemMarked = false;
         this.xImageLoc = xImageLoc;
+        this.xElemTrashed = false;
+    }
+
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, boolean xElemMarked, String xImageLoc, boolean xElemTrashed) {
+        this.xListIDForeign = xListIDForeign;
+        this.xElemTitle = xElemTitle;
+        this.xElemDescription = xElemDescription;
+        this.xElemNum = xElemNum;
+        this.xElemMarked = xElemMarked;
+        this.xImageLoc = xImageLoc;
+        this.xElemTrashed = xElemTrashed;
     }
 
     //Getters and Setters
@@ -126,6 +132,14 @@ public class XElemModel implements Comparable<XElemModel>{
 
     public void setXImageLoc(String xImageLoc) {
         this.xImageLoc = xImageLoc;
+    }
+
+    public boolean isXElemTrashed() {
+        return xElemTrashed;
+    }
+
+    public void setXElemTrashed(boolean xElemTrashed) {
+        this.xElemTrashed = xElemTrashed;
     }
 
     //Other Methods

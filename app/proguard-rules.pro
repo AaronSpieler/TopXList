@@ -23,3 +23,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#################################### OWN FROM HERE ON ###############################################
+
+#this is so backwards compatibility is guaranteed, needed for multimple things including searchview and the select and crop thing
+-keep class android.support.v7.widget.** { *; }

@@ -52,6 +52,9 @@ public class XListModel implements Comparable<XListModel>{
     @ColumnInfo(name = "image_loc")
     private String xImageLoc;
 
+    @ColumnInfo(name = "trashed")
+    private boolean xListTrashed;
+
     @Ignore
     public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc) {
         this.xListTitle = xListTitle;
@@ -61,28 +64,18 @@ public class XListModel implements Comparable<XListModel>{
         this.xListMarked = false;
         this.xImageLoc = xImageLoc;
         this.xListLanguage = Locale.getDefault().getLanguage();
+        this.xListTrashed = false;
     }
 
-    //TODO REMOE! depreciated, however until conversion done, not possible to remove
-    @Ignore
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum) {
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc, boolean xListMarked,String xListLanguage, boolean xListTrashed) {
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
-        this.xListMarked = false;
-        this.xImageLoc = xImageLoc;
-        this.xListLanguage = Locale.getDefault().getLanguage();
-    }
-
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc, String xListLanguage) {
-        this.xListTitle = xListTitle;
-        this.xListShortDescription = xListShortDescription;
-        this.xListLongDescription = xListLongDescription;
-        this.xListNum = xListNum;
-        this.xListMarked = false;
+        this.xListMarked = xListMarked;
         this.xImageLoc = xImageLoc;
         this.xListLanguage = xListLanguage;
+        this.xListTrashed = xListTrashed;
     }
 
     //Getters and Setters
@@ -149,6 +142,14 @@ public class XListModel implements Comparable<XListModel>{
 
     public void setXImageLoc(String xImageLoc) {
         this.xImageLoc = xImageLoc;
+    }
+
+    public boolean isXListTrashed() {
+        return xListTrashed;
+    }
+
+    public void setXListTrashed(boolean xListTrashed) {
+        this.xListTrashed = xListTrashed;
     }
 
     //Other Methods

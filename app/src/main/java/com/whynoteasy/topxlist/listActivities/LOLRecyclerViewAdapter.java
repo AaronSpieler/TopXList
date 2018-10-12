@@ -8,10 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
@@ -24,7 +22,6 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.general.ImageSaver;
-import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 

@@ -132,9 +132,10 @@ public class XElemCreateActivity extends AppCompatActivity {
                 //start selection and crop
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setMaxCropResultSize(1280,720)
-                        .setAspectRatio(16,9)
+                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
                         .setFixAspectRatio(true)
+                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
+                        .setOutputCompressQuality(90)
                         .start(thisActivity);
             }
         });
@@ -302,4 +303,5 @@ public class XElemCreateActivity extends AppCompatActivity {
         imageSelectChangeButton.setBackground(ContextCompat.getDrawable(this, R.drawable.create_and_edit_right_bottom_rounded));
         imageSelectChangeButton.setText(R.string.image_pane_change_button_text);
     }
+
 }
