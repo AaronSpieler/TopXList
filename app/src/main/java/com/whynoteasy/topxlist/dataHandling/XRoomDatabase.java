@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.dataDaos;
+package com.whynoteasy.topxlist.dataHandling;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -7,6 +7,10 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.migration.Migration;
 import android.support.annotation.NonNull;
 
+import com.whynoteasy.topxlist.dataDaos.XElemDao;
+import com.whynoteasy.topxlist.dataDaos.XListDao;
+import com.whynoteasy.topxlist.dataDaos.XListTagsSharesDao;
+import com.whynoteasy.topxlist.dataDaos.XTagDao;
 import com.whynoteasy.topxlist.general.TopXListApplication;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;

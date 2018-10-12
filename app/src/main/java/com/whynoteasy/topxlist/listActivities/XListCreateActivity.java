@@ -3,6 +3,7 @@ package com.whynoteasy.topxlist.listActivities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -28,9 +29,9 @@ import android.widget.TextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.general.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 import com.whynoteasy.topxlist.general.TopXListApplication;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.dataObjects.XTagModel;
@@ -39,6 +40,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XListCreateActivity extends AppCompatActivity {
@@ -127,15 +129,8 @@ public class XListCreateActivity extends AppCompatActivity {
         imageSelectChangeButton = findViewById(R.id.xlist_image_button_right);
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO: ask for external read permissions
                 //start selection and crop
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
-                        .setFixAspectRatio(true)
-                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
-                        .setOutputCompressQuality(90)
-                        .start(thisActivity);
+                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 

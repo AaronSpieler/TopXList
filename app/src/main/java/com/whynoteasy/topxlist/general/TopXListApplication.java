@@ -1,14 +1,20 @@
 package com.whynoteasy.topxlist.general;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.dataObjects.XTagModel;
@@ -28,6 +34,10 @@ public class TopXListApplication extends Application {
 
     private static Context appContext;
     private DataRepository myRep;
+
+    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_READ = 1;
+    public static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_WRITE = 2;
+
 
     @Override
     public void onCreate() {
@@ -114,22 +124,92 @@ public class TopXListApplication extends Application {
         return appContext;
     }
 
-    //TODO: Fix this method, one request external read for images, external write for export, (and a check permission one)
-    /*
-    public static void verifyStoragePermissions(Activity activity) {
-        final int REQUEST_EXTERNAL_STORAGE = 1;
-        String[] PERMISSIONS_STORAGE = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        };
-
-        // Check if we have write permission
-        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+    /* Dont knwow why I would need this?
+    public static boolean isExternalStorageAtLeastReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
         }
+        return false;
+    }
+
+    public static boolean isExternalStorageReadableAndWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
     }
     */
+
+    //return: !already! had permissions
+    public static boolean getExternalStorageReadPermission(Activity thisActivity) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(thisActivity,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            /* IF I WANT TO SHOW RATIONALE SOMEDAY
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+            */
+
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(thisActivity,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_READ);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+            return false;
+        } else {
+            // Permission has already been granted
+            return true;
+        }
+    }
+
+    //return: !already! had permissions
+    public static boolean getExternalStorageWritePermission(Activity thisActivity) {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(thisActivity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            /* IF I WANT TO SHOW RATIONALE SOMEDAY
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+            */
+
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(thisActivity,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_WRITE);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
+
+            return false;
+        } else {
+            // Permission has already been granted
+            return true;
+        }
+    }
+
 }
