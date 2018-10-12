@@ -92,7 +92,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:src="@drawable/stock_19by9and720p" />
+                    android:src="@drawable/stock_88205654"/>
 
                 <TextView
                     android:id="@+id/xList_short_description"

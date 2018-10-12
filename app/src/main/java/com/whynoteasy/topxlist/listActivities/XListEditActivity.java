@@ -1,18 +1,15 @@
 package com.whynoteasy.topxlist.listActivities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
@@ -223,9 +220,10 @@ public class XListEditActivity extends AppCompatActivity {
                 //start selection and crop
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON)
-                        .setMaxCropResultSize(1280,720)
-                        .setAspectRatio(16,9)
+                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
                         .setFixAspectRatio(true)
+                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
+                        .setOutputCompressQuality(90)
                         .start(thisActivity);
             }
         });
@@ -475,6 +473,7 @@ public class XListEditActivity extends AppCompatActivity {
         NavUtils.navigateUpFromSameTask(thisActivity);
     }
 
+    @SuppressLint("SetTextI18n")
     public void insertAppropriateTag(View view) {
         //get the tag text
         final String tempTagStr = tagEditText.getText().toString().trim();

@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
                     android:contentDescription="@string/image_description"
-                    android:src="@drawable/stock_19by9and720p"
+                    android:src="@drawable/stock_88205654"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:focusedByDefault="true"/>

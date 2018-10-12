@@ -183,7 +183,7 @@
                         android:layout_marginBottom="@dimen/card_image_margins"
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/image_description"
-                        android:src="@drawable/stock_19by9and720p"
+                        android:src="@drawable/stock_88205654"
                         app:layout_constraintBottom_toTopOf="@+id/xelem_image_panel_button_layout"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

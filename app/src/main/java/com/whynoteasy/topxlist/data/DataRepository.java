@@ -20,7 +20,7 @@ import javax.inject.Singleton;
  * HOWEVER THE QUARRIES ARE NOT REALLY ASYNC BECAUSE THE APPLICATION WAITS FOR THE RESULTS :/
  * Main Purpose:    Handle granular communication between local database(s) and database access objects
  *                  Wrap everything necessary in Async Methods
- *                  Manage whether Firebase or Offline Room database is uset
+ *                  Manage whether Firebase or Offline Room database is used
  */
 
 @Singleton

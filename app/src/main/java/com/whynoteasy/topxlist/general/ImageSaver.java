@@ -21,6 +21,11 @@ import java.util.Random;
 //TODO: Delete unused functions
 public class ImageSaver {
 
+    public static final int MaxImageHeight = 720;
+    public static final int MaxImageWidth = 1280;
+    public static final int ImageRatioX = 16;
+    public static final int ImageRatioY = 9;
+
     private Context context;
 
     public ImageSaver(Context context) {
@@ -44,7 +49,8 @@ public class ImageSaver {
 
     public Bitmap convertUriToBitmap (Uri uriLink) {
         try {
-            return MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriLink);
+            //also reduce Size if necessary
+            return reduceSizeOfBitmap(MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriLink));
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -70,6 +76,7 @@ public class ImageSaver {
     */
 
     private File saveFromBitmap(Bitmap bitmap, String fileName) {
+        bitmap = reduceSizeOfBitmap(bitmap);
         FileOutputStream fileOutputStream = null;
         try {
             File file = createFile(fileName); //!!!
@@ -208,5 +215,13 @@ public class ImageSaver {
 
     public String getRelativePathOfImage(String imageName) {
         return "images/"+imageName;
+    }
+
+    public static Bitmap reduceSizeOfBitmap (Bitmap bitmap) {
+        int currHeight = bitmap.getHeight();
+        if (currHeight > MaxImageHeight) {
+            return Bitmap.createScaledBitmap(bitmap, MaxImageWidth, MaxImageHeight, false);
+        }
+        return bitmap;
     }
 }
