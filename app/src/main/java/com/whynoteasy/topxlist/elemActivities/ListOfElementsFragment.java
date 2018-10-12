@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 
 import java.util.List;

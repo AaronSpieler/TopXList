@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -28,13 +29,15 @@ import android.widget.TextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.general.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageSaver;
+import com.whynoteasy.topxlist.general.TopXListApplication;
 
 import java.io.File;
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XElemEditActivity extends AppCompatActivity {
@@ -172,15 +175,8 @@ public class XElemEditActivity extends AppCompatActivity {
         imageSelectChangeButton = findViewById(R.id.xelem_image_button_right);
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO: ask for external read permissions
                 //start selection and crop
-                CropImage.activity()
-                        .setGuidelines(CropImageView.Guidelines.ON)
-                        .setAspectRatio(ImageSaver.ImageRatioX,ImageSaver.ImageRatioY)
-                        .setFixAspectRatio(true)
-                        .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
-                        .setOutputCompressQuality(90)
-                        .start(thisActivity);
+                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 
@@ -344,7 +340,6 @@ public class XElemEditActivity extends AppCompatActivity {
 
         String tempDescription = descriptionEditView.getText().toString().trim();
 
-        //TODO check if this works out
         Integer newPos = 0;
         try {
             newPos = Integer.parseInt(numView.getText().toString().trim());
@@ -413,5 +408,4 @@ public class XElemEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setBackground(ContextCompat.getDrawable(this, R.drawable.create_and_edit_right_bottom_rounded));
         imageSelectChangeButton.setText(R.string.image_pane_change_button_text);
     }
-
 }

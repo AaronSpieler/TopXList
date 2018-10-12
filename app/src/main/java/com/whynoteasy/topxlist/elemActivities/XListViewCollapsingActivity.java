@@ -17,7 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewLongDescriptionActivity;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;

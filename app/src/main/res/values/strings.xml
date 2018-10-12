@@ -143,7 +143,7 @@
     <string name="html_export_title">My Top X List Lists:</string>
     <string name="html_file_creation_failed">File Creation Failed</string>
     <string name="html_external_storage_not_accessible">External storage not accessible</string>
-    <string name="html_export_success">HTML export successfully completed:</string>
+    <string name="html_export_success">Lists successfully exported to DOWNLOADS folder.</string>
     <string name="html_export_failure">HTML export failed; could\'nt create File.</string>
 
     <string name="sidemenu_all_lists">All Lists</string>
@@ -163,5 +163,6 @@
     <string name="image_pane_select_button_text">Select</string>
     <string name="image_pane_change_button_text">Change</string>
     <string name="image_panel_desc">Image: </string>
+    <string name="read_external_image_denied">Without read permission photos cannot be selected</string>
 
 </resources>

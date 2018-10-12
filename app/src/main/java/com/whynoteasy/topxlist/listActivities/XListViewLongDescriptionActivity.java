@@ -18,10 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
-import com.whynoteasy.topxlist.general.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 
 public class XListViewLongDescriptionActivity extends AppCompatActivity {
 

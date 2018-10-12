@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.data;
+package com.whynoteasy.topxlist.dataHandling;
 
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;

@@ -4,9 +4,11 @@ package com.whynoteasy.topxlist.general;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -23,12 +25,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.HTMLExporter;
 import com.whynoteasy.topxlist.listActivities.LOLRecyclerViewAdapter;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
 import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
+
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
@@ -175,8 +180,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_browse_lists) {
 
         } else if (id == R.id.nav_export_to_html) {
-            HTMLExporter htmlExporter = new HTMLExporter(this.getCurrentFocus());
-            htmlExporter.exportToHTML();
+            //Get the required permissions
+            if (TopXListApplication.getExternalStorageWritePermission(this)) {
+                HTMLExporter htmlExporter = new HTMLExporter((View) findViewById(R.id.nav_view));
+                htmlExporter.exportToHTML();
+            }
+            //do nothing else, wait for the confirmation or rejection of the permissions => in onRequestPermissionsResult
         } else if (id == R.id.nav_settings) {
             //deal with the activity_settings
             Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -214,5 +223,26 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        View drawerView = findViewById(R.id.nav_view);
+        switch (requestCode) {
+            case TopXListApplication.MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_WRITE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Must have been we wanted to export something
+                    HTMLExporter htmlExporter = new HTMLExporter(drawerView);
+                    htmlExporter.exportToHTML();
+                } else {
+                    //show snackbar on success
+                    Snackbar mySnackbar = Snackbar.make(drawerView,  this.getString(R.string.html_external_storage_not_accessible), LENGTH_LONG);
+                    mySnackbar.show();
+                }
+                return;
+            }
 
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
 }

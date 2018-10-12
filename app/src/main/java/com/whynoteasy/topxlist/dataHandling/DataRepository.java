@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.data;
+package com.whynoteasy.topxlist.dataHandling;
 
 import android.os.AsyncTask;
 
@@ -7,7 +7,6 @@ import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 import com.whynoteasy.topxlist.dataObjects.XTagModel;
-import com.whynoteasy.topxlist.dataDaos.XRoomDatabase;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;

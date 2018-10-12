@@ -18,9 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.data.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.general.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 
 public class XElemViewActivity extends AppCompatActivity {
 
@@ -79,7 +79,7 @@ public class XElemViewActivity extends AppCompatActivity {
         });
 
         //show image, if there is any
-        ImageView imageView = findViewById(R.id.xlist_image_panel_image);
+        ImageView imageView = findViewById(R.id.xelem_image_panel_image);
         if (currentElement.getXImageLoc() != null) {
             Bitmap bitmap = (new ImageSaver(thisActivity)).loadFileByRelativePath(currentElement.getXImageLoc());
             imageView.setImageBitmap(bitmap);
