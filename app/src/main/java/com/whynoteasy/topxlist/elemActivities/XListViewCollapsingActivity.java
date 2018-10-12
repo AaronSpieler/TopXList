@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivities;
+package com.whynoteasy.topxlist.elemActivities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,11 +18,10 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.elemActivities.XElemCreateActivity;
-import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
-import com.whynoteasy.topxlist.elemActivities.XListViewLongDescriptionActivity;
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListModel;
+import com.whynoteasy.topxlist.listActivities.XListEditActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewLongDescriptionActivity;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
 
 public class XListViewCollapsingActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
 

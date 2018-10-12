@@ -1,24 +1,28 @@
-package com.whynoteasy.topxlist.elemActivities;
+package com.whynoteasy.topxlist.listActivities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.listActivities.XListEditActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.objects.XListModel;
+import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.general.ImageSaver;
 
 public class XListViewLongDescriptionActivity extends AppCompatActivity {
 
@@ -76,6 +80,16 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         });
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        //show image, if there is any
+        ImageView imageView = findViewById(R.id.xlist_image_panel_image);
+        if (currentList.getXImageLoc() != null) {
+            Bitmap bitmap = (new ImageSaver(thisActivity)).loadFileByRelativePath(currentList.getXImageLoc());
+            imageView.setImageBitmap(bitmap);
+        } else {
+            CardView imageCard = findViewById(R.id.xlist_image_panel);
+            imageCard.setVisibility(View.GONE);
         }
     }
 

@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.whynoteasy.topxlist.listActivities.XListCreateActivity"
-    tools:showIn="@layout/activity_xlist_create">
+    tools:showIn="@layout/activity_xlist_create"
+    android:importantForAutofill="no"
+    tools:targetApi="o">
 
         <ScrollView
             android:id="@+id/xlist_edit_cards_scroller"
@@ -71,9 +73,108 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@+id/xlist_title_label"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:importantForAutofill="no" />
                     </android.support.constraint.ConstraintLayout>
 
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/xlist_image_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="@dimen/card_defaults"
+                    app:cardElevation="@dimen/card_elevation_defaults"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="@dimen/negative_content_padding"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_name_text">
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/xlist_image_panel_constraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/xlist_image_panel_label"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/create_and_edit_card_top_rounded"
+                            android:lineSpacingExtra="0sp"
+                            android:paddingStart="@dimen/round_edge_card_margins"
+                            android:padding="@dimen/card_margins"
+                            android:paddingEnd="@dimen/round_edge_card_margins"
+                            android:text="@string/image_panel_desc"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/superDarkBlue"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageView
+                            android:id="@+id/xlist_image_panel_image"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/card_image_margins"
+                            android:layout_marginTop="@dimen/card_image_margins"
+                            android:layout_marginEnd="@dimen/card_image_margins"
+                            android:layout_marginBottom="@dimen/card_image_margins"
+                            android:adjustViewBounds="true"
+                            android:contentDescription="@string/image_description"
+                            android:src="@drawable/stock_19by9and720p"
+                            app:layout_constraintBottom_toTopOf="@+id/xlist_image_panel_button_layout"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel_label" />
+
+                        <LinearLayout
+                            android:id="@+id/xlist_image_panel_button_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:background="@drawable/create_and_edit_card_bottom_rounded"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel_image">
+
+                            <Button
+                                android:id="@+id/xlist_image_button_left"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/image_buttons_height"
+                                android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"
+                                android:layout_weight="1"
+                                android:background="@drawable/create_and_edit_card_left_bottom_rounded_button"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/round_edge_card_margins"
+                                android:paddingEnd="@dimen/round_edge_card_margins"
+                                android:text="@string/image_pane_delete_button_text"
+                                android:textAlignment="center"
+                                android:textColor="@color/lightBlue"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                            <Button
+                                android:id="@+id/xlist_image_button_right"
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/image_buttons_height"
+                                android:layout_weight="1"
+                                android:background="@drawable/create_and_edit_right_bottom_rounded"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/round_edge_card_margins"
+                                android:paddingEnd="@dimen/round_edge_card_margins"
+                                android:text="@string/image_pane_change_button_text"
+                                android:textAlignment="center"
+                                android:textColor="@color/lightBlue"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+                    </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
@@ -86,7 +187,7 @@
                     app:cardUseCompatPadding="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/xlist_name_text">
+                    app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel">
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/xlist_short_desc_constraint"
@@ -133,7 +234,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/xlist_short_desc_label"
-                             />
+                            android:importantForAutofill="no" />
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
@@ -193,7 +294,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/xlist_long_desc_label"
-                             />
+                            android:importantForAutofill="no" />
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
@@ -281,14 +382,15 @@
                             android:maxLength="30"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@+id/xList_tag_input_button"
-                            app:layout_constraintStart_toEndOf="@+id/xlist_tags_add_newTag_label" />
+                            app:layout_constraintStart_toEndOf="@+id/xlist_tags_add_newTag_label"
+                            android:importantForAutofill="no" />
 
                         <Button
                             android:id="@+id/xList_tag_input_button"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="0dp"
-                            android:background="@drawable/create_and_edit_newtag_bottom_rounded"
+                            android:background="@drawable/create_and_edit_right_bottom_rounded"
                             android:text="@string/xList_tag_input_button_label_text"
                             android:textColor="@color/lightBlue"
                             android:textSize="18sp"

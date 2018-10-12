@@ -1,17 +1,22 @@
 package com.whynoteasy.topxlist.general;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListModel;
-import com.whynoteasy.topxlist.objects.XTagModel;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.dataObjects.XTagModel;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -77,6 +82,10 @@ public class TopXListApplication extends Application {
             myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_6_title), getString(R.string.start_list_6_desc),6));
             myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_7_title), getString(R.string.start_list_7_desc),7));
 
+            //Create the images directory
+            File folder = new File(appContext.getFilesDir(), "images");
+            folder.mkdirs();
+
             //Setting up done
             settings = getSharedPreferences("PREFS_NAME", 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -88,4 +97,23 @@ public class TopXListApplication extends Application {
     public static Context getAppContext() {
         return appContext;
     }
+
+    //TODO: Fix this method, one request external read for images, external write for export, (and a check permission one)
+    /*
+    public static void verifyStoragePermissions(Activity activity) {
+        final int REQUEST_EXTERNAL_STORAGE = 1;
+        String[] PERMISSIONS_STORAGE = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE, REQUEST_EXTERNAL_STORAGE);
+        }
+    }
+    */
 }

@@ -1,9 +1,10 @@
-package com.whynoteasy.topxlist.mainActivity;
+package com.whynoteasy.topxlist.listActivities;
 
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -16,14 +17,16 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.listActivities.XListEditActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.mainActivity.MainListOfListsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.ImageSaver;
+import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
+import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -47,23 +50,26 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     //I guess this method is done?
+    @NonNull
     @Override
-    public XListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public XListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card_final, parent, false);
         return new XListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final XListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final XListViewHolder holder, int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
         //xlist_card, set background color if marked
         if (holder.mItem.getXListModel().isXListMarked()) {
+            //now marked
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleGreen));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_card_tick));
         } else {
+            //now unmarked
             holder.listCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleBlue));
             holder.listTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
@@ -72,6 +78,14 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         holder.listTitle.setText(mValues.get(position).getXListModel().getXListTitle());
         holder.listShortDesc.setText(mValues.get(position).getXListModel().getXListShortDescription());
         holder.listTags.setText(mValues.get(position).tagsToString());
+
+        //show image if there is one
+        if (holder.mItem.getXListModel().getXImageLoc() == null) { //if no image is set
+            holder.listImage.setVisibility(View.GONE);
+        } else { //loadFromFileName associated image
+            holder.listImage.setImageBitmap((new ImageSaver(activityContext)).loadFileByRelativePath(holder.mItem.getXListModel().getXImageLoc()));
+            holder.listImage.setVisibility(View.VISIBLE);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,12 +126,13 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
     //It must be the ViewHolder that implements the MenuClickListener because
     //this it the best way to get a reference of the XList that is relevant to the menu
-    public class XListViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
+    public class XListViewHolder extends RecyclerView.ViewHolder /*implements PopupMenu.OnMenuItemClickListener*/ {
         final View mView;
         final CardView listCard;
         final TextView listTitle;
         final TextView listShortDesc;
         final TextView listTags;
+        final ImageView listImage;
 
         //possibly useful to have a reference to the object itself later on
         XListTagsSharesPojo mItem;
@@ -133,10 +148,12 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             listTitle = itemView.findViewById(R.id.xList_title);
             listShortDesc = itemView.findViewById(R.id.xList_short_description);
             listTags = itemView.findViewById(R.id.xList_tags);
+            listImage = itemView.findViewById(R.id.xList_image);
 
             imgButton = itemView.findViewById(R.id.xList_popup_button);
         }
 
+        /* Menu item method not in use
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -160,6 +177,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                     return false;
             }
         }
+        */
     }
 
     //EVERYTHING THAT HAS TO DO WITH THE DRAG AND DROP ANIMATIONS
@@ -201,9 +219,9 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     //this is so the lists can be filtered
-    protected class CustomListFilter extends Filter {
+    public class CustomListFilter extends Filter {
         @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
+        public FilterResults performFiltering(CharSequence constraint) {
             FilterResults results = new FilterResults();
             DataRepository myRep = DataRepository.getRepository();
             List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
@@ -279,7 +297,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
         @SuppressWarnings("unchecked")
         @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
+        public void publishResults(CharSequence constraint, FilterResults results) {
             mValues = (List<XListTagsSharesPojo>) results.values;
             notifyDataSetChanged();
         }
@@ -290,6 +308,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         return mFilter;
     }
 
+    //TODO modify when temporarily deleting
     private void deleteAtPositionIfConfirmed(final int position) {
         final XListTagsSharesPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;
@@ -298,10 +317,20 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+tempPojo.getXListModel().getXListTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
+
+                //Delete corresponding Image
+                if (tempPojo.getXListModel().getXImageLoc() != null) {
+                    (new ImageSaver(activityContext)).deleteFileByRelativePath(tempPojo.getXListModel().getXImageLoc());
+                }
+
+                deleteCorrespondingElementImages(activityContext,tempPojo.getXListModel().getXListID());
+
                 DataRepository myRep = DataRepository.getRepository();
-                myRep.deleteElementsByListID(tempPojo.getXListModel().getXListID());
-                myRep.deleteTags(tempPojo.getXTagModelList());
+                //myRep.deleteElementsByListID(tempPojo.getXListModel().getXListID()); //unnecessary because of propagation?
+                //myRep.deleteTags(tempPojo.getXTagModelList()); //unnecessary because of propagation?
+
                 myRep.deleteList(tempPojo.getXListModel());
+
                 //remove the List from the activity cache and notify the adapter
                 //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
                 mValues.remove(tempPojo);
@@ -320,5 +349,17 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             }
         });
         builder.show();
+    }
+
+    public void deleteCorrespondingElementImages(Context context, int ListID) {
+        ImageSaver imgSaver = new ImageSaver(context);
+        DataRepository myRep = DataRepository.getRepository();
+        List<XElemModel> elemModelList = myRep.getElementsByListID(ListID);
+        for (XElemModel elemModel: elemModelList) {
+            if (elemModel.getXImageLoc() != null) {
+                imgSaver.deleteFileByRelativePath(elemModel.getXImageLoc());
+            }
+        }
+
     }
 }

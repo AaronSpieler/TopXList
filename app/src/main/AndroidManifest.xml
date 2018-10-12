@@ -3,8 +3,11 @@
     package="com.whynoteasy.topxlist">
     <!--Request permission so im able to export to to html-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--Request permission so im able to save file to download folder & sharing functions-->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!--Request permission so im able to get files from galery-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!--Request permission so im able to saveFromBitmap file to download folder & sharing functions-->
+    <!--<uses-permission android:name="android.permission.INTERNET" />-->
 
     <application
         android:name="com.whynoteasy.topxlist.general.TopXListApplication"
@@ -15,8 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
+
         <activity
-            android:name="com.whynoteasy.topxlist.mainActivity.MainActivity"
+            android:name="com.whynoteasy.topxlist.general.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher"
@@ -39,79 +43,84 @@
         <activity
             android:name="com.whynoteasy.topxlist.listActivities.XListCreateActivity"
             android:label="@string/title_activity_xlist_create"
-            android:parentActivityName="com.whynoteasy.topxlist.mainActivity.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.general.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.whynoteasy.topxlist.listActivities.XListEditActivity"
             android:label="@string/title_activity_xlist_edit"
-            android:parentActivityName="com.whynoteasy.topxlist.mainActivity.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.general.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.mainActivity.MainActivity" />
+                android:value="com.whynoteasy.topxlist.general.MainActivity" />
         </activity>
         <activity
             android:name="com.whynoteasy.topxlist.elemActivities.XElemCreateActivity"
             android:label="@string/title_activity_xelem_create"
-            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
             android:name="com.whynoteasy.topxlist.elemActivities.XElemEditActivity"
             android:label="@string/title_activity_xelem_edit"
-            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
             android:name="com.whynoteasy.topxlist.elemActivities.XElemViewActivity"
             android:label="@string/title_activity_xelem_view"
-            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
-            android:name="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
+            android:name="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity"
             android:label="@string/title_activity_scrolling"
-            android:parentActivityName="com.whynoteasy.topxlist.mainActivity.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.general.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.mainActivity.MainActivity" />
+                android:value="com.whynoteasy.topxlist.general.MainActivity" />
         </activity>
         <activity
-            android:name="com.whynoteasy.topxlist.elemActivities.XListViewLongDescriptionActivity"
+            android:name="com.whynoteasy.topxlist.listActivities.XListViewLongDescriptionActivity"
             android:label="@string/title_activity_xlist_view_long_description"
-            android:parentActivityName="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
         </activity>
         <activity
             android:name="com.whynoteasy.topxlist.general.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName="com.whynoteasy.topxlist.mainActivity.MainActivity"
+            android:parentActivityName="com.whynoteasy.topxlist.general.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.mainActivity.MainActivity" />
+                android:value="com.whynoteasy.topxlist.general.MainActivity" />
         </activity>
+        <!--NOT IN USE: METHOD 1 of CROP SELECT TODO: REMOVE-->
+        <!--following is external cropping library-->
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
     </application>
 
 </manifest>

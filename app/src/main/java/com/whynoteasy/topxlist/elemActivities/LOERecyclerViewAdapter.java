@@ -1,27 +1,26 @@
-package com.whynoteasy.topxlist.listActivities;
+package com.whynoteasy.topxlist.elemActivities;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.elemActivities.XElemEditActivity;
-import com.whynoteasy.topxlist.elemActivities.XElemViewActivity;
-import com.whynoteasy.topxlist.listActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
-import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.ImageSaver;
 
 import java.util.List;
 
@@ -40,8 +39,9 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         this.activityContext = context;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.elem_card_final, parent, false);
         return new ViewHolder(view);
@@ -49,18 +49,19 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
         //Xlist_card, set background color if marked
         if (holder.mItem.isXElemMarked()) {
-            System.out.println("Now marked positive");
+            //Now marked
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
             holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded_green));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_card_tick));
         } else {
+            //Now unmarked
             holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightBlue));
             holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
             holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded));
@@ -71,6 +72,14 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         holder.elemTitle.setText(mValues.get(position).getXElemTitle());
         holder.elemNum.setText(mValues.get(position).getXElemNum()+".");
         holder.elemDescription.setText(mValues.get(position).getXElemDescription());
+
+        //show image if there is one
+        if (holder.mItem.getXImageLoc() == null) { //if no image is set
+            holder.elemImage.setVisibility(View.GONE);
+        } else { //loadFromFileName associated image
+            holder.elemImage.setImageBitmap((new ImageSaver(activityContext)).loadFileByRelativePath(holder.mItem.getXImageLoc()));
+            holder.elemImage.setVisibility(View.VISIBLE);
+        }
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,12 +117,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder /* implements PopupMenu.OnMenuItemClickListener*/ {
         final View mView;
         final CardView elemCard;
         final TextView elemNum;
         final TextView elemTitle;
         final TextView elemDescription;
+        final ImageView elemImage;
 
         //possibly useful to have a reference to the object itself later on
         XElemModel mItem;
@@ -129,10 +139,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             elemNum = itemView.findViewById(R.id.xElem_num);
             elemTitle = itemView.findViewById(R.id.xElem_title);
             elemDescription = itemView.findViewById(R.id.xElem_description);
+            elemImage = itemView.findViewById(R.id.xElem_image);
 
             imgButton = itemView.findViewById(R.id.xElem_popup_button);
+
         }
 
+        /* Menu click method not in use TODO delete
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
@@ -155,6 +168,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                     return false;
             }
         }
+        */
 
     }
 
@@ -166,7 +180,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         mValues.add(newPosition, tempElem);
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
-        myRep.changeAllListNumbersElem(tempElem,newPosition+1,oldPosition+1);
+        myRep.changeAllListNumbersUpdateElem(tempElem,newPosition+1,oldPosition+1);
         this.changeNumbersVisibly(newPosition, oldPosition);
     }
 
@@ -209,6 +223,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         }
     }
 
+    //TODO modify when temporarily deleting
     private void deleteAtPositionIfConfirmed(final int position) {
         final XElemModel theElement = mValues.get(position);
         AlertDialog.Builder builder;
@@ -217,13 +232,21 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
+
+                //Delete corresponding Image
+                if (theElement.getXImageLoc() != null) {
+                    (new ImageSaver(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
+                }
+
                 DataRepository myRep = DataRepository.getRepository();
+
                 myRep.deleteElem(theElement);
+
                 //remove the List from the activity cache and notify the adapter
                 //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
                 mValues.remove(theElement);
                 notifyItemRemoved(position);
+
                 makeNumChangesVisibleOnDeletion(position);
             }
         });

@@ -1,6 +1,5 @@
 package com.whynoteasy.topxlist.general;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.mainActivity.MainListOfListsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
     private FragmentManager fragMan;
