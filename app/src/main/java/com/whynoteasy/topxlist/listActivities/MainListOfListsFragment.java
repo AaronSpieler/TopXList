@@ -2,6 +2,7 @@ package com.whynoteasy.topxlist.listActivities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,41 +14,33 @@ import android.view.ViewGroup;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
-*/
+ */
+public class MainListOfListsFragment extends Fragment {
 
-public class ListOfElementsFragment extends Fragment {
-
+    //column count could be used so that on larger devices the cards are not stretched too wide
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
+
     private OnListFragmentInteractionListener mListener;
 
-    private static final String ARG_LIST_ID = "list-id";
+    private List<XListTagsSharesPojo> listOfListWithTags;
 
-    //the id of the lists who's elements are displayed
-    private int theListID;
+    private LOLRecyclerViewAdapter adapterRef;
 
-    //List of the Elements
-    //It is pulled onCreate, but should be updated every time it changes
-    private List<XElemModel> listOfElements;
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public ListOfElementsFragment() {
+    //Mandatory empty constructor
+    public MainListOfListsFragment() {
     }
 
-    public static ListOfElementsFragment newInstance(int columnCount, int listID) {
-        ListOfElementsFragment fragment = new ListOfElementsFragment();
+    public static MainListOfListsFragment newInstance(int columnCount) {
+        MainListOfListsFragment fragment = new MainListOfListsFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        args.putInt(ARG_LIST_ID, listID);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,24 +51,18 @@ public class ListOfElementsFragment extends Fragment {
 
         DataRepository myRep = DataRepository.getRepository();
 
+        //get the ListsWithTags for the Adapter
+        listOfListWithTags = myRep.getListsWithTagsShares();
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-            //this is where we get the listID from
-            theListID = getArguments().getInt(ARG_LIST_ID);
-        } else {
-            //because if we didn't get the list id its pointless to continue
-            System.err.println("The List of Elements Fragment did not get the List ID passed");
-            System.exit(0);
         }
-
-        //get the ListsWithTags for the Adapter
-        listOfElements = myRep.getElementsByListID(theListID);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_xelem_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_lol, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -86,18 +73,15 @@ public class ListOfElementsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            LOERecyclerViewAdapter tempAdapRef = new LOERecyclerViewAdapter(listOfElements, mListener, this.getActivity());
-            recyclerView.setAdapter(tempAdapRef);
+
+            //Instantiate and set the adapter
+            adapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
+            recyclerView.setAdapter(adapterRef);
 
             //The ItemTouchHelperAnimation Stuff
-            ElementTouchHelper swipeAndDragHelper = new ElementTouchHelper(tempAdapRef);
+            ListTouchHelper swipeAndDragHelper = new ListTouchHelper(adapterRef);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
-            touchHelper.attachToRecyclerView(recyclerView);
-
-            //For apparent smoothness, but it may make the recycler view uncrossable???
-            //recyclerView.setNestedScrollingEnabled(false);
-
-            return recyclerView;
+            touchHelper.attachToRecyclerView((RecyclerView) view);
         }
         return view;
     }
@@ -121,6 +105,12 @@ public class ListOfElementsFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(XElemModel item);
+        void onListFragmentInteraction(XListTagsSharesPojo item);
     }
+
+    //This is to get the adapter reference through the fragment: needed so the main view can tell the adapter to redraw
+    public LOLRecyclerViewAdapter getAdapterRef(){
+        return adapterRef;
+    }
+
 }

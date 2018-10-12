@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.objects;
+package com.whynoteasy.topxlist.dataObjects;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -50,9 +50,9 @@ public class XElemModel implements Comparable<XElemModel>{
     @ColumnInfo(name = "marked_status")
     private boolean xElemMarked;
 
-    //so far not in use
-    @ColumnInfo(name = "media_id")
-    private int xMediaID;
+    //relative path to image: image/listid_elemid.jpg or image/listid_elemid.png
+    @ColumnInfo(name = "image_loc")
+    private String xImageLoc;
 
     //Constructor
     @Ignore
@@ -62,16 +62,16 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemDescription = xElemDescription;
         this.xElemNum = xElemNum;
         this.xElemMarked = false;
-        this.xMediaID = 0;
+        this.xImageLoc = null;
     }
 
-    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, int xMediaID) {
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, String xImageLoc) {
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
         this.xElemDescription = xElemDescription;
         this.xElemNum = xElemNum;
         this.xElemMarked = false;
-        this.xMediaID = xMediaID;
+        this.xImageLoc = xImageLoc;
     }
 
     //Getters and Setters
@@ -120,12 +120,12 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemMarked = xElemMarked;
     }
 
-    public int getXMediaID() {
-        return xMediaID;
+    public String getXImageLoc() {
+        return xImageLoc;
     }
 
-    public void setXMediaID(int xMediaID) {
-        this.xMediaID = xMediaID;
+    public void setXImageLoc(String xImageLoc) {
+        this.xImageLoc = xImageLoc;
     }
 
     //Other Methods

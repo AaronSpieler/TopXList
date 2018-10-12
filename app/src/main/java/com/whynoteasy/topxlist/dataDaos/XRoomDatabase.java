@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.roomData;
+package com.whynoteasy.topxlist.dataDaos;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
@@ -8,10 +8,10 @@ import android.arch.persistence.room.migration.Migration;
 import android.support.annotation.NonNull;
 
 import com.whynoteasy.topxlist.general.TopXListApplication;
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListModel;
-import com.whynoteasy.topxlist.objects.XShareModel;
-import com.whynoteasy.topxlist.objects.XTagModel;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.dataObjects.XShareModel;
+import com.whynoteasy.topxlist.dataObjects.XTagModel;
 
 /**
  * Created by Whatever on 15.11.2017.
@@ -40,8 +40,8 @@ public abstract class XRoomDatabase extends RoomDatabase{
                     "PRIMARY KEY (`list_id`))");
             database.execSQL("INSERT INTO `lists` (`list_id`, `list_name`, `list_desc`, `list_long_desc`, `list_num`, `marked_status`) " +
                     "SELECT `xListID`, `xListTitle`, `xListShortDescription`, `xListLongDescription`, `xListNum`, `xListMarked` FROM XListModel");
-            database.execSQL("ALTER TABLE lists ADD media_id INTEGER DEFAULT 0 NOT NULL"); //default media id = 0
-            database.execSQL("ALTER TABLE lists ADD language TEXT DEFAULT \"en\" "); //default language english
+            database.execSQL("ALTER TABLE lists ADD image_loc TEXT ");
+            database.execSQL("ALTER TABLE lists ADD language TEXT DEFAULT \"en\" "); //global default language english
             database.execSQL("DROP TABLE XListModel");
         }
 
@@ -71,7 +71,7 @@ public abstract class XRoomDatabase extends RoomDatabase{
                     "PRIMARY KEY(`element_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE CASCADE ON UPDATE NO ACTION)");
             database.execSQL("INSERT INTO `elements` (`element_id`, `list_id`, `element_name`, `element_desc`, `element_num`, `marked_status`) " +
                     "SELECT `xElemID`, `xListIDForeign`, `xElemTitle`, `xElemDescription`, `xElemNum`, `xElemMarked` FROM XElemModel");
-            database.execSQL("ALTER TABLE elements ADD media_id INTEGER DEFAULT 0 NOT NULL"); //default media id = 0 meaning no media file
+            database.execSQL("ALTER TABLE elements ADD image_loc TEXT ");
             database.execSQL("DROP TABLE XElemModel");
             database.execSQL("CREATE INDEX `elements_list_idx` ON `elements` (`list_id`)"); //seems to be non deterministic? sometimes sql doesnt creste the index??
         }

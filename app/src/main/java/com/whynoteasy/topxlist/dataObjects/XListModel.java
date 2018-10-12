@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.objects;
+package com.whynoteasy.topxlist.dataObjects;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -48,10 +48,22 @@ public class XListModel implements Comparable<XListModel>{
     @ColumnInfo(name = "language")
     private String xListLanguage;
 
-    //so far not in use
-    @ColumnInfo(name = "media_id")
-    private int xMediaID;
+    //relative path to image: ./image/listid.jpg
+    @ColumnInfo(name = "image_loc")
+    private String xImageLoc;
 
+    @Ignore
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc) {
+        this.xListTitle = xListTitle;
+        this.xListShortDescription = xListShortDescription;
+        this.xListLongDescription = xListLongDescription;
+        this.xListNum = xListNum;
+        this.xListMarked = false;
+        this.xImageLoc = xImageLoc;
+        this.xListLanguage = Locale.getDefault().getLanguage();
+    }
+
+    //TODO REMOE! depreciated, however until conversion done, not possible to remove
     @Ignore
     public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum) {
         this.xListTitle = xListTitle;
@@ -59,17 +71,17 @@ public class XListModel implements Comparable<XListModel>{
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
         this.xListMarked = false;
-        this.xMediaID = 0;
+        this.xImageLoc = xImageLoc;
         this.xListLanguage = Locale.getDefault().getLanguage();
     }
 
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, int xMediaID, String xListLanguage) {
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc, String xListLanguage) {
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
         this.xListNum = xListNum;
         this.xListMarked = false;
-        this.xMediaID = xMediaID;
+        this.xImageLoc = xImageLoc;
         this.xListLanguage = xListLanguage;
     }
 
@@ -131,12 +143,12 @@ public class XListModel implements Comparable<XListModel>{
         this.xListLanguage = xListLanguage;
     }
 
-    public int getXMediaID() {
-        return xMediaID;
+    public String getXImageLoc() {
+        return xImageLoc;
     }
 
-    public void setXMediaID(int xMediaID) {
-        this.xMediaID = xMediaID;
+    public void setXImageLoc(String xImageLoc) {
+        this.xImageLoc = xImageLoc;
     }
 
     //Other Methods

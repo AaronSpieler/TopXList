@@ -16,5 +16,8 @@
     <dimen name="card_elevation_defaults">1dp</dimen>
     <dimen name="card_target_elevation_on_drag">8dp</dimen>
     <dimen name="nav_image_margins">8dp</dimen>
+    <dimen name="card_image_margins">0dp</dimen>
+    <dimen name="image_pane_button_seperator_margin">2dp</dimen>
+    <dimen name="image_buttons_height">40dp</dimen>
 
 </resources>

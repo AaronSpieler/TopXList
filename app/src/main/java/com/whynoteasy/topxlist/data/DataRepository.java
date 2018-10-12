@@ -3,11 +3,11 @@ package com.whynoteasy.topxlist.data;
 import android.os.AsyncTask;
 
 import com.whynoteasy.topxlist.general.TopXListApplication;
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListModel;
-import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
-import com.whynoteasy.topxlist.objects.XTagModel;
-import com.whynoteasy.topxlist.roomData.XRoomDatabase;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.dataObjects.XTagModel;
+import com.whynoteasy.topxlist.dataDaos.XRoomDatabase;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -182,7 +182,8 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    public void changeAllListNumbersElem(XElemModel xElemModel, int newPos, int oldPos){
+    //changesAllListNumbersAndUpdatesElement
+    public void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos){
         new UpdateElemNumAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, newPos, oldPos));
     }
     private static class UpdateElemNumAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{

@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root_xElem_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
-        app:contentPadding="@dimen/negative_content_padding"
         android:id="@+id/xElem_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/middleLightBlue"
         app:cardCornerRadius="@dimen/card_defaults"
         app:cardElevation="@dimen/card_elevation_defaults"
-        app:cardUseCompatPadding="true"
         app:cardPreventCornerOverlap="false"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="@dimen/negative_content_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginBottom="4dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -55,10 +56,10 @@
                     android:id="@+id/xElem_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_margin_in_between"
-                    android:layout_marginEnd="@dimen/card_margins"
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="@dimen/card_margins"
+                    android:layout_marginEnd="@dimen/card_margins"
+                    android:layout_marginBottom="@dimen/card_margin_in_between"
                     android:text="@string/test_title_text"
                     android:textColor="@color/superDarkBlue"
                     android:textSize="18sp"
@@ -89,27 +90,44 @@
                 android:id="@+id/xElem_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/card_bottom_rounded"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/xElem_header"
-                android:background="@drawable/card_bottom_rounded">
+                app:layout_constraintTop_toBottomOf="@+id/xElem_header">
+
+                <ImageView
+                    android:id="@+id/xElem_image"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_image_margins"
+                    android:layout_marginTop="@dimen/card_image_margins"
+                    android:layout_marginEnd="@dimen/card_image_margins"
+                    android:layout_marginBottom="@dimen/card_image_margins"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/image_description"
+                    app:layout_constraintBottom_toTopOf="@+id/xElem_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/stock_19by9and720p" />
 
                 <TextView
                     android:id="@+id/xElem_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_margins"
-                    android:layout_marginEnd="@dimen/card_margins"
                     android:layout_marginStart="@dimen/round_edge_card_margins"
                     android:layout_marginTop="@dimen/card_margin_in_between"
+                    android:layout_marginEnd="@dimen/card_margins"
+                    android:layout_marginBottom="@dimen/card_margins"
+                    android:ellipsize="end"
+                    android:maxLines="7"
                     android:text="@string/test_short_description_text"
                     android:textColor="@color/superDarkBlue"
-                    android:maxLines="7"
-                    android:ellipsize="end"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xElem_image"
                     app:layout_constraintVertical_bias="0.0" />
 
             </android.support.constraint.ConstraintLayout>

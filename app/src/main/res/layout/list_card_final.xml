@@ -20,7 +20,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginBottom="@dimen/card_defaults">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -77,6 +78,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/xList_header">
 
+                <ImageView
+                    android:id="@+id/xList_image"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/card_image_margins"
+                    android:layout_marginTop="@dimen/card_image_margins"
+                    android:layout_marginEnd="@dimen/card_image_margins"
+                    android:layout_marginBottom="@dimen/card_image_margins"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/image_description"
+                    app:layout_constraintBottom_toTopOf="@+id/xList_short_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/stock_19by9and720p" />
+
                 <TextView
                     android:id="@+id/xList_short_description"
                     android:layout_width="0dp"
@@ -93,7 +110,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/xList_image"
                     app:layout_constraintVertical_bias="0.0" />
 
             </android.support.constraint.ConstraintLayout>

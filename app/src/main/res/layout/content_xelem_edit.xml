@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.whynoteasy.topxlist.listActivities.XListCreateActivity"
-    >
+    android:importantForAutofill="no"
+    tools:targetApi="o">
 
     <ScrollView
         android:id="@+id/xelem_edit_cards_scroller"
@@ -16,8 +17,10 @@
         android:layout_marginRight="@dimen/card_defaults"
         app:layout_constraintBottom_toTopOf="@+id/xelem_edit_save_button"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/xelem_cards_constraint"
@@ -62,12 +65,13 @@
                         android:background="@drawable/create_and_edit_card_right_rounded"
                         android:ems="10"
                         android:hint="@string/xelem_num_input_hint"
+                        android:importantForAutofill="no"
                         android:inputType="number"
                         android:maxLength="10"
+                        android:minHeight="40dp"
                         android:padding="@dimen/card_margins"
                         android:textColor="@color/superDarkBlue"
                         android:textSize="14sp"
-                        android:minHeight="40dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/xelem_num_label"
@@ -114,16 +118,17 @@
                     <EditText
                         android:id="@+id/xelem_title_input"
                         android:layout_width="0dp"
-                        android:minHeight="40dp"
                         android:layout_height="wrap_content"
                         android:background="@drawable/create_and_edit_card_right_rounded"
                         android:ems="10"
                         android:hint="@string/xelem_title_input_hint"
+                        android:importantForAutofill="no"
                         android:inputType="text"
                         android:maxLength="255"
+                        android:minHeight="40dp"
                         android:padding="@dimen/card_margins"
-                        android:textColor="@color/superDarkBlue"
 
+                        android:textColor="@color/superDarkBlue"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -132,6 +137,108 @@
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/xelem_image_panel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/card_defaults"
+                app:cardElevation="@dimen/card_elevation_defaults"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="@dimen/negative_content_padding"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/xelem_name_text">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/xelem_image_panel_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/xelem_image_panel_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/create_and_edit_card_top_rounded"
+                        android:lineSpacingExtra="0sp"
+                        android:paddingStart="@dimen/round_edge_card_margins"
+                        android:padding="@dimen/card_margins"
+                        android:paddingEnd="@dimen/round_edge_card_margins"
+                        android:text="@string/image_panel_desc"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/superDarkBlue"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/xelem_image_panel_image"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/card_image_margins"
+                        android:layout_marginTop="@dimen/card_image_margins"
+                        android:layout_marginEnd="@dimen/card_image_margins"
+                        android:layout_marginBottom="@dimen/card_image_margins"
+                        android:adjustViewBounds="true"
+                        android:contentDescription="@string/image_description"
+                        android:src="@drawable/stock_19by9and720p"
+                        app:layout_constraintBottom_toTopOf="@+id/xelem_image_panel_button_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel_label" />
+
+                    <LinearLayout
+                        android:id="@+id/xelem_image_panel_button_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:background="@drawable/create_and_edit_card_bottom_rounded"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel_image">
+
+                        <Button
+                            android:id="@+id/xelem_image_button_left"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/image_buttons_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/create_and_edit_card_left_bottom_rounded_button"
+                            android:gravity="center"
+                            android:padding="@dimen/card_margins"
+                            android:paddingStart="@dimen/round_edge_card_margins"
+                            android:paddingEnd="@dimen/round_edge_card_margins"
+                            android:text="@string/image_pane_delete_button_text"
+                            android:textAlignment="center"
+                            android:textColor="@color/lightBlue"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"/>
+
+                        <Button
+                            android:id="@+id/xelem_image_button_right"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/image_buttons_height"
+                            android:layout_weight="1"
+                            android:background="@drawable/create_and_edit_right_bottom_rounded"
+                            android:gravity="center"
+                            android:padding="@dimen/card_margins"
+                            android:paddingStart="@dimen/round_edge_card_margins"
+                            android:paddingEnd="@dimen/round_edge_card_margins"
+                            android:text="@string/image_pane_change_button_text"
+                            android:textAlignment="center"
+                            android:textColor="@color/lightBlue"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            />
+
+                    </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
 
             <android.support.v7.widget.CardView
                 android:id="@+id/xelem_desc_text"
@@ -143,7 +250,7 @@
                 app:contentPadding="@dimen/negative_content_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/xelem_name_text">
+                app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel">
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/xelem_desc_constraint"
@@ -156,10 +263,10 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/create_and_edit_card_top_rounded"
                         android:lineSpacingExtra="0sp"
-                        android:paddingTop="@dimen/card_margins"
-                        android:paddingBottom="@dimen/card_margin_in_between"
                         android:paddingStart="@dimen/round_edge_card_margins"
+                        android:paddingTop="@dimen/card_margins"
                         android:paddingEnd="@dimen/round_edge_card_margins"
+                        android:paddingBottom="@dimen/card_margin_in_between"
                         android:text="@string/xelem_desc_title"
                         android:textAlignment="textStart"
                         android:textColor="@color/superDarkBlue"
@@ -176,12 +283,13 @@
                         android:background="@drawable/create_and_edit_card_bottom_rounded"
                         android:ems="10"
                         android:hint="@string/xelem_description_input_hint"
+                        android:importantForAutofill="no"
                         android:inputType="textMultiLine"
                         android:maxLength="8192"
-                        android:paddingBottom="@dimen/card_margins"
-                        android:paddingTop="@dimen/card_margin_in_between"
                         android:paddingStart="@dimen/round_edge_card_margins"
+                        android:paddingTop="@dimen/card_margin_in_between"
                         android:paddingEnd="@dimen/round_edge_card_margins"
+                        android:paddingBottom="@dimen/card_margins"
                         android:textColor="@color/superDarkBlue"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="parent"

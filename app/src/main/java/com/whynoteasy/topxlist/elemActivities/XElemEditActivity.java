@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,32 +22,46 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.objects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.ImageSaver;
 
+import java.io.File;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XElemEditActivity extends AppCompatActivity {
 
+    private EditText titleEditView;
+    private EditText descriptionEditView;
+    private TextView numView;
+    private CardView markCard;
+
     private XElemModel currentElement;
     private int currentElementID;
+    private int lastPossibleNumber;
+    private boolean markWasEdited = false;
+    private boolean mMarked;
+
+    private ImageView imageView;
+    private Button imageDeleteButton;
+    private Button imageSelectChangeButton;
+    private Bitmap currentImageBitmap;
+
+    private boolean imageSet = false;
+    private boolean imageWasSet = false;
+    private boolean imageChanged = false;
+
     private DataRepository myRep;
 
     private Activity thisActivity;
-
-    private EditText titleEditView;
-    private EditText descriptionEditView;
-
-    private boolean markWasEdited = false;
-
-    private CardView markCard;
-    private boolean mMarked;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -55,7 +72,6 @@ public class XElemEditActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         thisActivity = this;
-        myRep = DataRepository.getRepository();
 
         //Get the List that is relevant
         if (savedInstanceState == null) {
@@ -71,7 +87,8 @@ public class XElemEditActivity extends AppCompatActivity {
             currentElementID = (int) savedInstanceState.getSerializable("X_ELEM_ID");
         }
 
-        //get the List with its Tags
+        //get the current Element
+        myRep = DataRepository.getRepository();
         currentElement = myRep.getElemByID(currentElementID);
 
         //set the title
@@ -81,6 +98,10 @@ public class XElemEditActivity extends AppCompatActivity {
             ab.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.darkBlue)));
             ab.setTitle("Edit: " + currentElement.getXElemTitle());
         }
+
+        //set the
+        lastPossibleNumber = myRep.getElemCountByListID(currentElement.getXListIDForeign())+1;
+        numView = findViewById(R.id.xelem_num_input);
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
@@ -132,59 +153,63 @@ public class XElemEditActivity extends AppCompatActivity {
         elemSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //retrieving the inputs
-                String tempTitle = titleEditView.getText().toString().trim();
-
-                if (tempTitle.length() == 0){
-                    //alert user that no title was entered
-                    Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
-                    mySnackbar.show();
-                    return;
-                } else if (!tempTitle.equals(currentElement.getXElemTitle())) {
-                    if (titleAlreadyExists(tempTitle)) {
-                        //alert user that no duplicate title was entered
-                        Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
-                        mySnackbar.show();
-                        return;
-                    }
-                }
-
-                String tempDescription = descriptionEditView.getText().toString().trim();
-                String tempNum = ((TextView)findViewById(R.id.xelem_num_input)).getText().toString().trim();
-
-                //update the necessary values
-                try {
-                    int tempIntNum = Integer.parseInt(tempNum);
-                    int lastPossibleNum = myRep.getElemCountByListID(currentElement.getXListIDForeign())+1;
-
-                    if (tempIntNum < 1) {
-                        Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
-                        mySnackbar.show();
-                        return;
-                    } else {
-                        if (tempIntNum >= lastPossibleNum) {
-                            tempIntNum = lastPossibleNum;
-                        }
-                        int oldPos = currentElement.getXElemNum();
-                        currentElement.setXElemNum(lastPossibleNum);
-                        currentElement.setXElemDescription(tempDescription);
-                        currentElement.setXElemTitle(tempTitle);
-                        currentElement.setXElemMarked(mMarked);
-
-                        myRep.changeAllListNumbersElem(currentElement, tempIntNum, oldPos);
-                    }
-                }catch (Exception e){
-                    Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
-                    mySnackbar.show();
-                    return;
-                }
-
-                //return to parent activity
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
-                NavUtils.navigateUpTo(thisActivity,intent);
+                saveElemFinally(view);
             }
         });
+
+        //The image View
+        imageView = findViewById(R.id.xelem_image_panel_image);
+
+        //The delete Button for images
+        imageDeleteButton = findViewById(R.id.xelem_image_button_left);
+        imageDeleteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                changeUIInterfaceToNoImage();
+            }
+        });
+
+        //The select/change Button for images
+        imageSelectChangeButton = findViewById(R.id.xelem_image_button_right);
+        imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO: ask for external read permissions
+                //start selection and crop
+                CropImage.activity()
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setMaxCropResultSize(1280,720)
+                        .setAspectRatio(16,9)
+                        .setFixAspectRatio(true)
+                        .start(thisActivity);
+            }
+        });
+
+        //change UI to no image if no Image Set
+        imageSet = (currentElement.getXImageLoc() != null);
+        if (imageSet){
+            imageWasSet = true; //only indicator that if there is a new image, it was changed
+            imageView.setImageBitmap((new ImageSaver(thisActivity)).loadFileByRelativePath(currentElement.getXImageLoc()));
+        } else {
+            changeUIInterfaceToNoImage();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //getting the image that was selected & cropped
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                ImageSaver imgSaver = new ImageSaver(thisActivity);
+                currentImageBitmap = imgSaver.convertUriToBitmap(resultUri);
+                imageView.setImageBitmap(currentImageBitmap);
+                imageChanged = true;
+                changeUIInterfaceToImage();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
     }
 
     @Override
@@ -219,32 +244,36 @@ public class XElemEditActivity extends AppCompatActivity {
         String tempDescription = descriptionEditView.getText().toString().trim();
 
         //if there is nothing entered so far
-        if (!markWasEdited && currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){
+        if (!(!imageSet && imageWasSet) && !imageChanged && !markWasEdited && currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){
             //exit without saving anything
             Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
             intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
-            //FROM HERE ON ITS THE ALERT DIALOG
-            AlertDialog.Builder builder;
-            builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
-            builder.setTitle(R.string.alert_dialog_nosave_edit_exit_title_element);
-            builder.setMessage(R.string.alert_dialog_nosave_edit_exit_message_element);
-            builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    //exit without saving anything
-                    Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                    intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
-                    NavUtils.navigateUpTo(thisActivity,intent);
-                }
-            });
-            builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    // do nothing
-                }
-            });
-            builder.show();
+            alertUserUnsavedChanges();
         }
+    }
+
+    private void alertUserUnsavedChanges() {
+        //FROM HERE ON ITS THE ALERT DIALOG
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
+        builder.setTitle(R.string.alert_dialog_nosave_edit_exit_title_element);
+        builder.setMessage(R.string.alert_dialog_nosave_edit_exit_message_element);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //exit without saving anything
+                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+                NavUtils.navigateUpTo(thisActivity,intent);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+        builder.show();
     }
 
     private boolean titleAlreadyExists(String newTitle) {
@@ -271,8 +300,13 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\"+"+currentElement.getXElemTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //delete the Elements of the List and the List Itself (Tags are automatically deleted because of Room and foreignKeyCascade on delete)
+
+                if (currentElement.getXImageLoc() != null) {
+                    (new ImageSaver(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
+                }
+
                 myRep = DataRepository.getRepository();
+
                 myRep.deleteElem(currentElement);
 
                 //exit to listView
@@ -287,6 +321,96 @@ public class XElemEditActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    private void  saveElemFinally(View view) {
+        //retrieving the inputs
+        String tempTitle = titleEditView.getText().toString().trim();
+
+        if (tempTitle.length() == 0){
+            //alert user that no title was entered
+            Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
+            mySnackbar.show();
+            return;
+        } else if (!tempTitle.equals(currentElement.getXElemTitle())) {
+            if (titleAlreadyExists(tempTitle)) {
+                //alert user that no duplicate title was entered
+                Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
+                mySnackbar.show();
+                return;
+            }
+        }
+
+        String tempDescription = descriptionEditView.getText().toString().trim();
+
+        //TODO check if this works out
+        Integer newPos = 0;
+        try {
+            newPos = Integer.parseInt(numView.getText().toString().trim());
+        } catch (Exception e) {
+            Snackbar mySnackbar = Snackbar.make(view, R.string.no_proper_number_entered, LENGTH_SHORT);
+            mySnackbar.show();
+            return;
+        }
+
+        //update image path if appropriate
+        ImageSaver imgSaver = new ImageSaver(thisActivity);
+        if (imageSet) {
+            if (imageWasSet) {
+                if (imageChanged) {
+                    imgSaver.reSaveFromBitmap(currentImageBitmap, currentElement.getXImageLoc()); //actually save
+                }
+            } else { //image set first
+                File temp = imgSaver.saveFromBitmapUniquely(currentImageBitmap); //actually save
+                String relativePath = imgSaver.getRelativePathOfImage(temp.getName());
+                currentElement.setXImageLoc(relativePath);
+            }
+        } else { //change image path to empty if appropriate
+            if (imageWasSet) { //if there was image, but deleted
+                imgSaver.deleteFileByRelativePath(currentElement.getXImageLoc());
+                currentElement.setXImageLoc(null);
+            }
+        }
+
+        //update the necessary values
+        if (newPos < 1) {
+            Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
+            mySnackbar.show();
+            return;
+        } else {
+            if (newPos >= lastPossibleNumber) {
+                newPos = lastPossibleNumber;
+            }
+
+            int oldPos = currentElement.getXElemNum();
+            currentElement.setXElemNum(lastPossibleNumber);
+            currentElement.setXElemDescription(tempDescription);
+            currentElement.setXElemTitle(tempTitle);
+            currentElement.setXElemMarked(mMarked);
+
+            myRep.changeAllListNumbersUpdateElem(currentElement, newPos, oldPos);
+        }
+
+        //return to parent activity
+        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+        NavUtils.navigateUpTo(thisActivity,intent);
+    }
+
+    private void changeUIInterfaceToNoImage(){
+        imageSet = false;
+        imageDeleteButton.setVisibility(View.GONE);
+        imageView.setVisibility(View.GONE); //image removed
+        imageSelectChangeButton.setBackground(ContextCompat.getDrawable(thisActivity, R.drawable.create_and_edit_card_bottom_rounded_button));
+        imageSelectChangeButton.setText(R.string.image_pane_select_button_text);
+    }
+
+    private void changeUIInterfaceToImage(){
+        imageSet = true;
+        imageDeleteButton.setVisibility(View.VISIBLE); //for creating no image exists
+        imageView.setVisibility(View.VISIBLE);
+        imageSelectChangeButton.setBackground(ContextCompat.getDrawable(this, R.drawable.create_and_edit_right_bottom_rounded));
+        imageSelectChangeButton.setText(R.string.image_pane_change_button_text);
     }
 
 }

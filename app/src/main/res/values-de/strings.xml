@@ -15,6 +15,8 @@
     <string name="title_activity_scrolling">Listen Ansicht</string>
     <string name="title_activity_xlist_view_long_description">Listen Lange Beschreibung Ansicht</string>
     <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_gallery_pick_image">Galeriewähler</string>
+
 
     <!--Not in Use currently-->
     <string name="navigation_drawer_open">Öffne navigations Menu</string>
@@ -156,5 +158,12 @@
     <string name="usability_category_title">Nutzbarkeit Einstellungen:</string>
     <string name="store_setting_summary">Eine Kopie aller Listen wird online gespeichert. Dies ist notwendig um kompliziertere Teilungsoptionen zu ermäglichen. Sie müssen eingeloggt sein, um diese Einstellung zu aktivieren.</string>
     <string name="autosave_setting_summary">Sie müssen nicht mehr \'Änderungen Speichern\' klicken. Dies geschieht nun automatisch.</string>
+
+    <string name="image_description">dein Bild</string>
+    <string name="image_pane_delete_button_text">Löschen</string>
+    <string name="image_pane_select_button_text">Auswählen</string>
+    <string name="image_pane_change_button_text">Ändern</string>
+    <string name="image_panel_desc">Bild: </string>
+
 
 </resources>

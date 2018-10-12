@@ -1,9 +1,9 @@
 package com.whynoteasy.topxlist.data;
 
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListModel;
-import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
-import com.whynoteasy.topxlist.objects.XTagModel;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.dataObjects.XTagModel;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ public interface DatabaseSpecification {
         public abstract XElemModel getElemByID(int elemID);
 
         //CHANGE lIST NUMBERS AFTER MOVEMENT
-        public abstract void changeAllListNumbersElem(XElemModel xElemModel, int newPos, int oldPos);
+        public abstract void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos);
 
         //INSERT ELEMENT AT POS
         public abstract void insertElemAtPos(XElemModel xElemModel, int thePos);
@@ -73,7 +73,7 @@ public interface DatabaseSpecification {
         public abstract long insertList(XListModel xListModel);
 
         //DELETE
-        public abstract void deleteList(XListModel xListModel);
+        void deleteList(XListModel xListModel);
 
         //UPDATE
         public abstract void updateList(XListModel xListModel);

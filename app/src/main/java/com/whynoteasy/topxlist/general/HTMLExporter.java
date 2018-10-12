@@ -8,8 +8,8 @@ import android.view.View;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.objects.XElemModel;
-import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import java.io.File;
 import java.io.FileOutputStream;

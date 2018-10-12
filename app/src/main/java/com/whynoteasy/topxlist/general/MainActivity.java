@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.mainActivity;
+package com.whynoteasy.topxlist.general;
 
 
 import android.app.SearchManager;
@@ -24,11 +24,11 @@ import android.view.MenuItem;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.data.DataRepository;
-import com.whynoteasy.topxlist.general.HTMLExporter;
-import com.whynoteasy.topxlist.general.SettingsActivity;
+import com.whynoteasy.topxlist.listActivities.LOLRecyclerViewAdapter;
+import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.objects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
+import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {

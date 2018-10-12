@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.objects;
+package com.whynoteasy.topxlist.dataObjects;
 
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Relation;

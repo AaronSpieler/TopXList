@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.objects;
+package com.whynoteasy.topxlist.dataObjects;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;

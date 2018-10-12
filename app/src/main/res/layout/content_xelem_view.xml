@@ -7,64 +7,109 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.whynoteasy.topxlist.elemActivities.XElemViewActivity"
     tools:showIn="@layout/activity_xelem_view"
-    android:layout_marginLeft="@dimen/card_defaults"
-    android:layout_marginRight="@dimen/card_defaults">
+    android:importantForAutofill="no"
+    tools:targetApi="o">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/xelem_desc_text"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/card_defaults"
-        app:cardElevation="@dimen/card_elevation_defaults"
-        app:cardUseCompatPadding="true"
-        app:contentPadding="@dimen/negative_content_padding"
+        android:layout_marginLeft="@dimen/card_defaults"
+        android:layout_marginRight="@dimen/card_defaults"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/xelem_view_desc_constraint"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/card_defaults"
+            android:paddingTop="@dimen/card_defaults">
 
-            <TextView
-                android:id="@+id/xelem_view_desc_label"
-                android:layout_width="0dp"
+            <android.support.v7.widget.CardView
+                android:id="@+id/xelem_image_panel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/card_top_rounded"
-                android:lineSpacingExtra="0sp"
-                android:paddingTop="@dimen/card_margins"
-                android:paddingBottom="@dimen/card_margin_in_between"
-                android:paddingStart="@dimen/round_edge_card_margins"
-                android:paddingEnd="@dimen/round_edge_card_margins"
-                android:text="@string/xelem_desc_title"
-                android:textAlignment="textStart"
-                android:textColor="@color/superDarkBlue"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                app:cardCornerRadius="@dimen/card_defaults"
+                app:cardElevation="@dimen/card_elevation_defaults"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="@dimen/negative_content_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/xelem_view_desc_input"
-                android:layout_width="0dp"
+                <ImageView
+                    android:id="@+id/xelem_image_panel_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/image_description"
+                    android:src="@drawable/stock_19by9and720p"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:focusedByDefault="true"/>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/xelem_desc_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/create_and_edit_card_bottom_rounded"
-                android:ems="10"
-                android:hint="@string/xelem_description_input_hint"
-                android:inputType="textMultiLine"
-                android:paddingBottom="@dimen/card_margins"
-                android:paddingTop="@dimen/card_margin_in_between"
-                android:paddingStart="@dimen/round_edge_card_margins"
-                android:paddingEnd="@dimen/round_edge_card_margins"
-                android:textColor="@color/superDarkBlue"
-
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:cardCornerRadius="@dimen/card_defaults"
+                app:cardElevation="@dimen/card_elevation_defaults"
+                app:cardUseCompatPadding="true"
+                app:contentPadding="@dimen/negative_content_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/xelem_view_desc_label" />
+                app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/xelem_view_desc_constraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/xelem_view_desc_label"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/card_top_rounded"
+                        android:lineSpacingExtra="0sp"
+                        android:paddingTop="@dimen/card_margins"
+                        android:paddingBottom="@dimen/card_margin_in_between"
+                        android:paddingStart="@dimen/round_edge_card_margins"
+                        android:paddingEnd="@dimen/round_edge_card_margins"
+                        android:text="@string/xelem_desc_title"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/superDarkBlue"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/xelem_view_desc_input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/create_and_edit_card_bottom_rounded"
+                        android:ems="10"
+                        android:hint="@string/xelem_description_input_hint"
+                        android:paddingBottom="@dimen/card_margins"
+                        android:paddingTop="@dimen/card_margin_in_between"
+                        android:paddingStart="@dimen/round_edge_card_margins"
+                        android:paddingEnd="@dimen/round_edge_card_margins"
+                        android:textColor="@color/superDarkBlue"
+                        android:focusable="false"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/xelem_view_desc_label"
+                        android:importantForAutofill="no" />
+                </android.support.constraint.ConstraintLayout>
+            </android.support.v7.widget.CardView>
+
         </android.support.constraint.ConstraintLayout>
-    </android.support.v7.widget.CardView>
+
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
