@@ -83,14 +83,8 @@ public class TopXListApplication extends Application {
             File old = new File(imageUri.getPath());
             File old2 = new File(imageUri2.getPath());
 
-            System.out.println(old.getPath());
-
             old.delete();
             old2.delete();
-
-            System.out.println("Exists?: " + old.exists());
-            System.out.println("Exists?: " + old2.exists());
-
 
             //this is all related to the creation and insertion of the first card
             //Setting up a list and Card

@@ -3,7 +3,7 @@
     <string name="app_name">Top X List</string>
 
     <string name="search_title_main">Listen Filter</string>
-    <string name="search_hint">Filtere Listen durch #tags oder Schhlüsselwörter</string>
+    <string name="search_hint">Filtere durch #tags oder Schhlüsselwörter</string>
 
     <!--Activity names-->
     <string name="title_activity_main">Top X List</string>
@@ -120,19 +120,24 @@
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_element">Verlassen ohne zu speichern?</string>
-    <string name="alert_dialog_nosave_exit_message_element">Sicher, dass sie ohne das Element zu speichern verlassen wollen?</string>
+    <string name="alert_dialog_nosave_exit_message_element">Clicke SPEICHERN um zu verlassen mit Speichern.</string>
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_list">Verlassen ohne zu speichern?</string>
-    <string name="alert_dialog_nosave_exit_message_list">Sicher, dass sie ohne die Liste zu speichern verlassen wollen?</string>
+    <string name="alert_dialog_nosave_exit_message_list">Clicke SPEICHERN um zu verlassen mit Speichern.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
-    <string name="alert_dialog_nosave_edit_exit_title_element">Verlassen ohne die Veränderungen zu speichern?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_element">Sicher, dass sie ohne die Änderungen am Element zu speichern verlassen wollen?</string>
+    <string name="alert_dialog_nosave_edit_exit_title_element">Verlassen ohne die Änderungen zu speichern?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_element">Clicke SPEICHERN um zu verlassen mit Speichern der Änderungen.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
-    <string name="alert_dialog_nosave_edit_exit_title_list">Verlassen ohne die Veränderungen zu speichern?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_list">Sicher, dass sie ohne die Änderungen an der Liste zu speichern verlassen wollen?</string>
+    <string name="alert_dialog_nosave_edit_exit_title_list">Verlassen ohne die Änderungen zu speichern?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">Clicke SPEICHERN um zu verlassen mit Speichern der Änderungen.</string>
+
+    <!--Alert Dialog Options-->
+    <string name="alert_dialog_save">Speichern</string>
+    <string name="alert_dialog_cancel">Abbrechen</string>
+    <string name="alert_dialog_exit">Verlassen</string>
 
     <string name="no_title_entered">Es wurde kein Titel eingegeben.</string>
     <string name="title_already_exists">Titel existiert bereits.</string>
@@ -151,19 +156,30 @@
     <string name="sidemenu_public_lists">Öffentliche Listen stöbern</string>
     <string name="sidemenu_export">Exportieren (HTML)</string>
 
-    <string name="sidemenu_settings">Einstellungen</string>
-    <string name="store_setting_title">Kopien Online Speichern</string>
-    <string name="autosave_setting_title">Automatisch Änderungen speichern</string>
-    <string name="store_category_title">Datenspeicherungs Einstellungen:</string>
-    <string name="usability_category_title">Nutzbarkeit Einstellungen:</string>
-    <string name="store_setting_summary">Eine Kopie aller Listen wird online gespeichert. Dies ist notwendig um kompliziertere Teilungsoptionen zu ermäglichen. Sie müssen eingeloggt sein, um diese Einstellung zu aktivieren.</string>
-    <string name="autosave_setting_summary">Sie müssen nicht mehr \'Änderungen Speichern\' klicken. Dies geschieht nun automatisch.</string>
-
     <string name="image_description">dein Bild</string>
     <string name="image_pane_delete_button_text">Löschen</string>
     <string name="image_pane_select_button_text">Auswählen</string>
     <string name="image_pane_change_button_text">Ändern</string>
     <string name="image_panel_desc">Bild: </string>
+
+    <!--Concerned with the preferences/settings-->
+    <string name="sidemenu_settings">Einstellungen</string>
+
+    <string name="preference_layout_usability">Handhabung</string>
+    <string name="usability_category_title">Usability Settings:</string>
+
+    <string name="auto_save_setting_title">Änderungen automatisch speichern</string>
+    <string name="auto_save_setting_summary">Änderungen werden automatisch gespeichert, außer wenn abgebrochen wird.</string>
+
+    <string name="pref_title_quite_delete">Löschen bestätigen</string>
+    <string name="pref_summary_quiet_delete">Jede Art von Löschung muss bestätigt werden.</string>
+
+    <string name="preference_layout_appearance">Aussehen</string>
+    <string name="appearance_category_title">Aussehen</string>
+
+    <string name="pref_title_image_size">Bildgröße</string>
+    <string name="pref_summary_image_size">Bildgröße in Pixel. Mehr sieht besser aus, kostet aber mehr Speicherplatz und Ladezeit Bildverhältnis immer 16x9.</string>
+
 
 
 </resources>

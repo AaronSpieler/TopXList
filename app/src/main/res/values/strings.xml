@@ -2,7 +2,7 @@
     <string name="app_name">Top X List</string>
 
     <string name="search_title_main">List Filter</string>
-    <string name="search_hint">Filter lists by #tags or keywords</string>
+    <string name="search_hint">Filter by #tags or keywords</string>
 
     <!--Activity names-->
     <string name="title_activity_main">Top X List</string>
@@ -119,19 +119,24 @@
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_element">Exit without saving?</string>
-    <string name="alert_dialog_nosave_exit_message_element">Are you sure you want to exit without saving the Element?</string>
+    <string name="alert_dialog_nosave_exit_message_element">Click SAVE to exit with saving.</string>
 
-    <!--Alert Dialog Exit NoSave Element-->
+    <!--Alert Dialog Exit NoSave List-->
     <string name="alert_dialog_nosave_exit_title_list">Exit without saving?</string>
-    <string name="alert_dialog_nosave_exit_message_list">Are you sure you want to exit without saving the List?</string>
+    <string name="alert_dialog_nosave_exit_message_list">Click SAVE to exit with saving.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_element">Exit without saving changes?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_element">Are you sure you want to exit without saving changes to Element?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_element">Click SAVE to exit with saving changes.</string>
 
-    <!--Alert Dialog Exit NoSave Edit Element-->
+    <!--Alert Dialog Exit NoSave Edit List-->
     <string name="alert_dialog_nosave_edit_exit_title_list">Exit without saving changes?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_list">Are you sure you want to exit without saving changes to List?</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">Click SAVE to exit with saving changes.</string>
+
+    <!--Alert Dialog Options-->
+    <string name="alert_dialog_save">Save</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_exit">Exit</string>
 
     <string name="no_title_entered">Not title was entered.</string>
     <string name="title_already_exists">Title already exists.</string>
@@ -150,19 +155,30 @@
     <string name="sidemenu_public_lists">Browse Public Lists</string>
     <string name="sidemenu_export">Export (HTML)</string>
 
-    <string name="sidemenu_settings">Settings</string>
-    <string name="store_setting_title">Store Copy Online</string>
-    <string name="autosave_setting_title">Automatically save changes</string>
-    <string name="store_category_title">Storage Settings:</string>
-    <string name="usability_category_title">Usability Settings:</string>
-    <string name="store_setting_summary">A copy of all lists is stored online. This is necessary to enable more sophisticated sharing. You need to be logged in to activate this setting.</string>
-    <string name="autosave_setting_summary">Dont need to click \'Save Changes\' to actually save changes.</string>
+
 
     <string name="image_description">your image</string>
     <string name="image_pane_delete_button_text">Delete</string>
     <string name="image_pane_select_button_text">Select</string>
     <string name="image_pane_change_button_text">Change</string>
     <string name="image_panel_desc">Image: </string>
-    <string name="read_external_image_denied">Without read permission photos cannot be selected</string>
+
+    <!--Concerned with the preferences/settings-->
+    <string name="sidemenu_settings">Settings</string>
+
+    <string name="preference_layout_usability">Usability</string>
+    <string name="usability_category_title">Usability</string>
+
+    <string name="auto_save_setting_title">Automatically save changes</string>
+    <string name="auto_save_setting_summary">Changes are automatically saved when editing, unless canceled.</string>
+
+    <string name="pref_title_quite_delete">Confirm Deletion</string>
+    <string name="pref_summary_quiet_delete">You will be prompted to confirm deletions of any kind.</string>
+
+    <string name="preference_layout_appearance">Appearance</string>
+    <string name="appearance_category_title">Appearance</string>
+
+    <string name="pref_title_image_size">Image size</string>
+    <string name="pref_summary_image_size">Image height in pixel. More looks better but costs more storage and loading time. Image aspect always 16x9.</string>
 
 </resources>

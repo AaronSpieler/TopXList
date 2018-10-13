@@ -2,29 +2,33 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/store_category_title"
-        android:key="pref_storage_settings">
+        android:title="@string/usability_category_title"
+        android:key="pref_usability_settings"
+        android:layout="@layout/preference_category_usability">
         <SwitchPreference
-            android:key="pref_store_online"
-            android:title="@string/store_setting_title"
-            android:summary="@string/store_setting_summary"
-            android:defaultValue="false"
-            >
-            <!-- IF THIS WAS FALSE BEFORE I SHOULD FIRE A LOGIN INTENT
-            <intent android:action="android.intent.action.VIEW"
-                android:data="http://www.example.com" />
-            -->
-        </SwitchPreference>
+            android:key="pref_auto_saving"
+            android:title="@string/auto_save_setting_title"
+            android:summary="@string/auto_save_setting_summary"
+            android:defaultValue="false"/>
+        <SwitchPreference
+            android:key="pref_quiet_delete"
+            android:title="@string/pref_title_quite_delete"
+            android:summary="@string/pref_summary_quiet_delete"
+            android:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory
-        android:title="@string/usability_category_title"
-        android:key="pref_usability_settings">
-        <SwitchPreference
-            android:key="pref_easy_saving"
-            android:title="@string/autosave_setting_title"
-            android:summary="@string/autosave_setting_summary"
-            android:defaultValue="false"/>
+        android:title="@string/appearance_category_title"
+        android:key="pref_appearance_settings"
+        android:layout="@layout/preference_category_appearance"
+        android:defaultValue="3">
+        <ListPreference
+            android:key="pref_image_size"
+            android:title="@string/pref_title_image_size"
+            android:summary="@string/pref_summary_image_size"
+            android:entries="@array/imageSize"
+            android:entryValues="@array/imageSizeData"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

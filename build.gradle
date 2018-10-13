@@ -21,6 +21,12 @@ allprojects {
         maven { url 'https://maven.google.com' }
 
     }
+
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" //DATA REPOSITORY THROWS UNCHECK OR UNSAFE OPERATIONS ERROR TODO: find out ???
+        }
+    }
 }
 
 task clean(type: Delete) {

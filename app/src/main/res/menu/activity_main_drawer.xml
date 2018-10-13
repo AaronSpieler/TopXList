@@ -6,10 +6,12 @@
             android:id="@+id/nav_all_lists"
             android:icon="@drawable/ic_home_dark_blue_24dp"
             android:title="@string/sidemenu_all_lists" />
+        <!--
         <item
             android:id="@+id/nav_browse_lists"
             android:icon="@drawable/ic_public_dark_blue_24dp"
             android:title="@string/sidemenu_public_lists" />
+        -->
         <item
             android:id="@+id/nav_export_to_html"
             android:icon="@drawable/ic_insert_drive_file_dark_blue_24dp"

@@ -30,6 +30,7 @@ public class HTMLExporter {
         this.myRep = DataRepository.getRepository();
     }
 
+    @SuppressWarnings("StringConcatenationInLoop")
     public void exportToHTML(){
         String htmlBody = "";
         List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();

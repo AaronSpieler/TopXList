@@ -48,10 +48,12 @@ public class DataRepository implements DatabaseSpecification {
     }
 
     //INSERT TAGS
+    @SuppressWarnings("unchecked")
     public void insertTags(List<XTagModel> xTagModelList) {
         //noinspection unchecked
         new InsertTagsAsyncTask(xRoomDatabase).execute(xTagModelList);
     }
+
     private static class InsertTagsAsyncTask extends AsyncTask<List<XTagModel>, Void, Void> {
         private final XRoomDatabase db;
         InsertTagsAsyncTask(XRoomDatabase xRoomDatabase) {
@@ -66,6 +68,7 @@ public class DataRepository implements DatabaseSpecification {
     }
 
     //DELETE TAGS
+    @SuppressWarnings("unchecked")
     public void deleteTags(List<XTagModel> xTagModelList) {
         //noinspection unchecked
         new DeleteTagsAsyncTask(xRoomDatabase).execute(xTagModelList);
@@ -84,6 +87,7 @@ public class DataRepository implements DatabaseSpecification {
     }
 
     //DELETE TAGS BY ID
+    @SuppressWarnings("unchecked")
     public void deleteTagsByID(List<Integer> xTagIDList) {
         //noinspection unchecked
         new DeleteTagByIDsAsyncTask(xRoomDatabase).execute(xTagIDList);
@@ -104,6 +108,7 @@ public class DataRepository implements DatabaseSpecification {
     }
 
     //UPDATE TAGS
+    @SuppressWarnings("unchecked")
     public void updateTags(List<XTagModel> xTagModelList) {
         //noinspection unchecked
         new UpdateTagsAsyncTask(xRoomDatabase).execute(xTagModelList);

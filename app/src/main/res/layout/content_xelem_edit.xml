@@ -10,7 +10,7 @@
     tools:targetApi="o">
 
     <ScrollView
-        android:id="@+id/xelem_edit_cards_scroller"
+        android:id="@+id/xelem_create_and_edit_cards_scroller"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginLeft="@dimen/card_defaults"
@@ -24,6 +24,8 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/xelem_cards_constraint"
+            android:paddingTop="@dimen/card_defaults"
+            android:paddingBottom="@dimen/card_defaults"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -199,7 +201,8 @@
                         android:background="@drawable/create_and_edit_card_bottom_rounded"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel_image">
+                        app:layout_constraintTop_toBottomOf="@+id/xelem_image_panel_image"
+                        style="?android:attr/buttonBarStyle">
 
                         <Button
                             android:id="@+id/xelem_image_button_left"
@@ -216,7 +219,8 @@
                             android:textColor="@color/lightBlue"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"/>
+                            android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"
+                            style="?android:attr/buttonBarButtonStyle"/>
 
                         <Button
                             android:id="@+id/xelem_image_button_right"
@@ -233,7 +237,7 @@
                             android:textColor="@color/lightBlue"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            />
+                            style="?android:attr/buttonBarButtonStyle"/>
 
                     </LinearLayout>
                 </android.support.constraint.ConstraintLayout>

@@ -12,81 +12,81 @@ public interface DatabaseSpecification {
         //--------------------------Tags------------------------------
 
         //GET ALL TAGS BY LIST ID
-        public abstract List<XTagModel> getTagsByListID(int listID);
+        List<XTagModel> getTagsByListID(int listID);
 
         //INSERT TAGS
-        public abstract void insertTags(List<XTagModel> xTagModelList);
+        void insertTags(List<XTagModel> xTagModelList);
 
         //DELETE TAGS
-        public abstract void deleteTags(List<XTagModel> xTagModelList);
+        void deleteTags(List<XTagModel> xTagModelList);
 
         //DELETE TAGS BY ID
-        public abstract void deleteTagsByID(List<Integer> xTagIDList);
+        void deleteTagsByID(List<Integer> xTagIDList);
 
         //UPDATE TAGS
-        public abstract void updateTags(List<XTagModel> xTagModelList);
+        void updateTags(List<XTagModel> xTagModelList);
 
         //--------------------------ELEMENTS--------------------------
 
         //GET ALL ELEMENTS
-        public abstract List<XElemModel> getAllElements();
+        List<XElemModel> getAllElements();
 
         //GET ELEMENTS LIST CORRESPONDING TO SPECIFIC ID
-        public abstract List<XElemModel> getElementsByListID(int listID);
+        List<XElemModel> getElementsByListID(int listID);
 
         //GET ELEMENT BY ID
-        public abstract XElemModel getElemByID(int elemID);
+        XElemModel getElemByID(int elemID);
 
         //CHANGE lIST NUMBERS AFTER MOVEMENT
-        public abstract void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos);
+        void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos);
 
         //INSERT ELEMENT AT POS
-        public abstract void insertElemAtPos(XElemModel xElemModel, int thePos);
+        void insertElemAtPos(XElemModel xElemModel, int thePos);
 
         //INSERT ELEMENT
-        public abstract void insertElem(XElemModel xElemModel);
+        void insertElem(XElemModel xElemModel);
 
         //DELETE ELEMENT
-        public abstract void deleteElem(XElemModel xElemModel);
+        void deleteElem(XElemModel xElemModel);
 
         //DELETE ELEMENTS BY LIST_ID
-        public abstract void deleteElementsByListID(Integer listID);
+        void deleteElementsByListID(Integer listID);
 
         //UPDATE ELEMENT
-        public abstract void updateElem(XElemModel xElemModel);
+        void updateElem(XElemModel xElemModel);
 
         //GET ELEM COUNT FOR LIST
-        public abstract int getElemCountByListID(int listID);
+        int getElemCountByListID(int listID);
 
         //---------------------------------Lists--------------------------
 
         //GET THE LIST OF LISTS
-        public abstract List<XListModel> getLists();
+        List<XListModel> getLists();
 
         //GET LIST BY ID
-        public abstract XListModel getListByID(int listID);
+        XListModel getListByID(int listID);
 
         //CHANGE lIST NUMBERS AFTER MOVEMENT
-        public abstract void changeAllListNumbersList(XListModel xListModel, int newPos, int oldPos);
+        void changeAllListNumbersList(XListModel xListModel, int newPos, int oldPos);
 
         //INSERT
-        public abstract long insertList(XListModel xListModel);
+        long insertList(XListModel xListModel);
 
         //DELETE
         void deleteList(XListModel xListModel);
 
         //UPDATE
-        public abstract void updateList(XListModel xListModel);
+        void updateList(XListModel xListModel);
 
         //GET LIST COUNT
-        public abstract int getListCount();
+        int getListCount();
 
         //---------------------------------ListTagPojo-----------------------
 
         //GET THE LIST OF LISTS
-        public abstract List<XListTagsSharesPojo> getListsWithTagsShares();
+        List<XListTagsSharesPojo> getListsWithTagsShares();
 
         //GET LIST BY ID
-        public abstract XListTagsSharesPojo getListWithTagsSharesByID(int listID);
+        XListTagsSharesPojo getListWithTagsSharesByID(int listID);
 
 }

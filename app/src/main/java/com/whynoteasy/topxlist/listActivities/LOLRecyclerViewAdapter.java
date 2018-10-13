@@ -102,16 +102,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 Intent intent = new Intent(activityContext , XListEditActivity.class);
                 intent.putExtra("X_LIST_ID", holder.mItem.getXListModel().getXListID());
                 activityContext.startActivity(intent);
-
-                /*THIS IS THE OLD IMPLEMENTATION WITH THE POPUP MENU
-                //This is to style tme Popup menu
-                Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
-                PopupMenu popup = new PopupMenu(wrapper, v);
-                //the ViewHolder implements the menuListener
-                popup.setOnMenuItemClickListener(holder);
-                popup.inflate(R.menu.list_card_menu);
-                popup.show();
-                */
             }
         });
     }
@@ -123,7 +113,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
     //It must be the ViewHolder that implements the MenuClickListener because
     //this it the best way to get a reference of the XList that is relevant to the menu
-    public class XListViewHolder extends RecyclerView.ViewHolder /*implements PopupMenu.OnMenuItemClickListener*/ {
+    public class XListViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final CardView listCard;
         final TextView listTitle;
@@ -150,31 +140,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
             imgButton = itemView.findViewById(R.id.xList_popup_button);
         }
 
-        /* Menu item method not in use
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
-            switch (item.getItemId()) {
-                case R.id.xList_edit:
-                    //starting the activity from the MainActivity context
-                    Intent intent = new Intent(activityContext , XListEditActivity.class);
-                    intent.putExtra("X_LIST_ID", this.mItem.getXListModel().getXListID());
-                    activityContext.startActivity(intent);
-                    return true;
-                case R.id.xList_delete:
-                    deleteAtPositionIfConfirmed(this.getAdapterPosition());
-                    return true;
-                case R.id.xList_view:
-                    //Start XListViewCollapsingActivity
-                    Intent viewIntent = new Intent(activityContext, XListViewCollapsingActivity.class);
-                    viewIntent.putExtra("X_LIST_ID", this.mItem.getXListModel().getXListID());
-                    activityContext.startActivity(viewIntent);
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        */
     }
 
     //EVERYTHING THAT HAS TO DO WITH THE DRAG AND DROP ANIMATIONS
