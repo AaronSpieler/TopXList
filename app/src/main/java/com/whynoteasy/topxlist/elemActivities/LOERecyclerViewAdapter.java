@@ -97,16 +97,6 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
                 Intent intent = new Intent(activityContext , XElemEditActivity.class);
                 intent.putExtra("X_ELEM_ID", holder.mItem.getXElemID());
                 activityContext.startActivity(intent);
-
-                /*THIS IS THE OLD VERSION WITH THE POPUP MENU
-                //This is to style tme Popup menu
-                Context wrapper = new ContextThemeWrapper(activityContext, R.style.PopupMenuTextView);
-                PopupMenu popup = new PopupMenu(wrapper, v);
-                //the ViewHolder implements the menuListener
-                popup.setOnMenuItemClickListener(holder);
-                popup.inflate(R.menu.elem_card_menu);
-                popup.show();
-                */
             }
         });
     }
@@ -117,7 +107,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder /* implements PopupMenu.OnMenuItemClickListener*/ {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final CardView elemCard;
         final TextView elemNum;
@@ -144,31 +134,6 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             imgButton = itemView.findViewById(R.id.xElem_popup_button);
 
         }
-
-        /* Menu click method not in use TODO delete
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
-            switch (item.getItemId()) {
-                case R.id.xElem_edit:
-                    //starting the activity from the MainActivity context
-                    Intent intent = new Intent(activityContext , XElemEditActivity.class);
-                    intent.putExtra("X_ELEM_ID", this.mItem.getXElemID());
-                    activityContext.startActivity(intent);
-                    return true;
-                case R.id.xElem_delete:
-                    deleteAtPositionIfConfirmed(this.getAdapterPosition());
-                    return true;
-                case R.id.xElem_view:
-                    Intent viewIntent = new Intent(activityContext, XElemViewActivity.class);
-                    viewIntent.putExtra("X_ELEM_ID", this.mItem.getXElemID());
-                    activityContext.startActivity(viewIntent);
-                    return true;
-                default:
-                    return false;
-            }
-        }
-        */
 
     }
 

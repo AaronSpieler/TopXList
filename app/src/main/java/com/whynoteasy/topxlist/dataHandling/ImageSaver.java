@@ -19,10 +19,9 @@ import java.io.IOException;
 import java.util.Random;
 
 /**
- * Created by Ilya Gazman on 3/6/2016.
- * Extended: by Aaron Spieler
+ *
  */
-//TODO: Delete unused functions
+
 public class ImageSaver {
 
     public static final int MaxImageHeight = 720;
@@ -60,24 +59,6 @@ public class ImageSaver {
         }
         return null;
     }
-
-    /*TODO delete if not needed
-    public String saveFromUri (Uri uriLink, String fileName) {
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uriLink);
-            File newFile = saveFromBitmap(bitmap,fileName);
-            return newFile.getAbsolutePath();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public String saveFromUriTemp (Uri uriLink) {
-        return saveFromUri(uriLink, "temp.jpg");
-    }
-    
-    */
 
     private File saveFromBitmap(Bitmap bitmap, String fileName) {
         bitmap = reduceSizeOfBitmap(bitmap);
@@ -118,45 +99,6 @@ public class ImageSaver {
         return false;
     }
 
-    /* TODO Delete if not needed
-    private File getAlbumStorageDir(String albumName) {
-        return new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), albumName);
-    }
-
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
-    
-    
-
-    public Bitmap loadFromFileName(String fileName) {
-        FileInputStream inputStream = null;
-        try {
-            inputStream = new FileInputStream(createFile(fileName));
-            return BitmapFactory.decodeStream(inputStream);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (inputStream != null) {
-                    inputStream.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
-    }
-*/
-
     public Bitmap loadFileByPath(String path) {
         FileInputStream inputStream = null;
         try {
@@ -180,22 +122,6 @@ public class ImageSaver {
         File file = new File(context.getFilesDir(), relPath);
         return loadFileByPath(file.getPath());
     }
-
-    /* TODO DElete
-    public Uri temporarilySaveImage(String path){
-        Bitmap imgBitmap = loadFileByPath(path);
-        File file = saveFromBitmap(imgBitmap,"temp.jpg");
-
-        if(file.exists()) {
-            System.out.println("Fuckin exists");
-            System.out.println(file.getAbsolutePath());
-        }
-        //file = createFile("images","temp.jpg");
-        //Uri contentUri = Uri.fromFile(file);
-        Uri contentUri = FileProvider.getUriForFile(context, "com.whynoteasy.topxlist.provider", file); //If error look in provider xml
-        return contentUri;
-    }
-    */
 
     public File saveFromBitmapUniquely(Bitmap bitmap) {
         int newID = generateNewUnique8CharacterIDForImage();

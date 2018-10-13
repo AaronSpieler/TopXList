@@ -33,7 +33,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginTop="?attr/actionBarSize"
                 android:padding="16dp"
-                android:textColor="#fff"
+                android:textColor="@color/plain_white"
                 android:textSize="16sp"
                 android:maxLines="7"
                 android:ellipsize="end"/>

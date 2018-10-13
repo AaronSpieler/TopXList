@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -27,17 +26,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.theartofdev.edmodo.cropper.CropImage;
-import com.theartofdev.edmodo.cropper.CropImageView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataHandling.ImageSaver;
-import com.whynoteasy.topxlist.general.TopXListApplication;
 
 import java.io.File;
 import java.util.List;
 
-import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XElemEditActivity extends AppCompatActivity {
@@ -205,6 +201,7 @@ public class XElemEditActivity extends AppCompatActivity {
                 changeUIInterfaceToImage();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+                error.printStackTrace();
             }
         }
     }
@@ -257,7 +254,7 @@ public class XElemEditActivity extends AppCompatActivity {
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(R.string.alert_dialog_nosave_edit_exit_title_element);
         builder.setMessage(R.string.alert_dialog_nosave_edit_exit_message_element);
-        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.alert_dialog_exit, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //exit without saving anything
                 Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
@@ -265,9 +262,14 @@ public class XElemEditActivity extends AppCompatActivity {
                 NavUtils.navigateUpTo(thisActivity,intent);
             }
         });
-        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing
+            }
+        });
+        builder.setNeutralButton(R.string.alert_dialog_save, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                saveElemFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }
         });
         builder.show();
@@ -290,6 +292,7 @@ public class XElemEditActivity extends AppCompatActivity {
         return true;
     }
 
+    //TODO modify when temporarily deleting
     private void deleteElemIfConfirmed() {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
@@ -340,7 +343,7 @@ public class XElemEditActivity extends AppCompatActivity {
 
         String tempDescription = descriptionEditView.getText().toString().trim();
 
-        Integer newPos = 0;
+        Integer newPos;
         try {
             newPos = Integer.parseInt(numView.getText().toString().trim());
         } catch (Exception e) {

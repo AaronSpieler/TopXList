@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         //Side Navigation Drawer
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -158,11 +158,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -177,8 +172,6 @@ public class MainActivity extends AppCompatActivity
             Intent returnHome = new Intent(this, MainActivity.class);
             returnHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(returnHome);
-        } else if (id == R.id.nav_browse_lists) {
-
         } else if (id == R.id.nav_export_to_html) {
             //Get the required permissions
             if (TopXListApplication.getExternalStorageWritePermission(this)) {
@@ -223,8 +216,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @SuppressWarnings("UnnecessaryReturnStatement")
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
         View drawerView = findViewById(R.id.nav_view);
         switch (requestCode) {
             case TopXListApplication.MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE_WRITE: {

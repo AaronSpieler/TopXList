@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_xElem_card"
     android:layout_width="match_parent"
@@ -58,7 +59,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="@dimen/card_margins"
                     android:layout_marginEnd="@dimen/card_margins"
-                    android:layout_marginBottom="@dimen/card_margin_in_between"
+                    android:layout_marginBottom="@dimen/card_margins"
                     android:text="@string/test_title_text"
                     android:textColor="@color/superDarkBlue"
                     android:textSize="18sp"

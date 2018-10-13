@@ -39,7 +39,7 @@
                     android:id="@+id/xList_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/card_margin_in_between"
+                    android:layout_marginBottom="@dimen/card_margins"
                     android:layout_marginEnd="@dimen/card_margins"
                     android:layout_marginStart="@dimen/round_edge_card_margins"
                     android:layout_marginTop="@dimen/card_margins"

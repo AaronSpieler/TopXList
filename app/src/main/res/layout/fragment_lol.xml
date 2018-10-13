@@ -5,11 +5,10 @@
     android:name="com.whynoteasy.topxlist.listActivity.MainListOfListsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="4dp"
-    android:layout_marginTop="4dp"
+    android:paddingTop="@dimen/recycler_margins"
+    android:paddingBottom="80dp"
     android:layout_marginLeft="@dimen/recycler_margins"
     android:layout_marginRight="@dimen/recycler_margins"
     tools:context="com.whynoteasy.topxlist.listActivities.MainListOfListsFragment"
     tools:listitem="@layout/list_card_final"
-    android:paddingBottom="80dp"
     android:clipToPadding="false"/>
