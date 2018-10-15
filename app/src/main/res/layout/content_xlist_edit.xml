@@ -16,7 +16,7 @@
             android:layout_height="0dp"
             android:layout_marginLeft="@dimen/card_defaults"
             android:layout_marginRight="@dimen/card_defaults"
-            app:layout_constraintBottom_toTopOf="@+id/xlist_edit_save_button"
+            app:layout_constraintBottom_toTopOf="@+id/xlist_save_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -50,7 +50,7 @@
                             android:padding="@dimen/card_margins"
                             android:paddingStart="@dimen/round_edge_card_margins"
                             android:paddingEnd="@dimen/round_edge_card_margins"
-                            android:text="@string/xlist_edit_title_label"
+                            android:text="@string/create_and_edit_title_label"
                             android:textAlignment="center"
                             android:textColor="@color/superDarkBlue"
                             android:textSize="18sp"
@@ -129,60 +129,51 @@
                             android:adjustViewBounds="true"
                             android:contentDescription="@string/image_description"
                             android:src="@drawable/stock_88205654"
-                            app:layout_constraintBottom_toTopOf="@+id/xlist_image_panel_button_layout"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel_label" />
 
-                        <LinearLayout
-                            android:id="@+id/xlist_image_panel_button_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                        <Button
+                            android:id="@+id/xlist_image_button_left"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/image_buttons_height"
+                            android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"
+                            app:layout_constraintHorizontal_weight="1"
+                            android:background="@drawable/create_and_edit_card_left_bottom_rounded_button"
                             android:gravity="center"
-                            android:orientation="horizontal"
-                            android:background="@drawable/create_and_edit_card_bottom_rounded"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
+                            android:paddingStart="@dimen/round_edge_card_margins"
+                            android:paddingEnd="@dimen/round_edge_card_margins"
+                            android:text="@string/image_pane_delete_button_text"
+                            android:textAlignment="center"
+                            android:textColor="@color/lightBlue"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            style="?android:attr/buttonBarButtonStyle"
                             app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel_image"
-                            style="?android:attr/buttonBarStyle" >
+                            app:layout_constraintBottom_toBottomOf="@id/xlist_image_panel_constraint"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/xlist_image_button_right"/>
 
-                            <Button
-                                android:id="@+id/xlist_image_button_left"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/image_buttons_height"
-                                android:layout_weight="1"
-                                android:background="@drawable/create_and_edit_card_left_bottom_rounded_button"
-                                android:gravity="center"
-                                android:padding="@dimen/card_margins"
-                                android:paddingStart="@dimen/round_edge_card_margins"
-                                android:paddingEnd="@dimen/round_edge_card_margins"
-                                android:text="@string/image_pane_delete_button_text"
-                                android:textAlignment="center"
-                                android:textColor="@color/lightBlue"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                android:layout_marginEnd="@dimen/image_pane_button_seperator_margin"
-                                style="?android:attr/buttonBarButtonStyle"/>
+                        <Button
+                            android:id="@+id/xlist_image_button_right"
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/image_buttons_height"
+                            app:layout_constraintHorizontal_weight="1"
+                            android:background="@drawable/create_and_edit_right_bottom_rounded"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/round_edge_card_margins"
+                            android:paddingEnd="@dimen/round_edge_card_margins"
+                            android:text="@string/image_pane_change_button_text"
+                            android:textAlignment="center"
+                            android:textColor="@color/lightBlue"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            style="?android:attr/buttonBarButtonStyle"
+                            app:layout_constraintTop_toBottomOf="@+id/xlist_image_panel_image"
+                            app:layout_constraintBottom_toBottomOf="@id/xlist_image_panel_constraint"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/xlist_image_button_left"/>
 
-                            <Button
-                                android:id="@+id/xlist_image_button_right"
-                                android:layout_width="0dp"
-                                android:layout_height="@dimen/image_buttons_height"
-                                android:layout_weight="1"
-                                android:background="@drawable/create_and_edit_right_bottom_rounded"
-                                android:gravity="center"
-                                android:padding="@dimen/card_margins"
-                                android:paddingStart="@dimen/round_edge_card_margins"
-                                android:paddingEnd="@dimen/round_edge_card_margins"
-                                android:text="@string/image_pane_change_button_text"
-                                android:textAlignment="center"
-                                android:textColor="@color/lightBlue"
-                                android:textSize="18sp"
-                                android:textStyle="bold"
-                                style="?android:attr/buttonBarButtonStyle"/>
-
-                        </LinearLayout>
                     </android.support.constraint.ConstraintLayout>
                 </android.support.v7.widget.CardView>
 
@@ -452,16 +443,35 @@
         </ScrollView>
 
     <Button
-        android:id="@+id/xlist_edit_save_button"
+        android:id="@+id/xlist_cancel_button"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:background="@color/darkBlue"
-        android:text="@string/edit_save_button"
+        android:text="@string/create_and_edit_cancel_button"
         android:textColor="@color/lightBlue"
         android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/xlist_save_button"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginEnd="1dp"/>
+
+    <Button
+        android:id="@+id/xlist_save_button"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:background="@color/darkBlue"
+        android:text="@string/create_and_edit_save_button"
+        android:textColor="@color/lightBlue"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@id/xlist_cancel_button"
+        android:layout_marginStart="1dp"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -30,8 +30,8 @@ import android.widget.TextView;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.whynoteasy.topxlist.R;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 import com.whynoteasy.topxlist.general.TopXListApplication;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
@@ -189,8 +189,18 @@ public class XListEditActivity extends AppCompatActivity {
             }
         });
 
+        //The cancelList Button
+        Button listCancelButton = findViewById(R.id.xlist_cancel_button);
+        listCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //exit without saving anything
+                NavUtils.navigateUpFromSameTask(thisActivity);
+            }
+        });
+
         //The saveList Button
-        Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xlist_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -216,7 +226,7 @@ public class XListEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start selection and crop
-                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
+                (new ImageHandler(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 
@@ -224,7 +234,7 @@ public class XListEditActivity extends AppCompatActivity {
         imageSet = (currentList.getXListModel().getXImageLoc() != null);
         if (imageSet){
             imageWasSet = true; //only indicator that if there is a new image, it was changed
-            imageView.setImageBitmap((new ImageSaver(thisActivity)).loadFileByRelativePath(currentList.getXListModel().getXImageLoc()));
+            imageView.setImageBitmap((new ImageHandler(thisActivity)).loadFileByRelativePath(currentList.getXListModel().getXImageLoc()));
         } else {
             changeUIInterfaceToNoImage();
         }
@@ -238,7 +248,7 @@ public class XListEditActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                ImageSaver imgSaver = new ImageSaver(thisActivity);
+                ImageHandler imgSaver = new ImageHandler(thisActivity);
                 currentImageBitmap = imgSaver.convertUriToBitmap(resultUri);
                 imageView.setImageBitmap(currentImageBitmap);
                 imageChanged = true;
@@ -350,7 +360,7 @@ public class XListEditActivity extends AppCompatActivity {
 
                 //Delete the List Image
                 if (currentList.getXListModel().getXImageLoc() != null) {
-                    (new ImageSaver(thisActivity)).deleteFileByRelativePath(currentList.getXListModel().getXImageLoc());
+                    (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentList.getXListModel().getXImageLoc());
                 }
 
                 //Delete All The Images Of The Elements
@@ -427,7 +437,7 @@ public class XListEditActivity extends AppCompatActivity {
         currentList.getXListModel().setXListMarked(mMarked);
 
         //update image path if appropriate
-        ImageSaver imgSaver = new ImageSaver(thisActivity);
+        ImageHandler imgSaver = new ImageHandler(thisActivity);
         if (imageSet) {
             if (imageWasSet) {
                 if (imageChanged) {
@@ -532,7 +542,7 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     public void deleteCorrespondingElementImages(Context context, int ListID) {
-        ImageSaver imgSaver = new ImageSaver(context);
+        ImageHandler imgSaver = new ImageHandler(context);
         DataRepository myRep = DataRepository.getRepository();
         List<XElemModel> elemModelList = myRep.getElementsByListID(ListID);
         for (XElemModel elemModel: elemModelList) {

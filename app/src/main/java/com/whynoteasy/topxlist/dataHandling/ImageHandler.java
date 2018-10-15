@@ -5,12 +5,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,17 +24,53 @@ import java.util.Random;
  *
  */
 
-public class ImageSaver {
+public class ImageHandler {
 
-    public static final int MaxImageHeight = 720;
-    public static final int MaxImageWidth = 1280;
-    public static final int ImageRatioX = 16;
-    public static final int ImageRatioY = 9;
+
+
+    private int MaxImageHeight; //= 720 by default
+    private int MaxImageWidth; // = 1280 by default
+    private final int ImageRatioX = 16;
+    private final int ImageRatioY = 9;
+    private final int verSmallImageSize = 320;
+    private final int smallImageSize = 480;
+    private final int normalImageQuality = 720;
+    private final int largeImageSize = 1080;
+    private final int defaultImageQuality = 3;
+    private final int imageQuality = 90;
+
 
     private Context context;
 
-    public ImageSaver(Context context) {
+    public ImageHandler(Context context) {
         this.context = context;
+
+        //setting up the image sizes
+        int imageSetting = defaultImageQuality;
+        try {
+            imageSetting = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(SettingsActivity.KEY_PREF_IMAGE_SIZE, Integer.toString(defaultImageQuality))); //default option 3
+        }catch (Error e) {
+            e.printStackTrace();
+        }
+        switch (imageSetting) {
+            case 1:
+                MaxImageHeight = verSmallImageSize;
+                MaxImageWidth = Math.round(verSmallImageSize*((float) ImageRatioX/ImageRatioY));
+                break;
+            case 2:
+                MaxImageHeight = smallImageSize;
+                MaxImageWidth = Math.round(smallImageSize*((float) ImageRatioX/ImageRatioY));
+                break;
+            case 3:
+                MaxImageHeight = normalImageQuality;
+                MaxImageWidth = Math.round(normalImageQuality *((float) ImageRatioX/ImageRatioY));
+                break;
+            case 4:
+                MaxImageHeight = largeImageSize;
+                MaxImageWidth = Math.round(largeImageSize*((float) ImageRatioX/ImageRatioY));
+                break;
+        }
+        System.out.println("DefaultSize: "+MaxImageWidth+"by"+MaxImageHeight); //TODO remove
     }
 
     @NonNull
@@ -40,7 +78,7 @@ public class ImageSaver {
         String directoryName = "images";
         File directory = new File(context.getFilesDir(), directoryName);
         if (!directory.exists() && !directory.mkdirs()) {
-            Log.e("ImageSaver", "Error creating directory " + directory);
+            Log.e("ImageHandler", "Error creating directory " + directory);
         }
         return new File(directory, fileName);
     }
@@ -69,7 +107,7 @@ public class ImageSaver {
                 file.delete(); //dont want old remains
             }
             fileOutputStream = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fileOutputStream); //JPEG creation
+            bitmap.compress(Bitmap.CompressFormat.JPEG, imageQuality, fileOutputStream); //JPEG creation
             return file;
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,7 +185,7 @@ public class ImageSaver {
         return "images/" + imageName;
     }
 
-    public static Bitmap reduceSizeOfBitmap(Bitmap bitmap) {
+    private Bitmap reduceSizeOfBitmap(Bitmap bitmap) {
         int currHeight = bitmap.getHeight();
         if (currHeight > MaxImageHeight) {
             return Bitmap.createScaledBitmap(bitmap, MaxImageWidth, MaxImageHeight, false);
@@ -155,13 +193,14 @@ public class ImageSaver {
         return bitmap;
     }
 
-    public static void startPickingAndCropping(Activity thisActivity) {
+    public void startPickingAndCropping(Activity thisActivity) {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(ImageSaver.ImageRatioX, ImageSaver.ImageRatioY)
+                .setAspectRatio(ImageRatioX, ImageRatioY)
                 .setFixAspectRatio(true)
                 .setOutputCompressFormat(Bitmap.CompressFormat.JPEG)
-                .setOutputCompressQuality(90)
+                .setOutputCompressQuality(imageQuality)
                 .start(thisActivity);
     }
+
 }

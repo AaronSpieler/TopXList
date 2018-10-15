@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -26,9 +27,10 @@ import android.widget.TextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.io.File;
 import java.util.List;
@@ -42,7 +44,7 @@ public class XElemCreateActivity extends AppCompatActivity {
     private TextView numView;
 
     private int currentListID;
-    private int probableElemNum;
+    private int lastPossibleElemNum;
 
     private Button imageDeleteButton;
     private Button imageSelectChangeButton;
@@ -91,10 +93,19 @@ public class XElemCreateActivity extends AppCompatActivity {
             ab.setTitle("Add Element to: " + currentList.getXListTitle());
         }
 
+        //set the last possible number
+        lastPossibleElemNum = myRep.getElemCountByListID(currentListID)+1;
+
+
         //set the probable element number
-        probableElemNum = myRep.getElemCountByListID(currentListID)+1;
+
+        //save to first position or last
+        int newDefaultPos = lastPossibleElemNum;
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+            newDefaultPos = 1;
+        }
         numView = findViewById(R.id.xelem_num_input);
-        numView.setText(Integer.toString(probableElemNum));
+        numView.setText(Integer.toString(newDefaultPos));
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
@@ -103,8 +114,20 @@ public class XElemCreateActivity extends AppCompatActivity {
         //get the shortDescEditText to focus next
         descriptionEditView = findViewById(R.id.xelem_desc_input);
 
-        //The saveList Button
-        Button listSaveButton = findViewById(R.id.xelem_edit_save_button);
+        //The cancelElem Button
+        Button listCancelButton = findViewById(R.id.xelem_cancel_button);
+        listCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //exit without saving anything
+                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                intent.putExtra("X_LIST_ID", currentListID);
+                NavUtils.navigateUpTo(thisActivity,intent);
+            }
+        });
+
+        //The saveElem Button
+        Button listSaveButton = findViewById(R.id.xelem_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -128,7 +151,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start selection and crop
-                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
+                (new ImageHandler(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 
@@ -146,7 +169,7 @@ public class XElemCreateActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                ImageSaver imgSaver = new ImageSaver(thisActivity);
+                ImageHandler imgSaver = new ImageHandler(thisActivity);
                 currentImageBitmap = imgSaver.convertUriToBitmap(resultUri);
                 imageView.setImageBitmap(currentImageBitmap);
                 changeUIInterfaceToImage();
@@ -263,7 +286,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         //Set relativePath to new Image path, if image was loaded, has to be null otherwise
         String relativePath = null;
         if (imageSet) {
-            ImageSaver imgSaver = new ImageSaver(thisActivity);
+            ImageHandler imgSaver = new ImageHandler(thisActivity);
             File temp = imgSaver.saveFromBitmapUniquely(currentImageBitmap); //actually save
             relativePath = imgSaver.getRelativePathOfImage(temp.getName());
         }
@@ -273,8 +296,8 @@ public class XElemCreateActivity extends AppCompatActivity {
             Snackbar mySnackbar = Snackbar.make(view,  R.string.no_proper_number_entered, LENGTH_SHORT);
             mySnackbar.show();
             return;
-        } else if (newPos >= probableElemNum) {
-            myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, probableElemNum,relativePath));
+        } else if (newPos >= lastPossibleElemNum) {
+            myRep.insertElem(new XElemModel(currentListID, tempTitle, tempDescription, lastPossibleElemNum,relativePath));
         } else {
             myRep.insertElemAtPos(new XElemModel(currentListID, tempTitle, tempDescription, newPos,relativePath), newPos);
         }

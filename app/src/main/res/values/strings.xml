@@ -35,8 +35,9 @@
     <string name="xList_view">View</string>
 
     <!--List and Elem Create & Edit Labels-->
-    <string name="edit_save_button">Save</string>
-    <string name="xlist_edit_title_label">Title:</string>
+    <string name="create_and_edit_save_button">Save</string>
+    <string name="create_and_edit_cancel_button">Cancel</string>
+    <string name="create_and_edit_title_label">Title:</string>
     <string name="xlist_short_desc_title"> Short Description:</string>
     <string name="xlist_long_desc_title">Long Description:</string>
     <string name="xlist_tags_editor_title">Tags:</string>
@@ -61,6 +62,8 @@
     <string name="xelem_description_input_hint">Here you can explain everything regarding this element in your list…</string>
     <string name="xelem_title_input_hint">5th favorite icecream</string>
     <string name="xelem_num_input_hint">default is: last one</string>
+    <string name="xelem_num_input_hint_alt">default is: first one</string>
+
 
     <!--List View Collapsing Toolbar Stuff-->
     <string name="xlist_long_desc_view_label">Long Description:</string>
@@ -169,16 +172,19 @@
     <string name="preference_layout_usability">Usability</string>
     <string name="usability_category_title">Usability</string>
 
-    <string name="auto_save_setting_title">Automatically save changes</string>
+    <string name="auto_save_setting_title">Automatically save Changes</string>
     <string name="auto_save_setting_summary">Changes are automatically saved when editing, unless canceled.</string>
 
-    <string name="pref_title_quite_delete">Confirm Deletion</string>
-    <string name="pref_summary_quiet_delete">You will be prompted to confirm deletions of any kind.</string>
+    <string name="pref_title_confirm_delete">Confirm Deletion</string>
+    <string name="pref_summary_onfirm_delete">You will be prompted to confirm deletions of any kind.</string>
 
     <string name="preference_layout_appearance">Appearance</string>
     <string name="appearance_category_title">Appearance</string>
 
-    <string name="pref_title_image_size">Image size</string>
+    <string name="pref_title_image_size">Image Size</string>
     <string name="pref_summary_image_size">Image height in pixel. More looks better but costs more storage and loading time. Image aspect always 16x9.</string>
+
+    <string name="pref_title_new_obj_num">Lists are Queues</string>
+    <string name="pref_summary_new_obj_num">New elements get appended to the end of the list rather than to the front.</string>
 
 </resources>

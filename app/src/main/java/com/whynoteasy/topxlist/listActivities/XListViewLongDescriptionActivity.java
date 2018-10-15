@@ -19,9 +19,9 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 
 public class XListViewLongDescriptionActivity extends AppCompatActivity {
 
@@ -84,7 +84,7 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         //show image, if there is any
         ImageView imageView = findViewById(R.id.xlist_image_panel_image);
         if (currentList.getXImageLoc() != null) {
-            Bitmap bitmap = (new ImageSaver(thisActivity)).loadFileByRelativePath(currentList.getXImageLoc());
+            Bitmap bitmap = (new ImageHandler(thisActivity)).loadFileByRelativePath(currentList.getXImageLoc());
             imageView.setImageBitmap(bitmap);
         } else {
             CardView imageCard = findViewById(R.id.xlist_image_panel);

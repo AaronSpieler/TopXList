@@ -9,11 +9,16 @@
             android:key="pref_auto_saving"
             android:title="@string/auto_save_setting_title"
             android:summary="@string/auto_save_setting_summary"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
         <SwitchPreference
-            android:key="pref_quiet_delete"
-            android:title="@string/pref_title_quite_delete"
-            android:summary="@string/pref_summary_quiet_delete"
+            android:key="pref_confirm_delete"
+            android:title="@string/pref_title_confirm_delete"
+            android:summary="@string/pref_summary_onfirm_delete"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_new_object_number"
+            android:title="@string/pref_title_new_obj_num"
+            android:summary="@string/pref_summary_new_obj_num"
             android:defaultValue="true"/>
     </PreferenceCategory>
 

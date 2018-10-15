@@ -20,7 +20,7 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 
 import java.util.List;
 
@@ -77,7 +77,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         if (holder.mItem.getXImageLoc() == null) { //if no image is set
             holder.elemImage.setVisibility(View.GONE);
         } else { //loadFromFileName associated image
-            holder.elemImage.setImageBitmap((new ImageSaver(activityContext)).loadFileByRelativePath(holder.mItem.getXImageLoc()));
+            holder.elemImage.setImageBitmap((new ImageHandler(activityContext)).loadFileByRelativePath(holder.mItem.getXImageLoc()));
             holder.elemImage.setVisibility(View.VISIBLE);
         }
 
@@ -200,7 +200,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
                 //Delete corresponding Image
                 if (theElement.getXImageLoc() != null) {
-                    (new ImageSaver(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
+                    (new ImageHandler(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
                 }
 
                 DataRepository myRep = DataRepository.getRepository();

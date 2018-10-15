@@ -12,6 +12,11 @@ import com.whynoteasy.topxlist.R;
 
 public class SettingsActivity extends AppCompatActivity {
     private FragmentManager fragMan;
+    public static final String KEY_PREF_IMAGE_SIZE = "pref_image_size";
+    public static final String KEY_PREF_NEW_OBJECT_NUMBER = "pref_new_object_number";
+    public static final String KEY_PREF_CONFIRM_DELETE = "pref_confirm_delete";
+    public static final String KEY_PREF_AUTO_SAVING = "pref_auto_saving";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
