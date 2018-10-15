@@ -28,8 +28,8 @@ import android.widget.TextView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 
 import java.io.File;
 import java.util.List;
@@ -147,8 +147,20 @@ public class XElemEditActivity extends AppCompatActivity {
             }
         });
 
-        //The saveList Button
-        Button elemSaveButton = findViewById(R.id.xelem_edit_save_button);
+        //The cancelList Button
+        Button listCancelButton = findViewById(R.id.xelem_cancel_button);
+        listCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //exit without saving anything
+                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+                NavUtils.navigateUpTo(thisActivity,intent);
+            }
+        });
+
+        //The saveElem Button
+        Button elemSaveButton = findViewById(R.id.xelem_save_button);
         elemSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -172,7 +184,7 @@ public class XElemEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start selection and crop
-                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
+                (new ImageHandler(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 
@@ -180,7 +192,7 @@ public class XElemEditActivity extends AppCompatActivity {
         imageSet = (currentElement.getXImageLoc() != null);
         if (imageSet){
             imageWasSet = true; //only indicator that if there is a new image, it was changed
-            imageView.setImageBitmap((new ImageSaver(thisActivity)).loadFileByRelativePath(currentElement.getXImageLoc()));
+            imageView.setImageBitmap((new ImageHandler(thisActivity)).loadFileByRelativePath(currentElement.getXImageLoc()));
         } else {
             changeUIInterfaceToNoImage();
         }
@@ -194,7 +206,7 @@ public class XElemEditActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                ImageSaver imgSaver = new ImageSaver(thisActivity);
+                ImageHandler imgSaver = new ImageHandler(thisActivity);
                 currentImageBitmap = imgSaver.convertUriToBitmap(resultUri);
                 imageView.setImageBitmap(currentImageBitmap);
                 imageChanged = true;
@@ -302,7 +314,7 @@ public class XElemEditActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
 
                 if (currentElement.getXImageLoc() != null) {
-                    (new ImageSaver(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
+                    (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
                 }
 
                 myRep = DataRepository.getRepository();
@@ -353,7 +365,7 @@ public class XElemEditActivity extends AppCompatActivity {
         }
 
         //update image path if appropriate
-        ImageSaver imgSaver = new ImageSaver(thisActivity);
+        ImageHandler imgSaver = new ImageHandler(thisActivity);
         if (imageSet) {
             if (imageWasSet) {
                 if (imageChanged) {

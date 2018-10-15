@@ -3,9 +3,11 @@ package com.whynoteasy.topxlist.listActivities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.content.DialogInterface;
@@ -27,7 +29,8 @@ import android.widget.TextView;
 
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.whynoteasy.topxlist.R;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 import com.whynoteasy.topxlist.general.TopXListApplication;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
@@ -100,8 +103,18 @@ public class XListCreateActivity extends AppCompatActivity {
             }
         });
 
+        //The cancelList Button
+        Button listCancelButton = findViewById(R.id.xlist_cancel_button);
+        listCancelButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //exit without saving anything
+                NavUtils.navigateUpFromSameTask(thisActivity);
+            }
+        });
+
         //The saveList Button
-        Button listSaveButton = findViewById(R.id.xlist_edit_save_button);
+        Button listSaveButton = findViewById(R.id.xlist_save_button);
         listSaveButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -127,7 +140,7 @@ public class XListCreateActivity extends AppCompatActivity {
         imageSelectChangeButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //start selection and crop
-                (new ImageSaver(thisActivity)).startPickingAndCropping(thisActivity);
+                (new ImageHandler(thisActivity)).startPickingAndCropping(thisActivity);
             }
         });
 
@@ -146,7 +159,7 @@ public class XListCreateActivity extends AppCompatActivity {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                ImageSaver imgSaver = new ImageSaver(thisActivity);
+                ImageHandler imgSaver = new ImageHandler(thisActivity);
                 currentImageBitmap = imgSaver.convertUriToBitmap(resultUri);
                 imageView.setImageBitmap(currentImageBitmap);
                 changeUIInterfaceToImage();
@@ -257,12 +270,19 @@ public class XListCreateActivity extends AppCompatActivity {
         //Set relativePath to new Image path, if image was loaded, has to be null otherwise
         String relativePath = null;
         if (imageSet) {
-            ImageSaver imgSaver = new ImageSaver(thisActivity);
+            ImageHandler imgSaver = new ImageHandler(thisActivity);
             File temp = imgSaver.saveFromBitmapUniquely(currentImageBitmap); //actually save
             relativePath = imgSaver.getRelativePathOfImage(temp.getName());
         }
 
-        long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,myRep.getListCount()+1,relativePath));
+        //save to first position or last
+        int tempNewPos = myRep.getListCount()+1;
+
+        long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,tempNewPos,relativePath));
+
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+            myRep.changeAllListNumbersList(myRep.getListByID((int)listID),1,tempNewPos);
+        }
 
         //ATTENTION: THIS COULD BE A MAJOR MISTAKE CONVERTING LONG TO INT,
         // however, the long value should be the primary key, thus it should not give a conversion problem since primary key's are int

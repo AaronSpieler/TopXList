@@ -14,7 +14,7 @@ import android.support.v7.app.AppCompatDelegate;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.dataObjects.XTagModel;
@@ -76,7 +76,7 @@ public class TopXListApplication extends Application {
             Uri imageUri = Uri.parse("android.resource://com.whynoteasy.topxlist/" + R.drawable.stock_88205654);
             Uri imageUri2 = Uri.parse("android.resource://com.whynoteasy.topxlist/" + R.drawable.stock_15768651);
 
-            ImageSaver imgSaver = new ImageSaver(this);
+            ImageHandler imgSaver = new ImageHandler(this);
             File image = imgSaver.reSaveFromBitmap(imgSaver.convertUriToBitmap(imageUri),imageUri.getPath()+".jpg");
             File image2 = imgSaver.reSaveFromBitmap(imgSaver.convertUriToBitmap(imageUri2),imageUri2.getPath()+".jpg");
 

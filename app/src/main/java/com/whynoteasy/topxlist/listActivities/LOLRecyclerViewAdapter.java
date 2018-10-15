@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
-import com.whynoteasy.topxlist.dataHandling.ImageSaver;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
@@ -80,7 +80,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         if (holder.mItem.getXListModel().getXImageLoc() == null) { //if no image is set
             holder.listImage.setVisibility(View.GONE);
         } else { //loadFromFileName associated image
-            holder.listImage.setImageBitmap((new ImageSaver(activityContext)).loadFileByRelativePath(holder.mItem.getXListModel().getXImageLoc()));
+            holder.listImage.setImageBitmap((new ImageHandler(activityContext)).loadFileByRelativePath(holder.mItem.getXListModel().getXImageLoc()));
             holder.listImage.setVisibility(View.VISIBLE);
         }
 
@@ -282,7 +282,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
                 //Delete corresponding Image
                 if (tempPojo.getXListModel().getXImageLoc() != null) {
-                    (new ImageSaver(activityContext)).deleteFileByRelativePath(tempPojo.getXListModel().getXImageLoc());
+                    (new ImageHandler(activityContext)).deleteFileByRelativePath(tempPojo.getXListModel().getXImageLoc());
                 }
 
                 deleteCorrespondingElementImages(activityContext,tempPojo.getXListModel().getXListID());
@@ -314,7 +314,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     }
 
     public void deleteCorrespondingElementImages(Context context, int ListID) {
-        ImageSaver imgSaver = new ImageSaver(context);
+        ImageHandler imgSaver = new ImageHandler(context);
         DataRepository myRep = DataRepository.getRepository();
         List<XElemModel> elemModelList = myRep.getElementsByListID(ListID);
         for (XElemModel elemModel: elemModelList) {
@@ -322,6 +322,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 imgSaver.deleteFileByRelativePath(elemModel.getXImageLoc());
             }
         }
-
     }
+
 }

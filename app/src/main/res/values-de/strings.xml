@@ -36,8 +36,9 @@
     <string name="xList_view">Ansehen</string>
 
     <!--List and Elem Create & Edit Labels-->
-    <string name="edit_save_button">Speichern</string>
-    <string name="xlist_edit_title_label">Titel:</string>
+    <string name="create_and_edit_save_button">Speichern</string>
+    <string name="create_and_edit_cancel_button">Abbrechen</string>
+    <string name="create_and_edit_title_label">Titel:</string>
     <string name="xlist_short_desc_title">Kurze Beschreibung:</string>
     <string name="xlist_long_desc_title">Lange Beschreibung</string>
     <string name="xlist_tags_editor_title">Tags:</string>
@@ -62,6 +63,8 @@
     <string name="xelem_description_input_hint">Hier kannst du alles bezüglich deines Listen-Elementes schreiben…</string>
     <string name="xelem_title_input_hint">Es ist wie es ist…</string>
     <string name="xelem_num_input_hint">Standard ist: letzte Element</string>
+    <string name="xelem_num_input_hint_alt">Standard is: erste Element</string>
+
 
     <!--List View Collapsing Toolbar Stuff-->
     <string name="xlist_long_desc_view_label">Lange Beschreibung:</string>
@@ -171,8 +174,8 @@
     <string name="auto_save_setting_title">Änderungen automatisch speichern</string>
     <string name="auto_save_setting_summary">Änderungen werden automatisch gespeichert, außer wenn abgebrochen wird.</string>
 
-    <string name="pref_title_quite_delete">Löschen bestätigen</string>
-    <string name="pref_summary_quiet_delete">Jede Art von Löschung muss bestätigt werden.</string>
+    <string name="pref_title_confirm_delete">Löschen bestätigen</string>
+    <string name="pref_summary_onfirm_delete">Jede Art von Löschung muss bestätigt werden.</string>
 
     <string name="preference_layout_appearance">Aussehen</string>
     <string name="appearance_category_title">Aussehen</string>
@@ -180,6 +183,7 @@
     <string name="pref_title_image_size">Bildgröße</string>
     <string name="pref_summary_image_size">Bildgröße in Pixel. Mehr sieht besser aus, kostet aber mehr Speicherplatz und Ladezeit Bildverhältnis immer 16x9.</string>
 
-
+    <string name="pref_title_new_obj_num">Listen sind Schlangen</string>
+    <string name="pref_summary_new_obj_num">Neue Elemente werden standardmäßig ans Ende der Liste gepackt, anstatt an den Anfang.</string>
 
 </resources>
