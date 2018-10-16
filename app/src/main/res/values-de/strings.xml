@@ -175,7 +175,7 @@
     <string name="auto_save_setting_summary">Änderungen werden automatisch gespeichert, außer wenn abgebrochen wird.</string>
 
     <string name="pref_title_confirm_delete">Löschen bestätigen</string>
-    <string name="pref_summary_onfirm_delete">Jede Art von Löschung muss bestätigt werden.</string>
+    <string name="pref_summary_confirm_delete">Jede Art von Löschung muss bestätigt werden.</string>
 
     <string name="preference_layout_appearance">Aussehen</string>
     <string name="appearance_category_title">Aussehen</string>

@@ -159,7 +159,6 @@
     <string name="sidemenu_export">Export (HTML)</string>
 
 
-
     <string name="image_description">your image</string>
     <string name="image_pane_delete_button_text">Delete</string>
     <string name="image_pane_select_button_text">Select</string>
@@ -176,7 +175,7 @@
     <string name="auto_save_setting_summary">Changes are automatically saved when editing, unless canceled.</string>
 
     <string name="pref_title_confirm_delete">Confirm Deletion</string>
-    <string name="pref_summary_onfirm_delete">You will be prompted to confirm deletions of any kind.</string>
+    <string name="pref_summary_confirm_delete">You will be prompted to confirm deletions of any kind.</string>
 
     <string name="preference_layout_appearance">Appearance</string>
     <string name="appearance_category_title">Appearance</string>

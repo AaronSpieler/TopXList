@@ -216,7 +216,14 @@ public class XElemCreateActivity extends AppCompatActivity {
             intent.putExtra("X_LIST_ID", currentListID);
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
-            alertUserUnsavedChanges();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
+                //exit without saving anything
+                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                intent.putExtra("X_LIST_ID", currentListID);
+                NavUtils.navigateUpTo(thisActivity,intent);
+            } else {
+                alertUserUnsavedChanges();
+            }
         }
     }
 

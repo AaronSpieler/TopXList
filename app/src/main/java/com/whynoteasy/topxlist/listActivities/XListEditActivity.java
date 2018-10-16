@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -32,6 +33,7 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 import com.whynoteasy.topxlist.general.TopXListApplication;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
@@ -269,8 +271,12 @@ public class XListEditActivity extends AppCompatActivity {
             returnToMainActivity();
             return true;
         } else if (id == R.id.delete_action_xlist) {
-            //delete List if confirmed
-            deleteListIfConfirmed();
+            //delete List based on preference
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                deleteListIfConfirmed();
+            } else {
+                deleteListImmediately();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -297,7 +303,12 @@ public class XListEditActivity extends AppCompatActivity {
             //exit without saving anything and without promoting
             NavUtils.navigateUpFromSameTask(thisActivity);
         } else {
-            alertUserUnsavedChanges();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
+                //save changes without asking
+                saveListFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+            } else {
+                alertUserUnsavedChanges();
+            }
         }
     }
 
@@ -357,22 +368,7 @@ public class XListEditActivity extends AppCompatActivity {
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-                //Delete the List Image
-                if (currentList.getXListModel().getXImageLoc() != null) {
-                    (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentList.getXListModel().getXImageLoc());
-                }
-
-                //Delete All The Images Of The Elements
-                deleteCorrespondingElementImages(thisActivity,currentListID);
-
-                myRep.deleteList(currentList.getXListModel()); //deletionPropagates
-
-                if (TopXListApplication.DEBUG_APPLICATION) {
-                    myRep.getListCount();
-                }
-                //return to activity
-                NavUtils.navigateUpFromSameTask(thisActivity);
+                deleteListImmediately();
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -383,7 +379,25 @@ public class XListEditActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void alertUserUnsavedChanges() {
+    private void deleteListImmediately(){
+        //Delete the List Image
+        if (currentList.getXListModel().getXImageLoc() != null) {
+            (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentList.getXListModel().getXImageLoc());
+        }
+
+        //Delete All The Images Of The Elements
+        deleteCorrespondingElementImages(thisActivity,currentListID);
+
+        myRep.deleteList(currentList.getXListModel()); //deletionPropagates
+
+        if (TopXListApplication.DEBUG_APPLICATION) {
+            myRep.getListCount();
+        }
+        //return to activity
+        NavUtils.navigateUpFromSameTask(thisActivity);
+    }
+
+    private void alertUserUnsavedChanges() {
         //FROM HERE ON ITS THE ALERT DIALOG
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle);
@@ -408,7 +422,7 @@ public class XListEditActivity extends AppCompatActivity {
         builder.show();
     }
 
-    public void saveListFinally(View view) {
+    private void saveListFinally(View view) {
         String tempTitle = titleEditText.getText().toString().trim();
 
         if (tempTitle.length() == 0){
@@ -482,7 +496,7 @@ public class XListEditActivity extends AppCompatActivity {
     }
 
     @SuppressLint("SetTextI18n")
-    public void insertAppropriateTag(View view) {
+    private void insertAppropriateTag(View view) {
         //get the tag text
         final String tempTagStr = tagEditText.getText().toString().trim();
 
@@ -525,7 +539,7 @@ public class XListEditActivity extends AppCompatActivity {
         tagEditText.setText("");
     }
 
-    public void changeUIInterfaceToNoImage(){
+    private void changeUIInterfaceToNoImage(){
         imageSet = false;
         imageDeleteButton.setVisibility(View.GONE);
         imageView.setVisibility(View.GONE); //image removed
@@ -533,7 +547,7 @@ public class XListEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setText(R.string.image_pane_select_button_text);
     }
 
-    public void changeUIInterfaceToImage(){
+    private void changeUIInterfaceToImage(){
         imageSet = true;
         imageDeleteButton.setVisibility(View.VISIBLE); //for creating no image exists
         imageView.setVisibility(View.VISIBLE);
@@ -541,7 +555,7 @@ public class XListEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setText(R.string.image_pane_change_button_text);
     }
 
-    public void deleteCorrespondingElementImages(Context context, int ListID) {
+    private void deleteCorrespondingElementImages(Context context, int ListID) {
         ImageHandler imgSaver = new ImageHandler(context);
         DataRepository myRep = DataRepository.getRepository();
         List<XElemModel> elemModelList = myRep.getElementsByListID(ListID);

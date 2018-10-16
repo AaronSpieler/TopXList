@@ -70,7 +70,6 @@ public class ImageHandler {
                 MaxImageWidth = Math.round(largeImageSize*((float) ImageRatioX/ImageRatioY));
                 break;
         }
-        System.out.println("DefaultSize: "+MaxImageWidth+"by"+MaxImageHeight); //TODO remove
     }
 
     @NonNull

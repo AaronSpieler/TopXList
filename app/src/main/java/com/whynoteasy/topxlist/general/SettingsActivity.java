@@ -39,7 +39,6 @@ public class SettingsActivity extends AppCompatActivity {
         FragmentManager manager = getFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         SettingsFragment settingsFragment =  new SettingsFragment();
-
         //very important, so the fragments dont stack
         if (savedInstanceState == null) {
             transaction.add(R.id.settings_activity_fragment_placeholder, settingsFragment);
