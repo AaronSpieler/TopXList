@@ -3,7 +3,6 @@ package com.whynoteasy.topxlist.listActivities;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -205,7 +204,12 @@ public class XListCreateActivity extends AppCompatActivity {
             //exit without saving anything
             NavUtils.navigateUpFromSameTask(thisActivity);
         } else {
-            alertUserUnsavedChanges();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
+                //exit without saving anything
+                NavUtils.navigateUpFromSameTask(thisActivity);
+            } else {
+                alertUserUnsavedChanges();
+            }
         }
     }
 

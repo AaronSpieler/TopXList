@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,7 @@ import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.util.List;
 
@@ -151,7 +153,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     @Override
     public void onViewSwipedLeft(int position) {
-        deleteAtPositionIfConfirmed(position);
+
+        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+            deleteAtPositionIfConfirmed(position);
+        } else {
+            deleteListImmediately(position);
+        }
     }
 
     @Override
@@ -190,29 +197,14 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     //TODO modify when temporarily deleting
     private void deleteAtPositionIfConfirmed(final int position) {
-        final XElemModel theElement = mValues.get(position);
+        XElemModel theElement = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(activityContext.getString(R.string.alert_dialog_delete_element_title));
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-                //Delete corresponding Image
-                if (theElement.getXImageLoc() != null) {
-                    (new ImageHandler(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
-                }
-
-                DataRepository myRep = DataRepository.getRepository();
-
-                myRep.deleteElem(theElement);
-
-                //remove the List from the activity cache and notify the adapter
-                //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
-                mValues.remove(theElement);
-                notifyItemRemoved(position);
-
-                makeNumChangesVisibleOnDeletion(position);
+                deleteListImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -227,5 +219,24 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             }
         });
         builder.show();
+    }
+
+    private void deleteListImmediately(int position) {
+        XElemModel theElement = mValues.get(position);
+        //Delete corresponding Image
+        if (theElement.getXImageLoc() != null) {
+            (new ImageHandler(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
+        }
+
+        DataRepository myRep = DataRepository.getRepository();
+
+        myRep.deleteElem(theElement);
+
+        //remove the List from the activity cache and notify the adapter
+        //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
+        mValues.remove(theElement);
+        notifyItemRemoved(position);
+
+        makeNumChangesVisibleOnDeletion(position);
     }
 }

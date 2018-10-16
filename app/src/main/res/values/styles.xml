@@ -30,7 +30,6 @@
         <item name="android:textColor">@color/darkBlue</item>
         <item name="android:textColorSecondary">@color/custom_grey</item>
         <item name="android:textColorHint">@color/darkBlue</item>
-        <item name="android:background">@color/plain_white</item>
     </style>
 
     <!--Chante text font to open sans-->

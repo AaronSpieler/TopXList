@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
@@ -30,6 +31,7 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.io.File;
 import java.util.List;
@@ -227,7 +229,11 @@ public class XElemEditActivity extends AppCompatActivity {
             returnToXListViewCollapsingActivity();
             return true;
         } else if (id == R.id.delete_action_xelem) {
-            deleteElemIfConfirmed();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                deleteElemIfConfirmed();
+            } else {
+                deleteListImmediately();
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -256,7 +262,12 @@ public class XElemEditActivity extends AppCompatActivity {
             intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
-            alertUserUnsavedChanges();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
+                //save changes without asking
+                saveElemFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+            } else {
+                alertUserUnsavedChanges();
+            }
         }
     }
 
@@ -312,19 +323,7 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\"+"+currentElement.getXElemTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-
-                if (currentElement.getXImageLoc() != null) {
-                    (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
-                }
-
-                myRep = DataRepository.getRepository();
-
-                myRep.deleteElem(currentElement);
-
-                //exit to listView
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
-                NavUtils.navigateUpTo(thisActivity,intent);
+                deleteListImmediately();
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -334,6 +333,22 @@ public class XElemEditActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    private void deleteListImmediately() {
+        if (currentElement.getXImageLoc() != null) {
+            (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
+        }
+
+        myRep = DataRepository.getRepository();
+
+        myRep.deleteElem(currentElement);
+
+        //exit to listView
+        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+        NavUtils.navigateUpTo(thisActivity,intent);
+    }
+
 
     private void  saveElemFinally(View view) {
         //retrieving the inputs
