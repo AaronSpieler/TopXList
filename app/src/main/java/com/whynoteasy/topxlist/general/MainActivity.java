@@ -34,6 +34,7 @@ import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity
 
     //the repository
     private DataRepository myRep;
+
+    static final int EXPORT_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,8 +178,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_export_to_html) {
             //Get the required permissions
             if (TopXListApplication.getExternalStorageWritePermission(this)) {
-                HTMLExporter htmlExporter = new HTMLExporter((View) findViewById(R.id.nav_view));
-                htmlExporter.exportToHTML();
+                startFileSelectorForHTMLExport();
             }
             //do nothing else, wait for the confirmation or rejection of the permissions => in onRequestPermissionsResult
         } else if (id == R.id.nav_settings) {
@@ -225,8 +227,7 @@ public class MainActivity extends AppCompatActivity
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //Must have been we wanted to export something
-                    HTMLExporter htmlExporter = new HTMLExporter(drawerView);
-                    htmlExporter.exportToHTML();
+                    startFileSelectorForHTMLExport();
                 } else {
                     //show snackbar on success
                     Snackbar mySnackbar = Snackbar.make(drawerView,  this.getString(R.string.html_external_storage_not_accessible), LENGTH_LONG);
@@ -237,6 +238,33 @@ public class MainActivity extends AppCompatActivity
 
             // other 'case' lines to check for other
             // permissions this app might request.
+        }
+    }
+
+    public void startFileSelectorForHTMLExport(){
+        Intent saveFileIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        saveFileIntent.setType("text/html");
+        saveFileIntent.putExtra(Intent.EXTRA_TITLE, "MyTopXLists.html");
+        saveFileIntent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            //create chooser so user has application choice
+            startActivityForResult(Intent.createChooser(saveFileIntent,getString(R.string.export_file_chooser_title)), EXPORT_CODE);
+        } catch (Exception e) {
+            Snackbar mySnackbar = Snackbar.make(findViewById(R.id.nav_view), R.string.html_export_failure, LENGTH_LONG);
+            mySnackbar.show();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == EXPORT_CODE) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                HTMLExporter htmlExporter = new HTMLExporter(findViewById(R.id.nav_view));
+                htmlExporter.saveHTMLtoFile(data.getData());
+            }
         }
     }
 }
