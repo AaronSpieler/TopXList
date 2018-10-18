@@ -14,10 +14,9 @@
     <string name="title_activity_scrolling">View List</string>
     <string name="title_activity_xlist_view_long_description">View List Long Description</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="title_activity_gallery_pick_image">Gallery picker</string>
 
 
-    <!--Not in Use currently-->
+    <!--Navigation Draver-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -28,11 +27,6 @@
     <string name="test_title_text">This is a great Title</string>
     <string name="test_popup_menu">List options</string>
     <string name="test_elem_card_num">11.</string>
-
-    <!--Popup Menu Names-->
-    <string name="xList_edit">Edit</string>
-    <string name="xList_delete">Delete</string>
-    <string name="xList_view">View</string>
 
     <!--List and Elem Create & Edit Labels-->
     <string name="create_and_edit_save_button">Save</string>
@@ -156,7 +150,6 @@
 
 
     <string name="sidemenu_all_lists">All Lists</string>
-    <string name="sidemenu_public_lists">Browse Public Lists</string>
     <string name="sidemenu_export">Export (HTML)</string>
 
 

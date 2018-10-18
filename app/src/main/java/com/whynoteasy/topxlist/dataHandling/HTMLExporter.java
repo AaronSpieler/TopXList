@@ -1,29 +1,20 @@
 package com.whynoteasy.topxlist.dataHandling;
 
-import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.FileProvider;
 import android.view.View;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.net.URI;
 import java.util.List;
 
-import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
-import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class HTMLExporter {
     private Context activityContext;

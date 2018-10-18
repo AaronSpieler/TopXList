@@ -80,11 +80,13 @@ public class TopXListApplication extends Application {
             File image = imgSaver.reSaveFromBitmap(imgSaver.convertUriToBitmap(imageUri),imageUri.getPath()+".jpg");
             File image2 = imgSaver.reSaveFromBitmap(imgSaver.convertUriToBitmap(imageUri2),imageUri2.getPath()+".jpg");
 
+            /*
             File old = new File(imageUri.getPath());
             File old2 = new File(imageUri2.getPath());
 
             old.delete();
             old2.delete();
+            */
 
             //this is all related to the creation and insertion of the first card
             //Setting up a list and Card
@@ -117,25 +119,6 @@ public class TopXListApplication extends Application {
     public static Context getAppContext() {
         return appContext;
     }
-
-    /* Dont knwow why I would need this?
-    public static boolean isExternalStorageAtLeastReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isExternalStorageReadableAndWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-    */
 
     //return: !already! had permissions
     public static boolean getExternalStorageReadPermission(Activity thisActivity) {

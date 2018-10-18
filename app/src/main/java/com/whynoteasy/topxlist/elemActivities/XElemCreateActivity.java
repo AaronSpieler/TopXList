@@ -106,6 +106,9 @@ public class XElemCreateActivity extends AppCompatActivity {
         }
         numView = findViewById(R.id.xelem_num_input);
         numView.setText(Integer.toString(newDefaultPos));
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+            numView.setHint(R.string.xelem_num_input_hint_alt);
+        }
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);

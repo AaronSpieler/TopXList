@@ -34,7 +34,6 @@ import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
-import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {

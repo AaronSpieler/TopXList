@@ -103,6 +103,9 @@ public class XElemEditActivity extends AppCompatActivity {
         //set the
         lastPossibleNumber = myRep.getElemCountByListID(currentElement.getXListIDForeign())+1;
         numView = findViewById(R.id.xelem_num_input);
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+            numView.setHint(R.string.xelem_num_input_hint_alt);
+        }
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
