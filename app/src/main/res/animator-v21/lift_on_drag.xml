@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- animate the translationZ property of a view when draggen -->
+<!-- animate the translationZ property of a view when pressed -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_enabled="true"
-        android:state_drag_hovered="true">
+        android:state_pressed="true">
         <set>
             <objectAnimator
-                android:duration="@android:integer/config_longAnimTime"
+                android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="@dimen/card_target_elevation_on_drag"
+                android:valueTo="8dp"
                 android:valueType="floatType"/>
         </set>
     </item>
     <item>
         <set>
             <objectAnimator
-                android:duration="@android:integer/config_longAnimTime"
+                android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="translationZ"
-                android:valueTo="@dimen/card_elevation_defaults"
+                android:valueTo="0"
                 android:valueType="floatType"/>
         </set>
     </item>

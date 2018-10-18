@@ -149,15 +149,15 @@
     <string name="no_proper_number_entered">No proper number was entered for Element</string>
 
     <string name="html_export_title">My Top X List Lists:</string>
-    <string name="html_file_creation_failed">File Creation Failed</string>
     <string name="html_external_storage_not_accessible">External storage not accessible</string>
-    <string name="html_export_success">Lists successfully exported to DOWNLOADS folder.</string>
+    <string name="html_export_success">HTML export successful .</string>
     <string name="html_export_failure">HTML export failed; could\'nt create File.</string>
+    <string name="export_file_chooser_title">Export File</string>
+
 
     <string name="sidemenu_all_lists">All Lists</string>
     <string name="sidemenu_public_lists">Browse Public Lists</string>
     <string name="sidemenu_export">Export (HTML)</string>
-
 
 
     <string name="image_description">your image</string>
@@ -186,5 +186,6 @@
 
     <string name="pref_title_new_obj_num">Lists are Queues</string>
     <string name="pref_summary_new_obj_num">New elements get appended to the end of the list rather than to the front.</string>
+
 
 </resources>

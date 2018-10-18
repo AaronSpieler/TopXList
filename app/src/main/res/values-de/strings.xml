@@ -150,10 +150,11 @@
     <string name="no_proper_number_entered">Es wurde keine gültige Nummer eingegeben.</string>
 
     <string name="html_export_title">Meine Top X List Listen:</string>
-    <string name="html_file_creation_failed">Document konnte nicht kreiert werden</string>
     <string name="html_external_storage_not_accessible">Kein Zugriff auf externen Speicher vorhanden</string>
     <string name="html_export_success">Listen erfolgreich in den DOWNLOADS Ordner exportiert.</string>
     <string name="html_export_failure">HTML export gescheitert; konnte Dokument nicht erstellen.</string>
+    <string name="export_file_chooser_title">Exportiere Dokument</string>
+
 
     <string name="sidemenu_all_lists">Alle Listen</string>
     <string name="sidemenu_public_lists">Öffentliche Listen stöbern</string>

@@ -1,8 +1,13 @@
 package com.whynoteasy.topxlist.dataHandling;
 
+import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 
 import com.whynoteasy.topxlist.R;
@@ -10,10 +15,13 @@ import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.net.URI;
 import java.util.List;
 
+import static android.content.Context.DOWNLOAD_SERVICE;
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
@@ -24,14 +32,15 @@ public class HTMLExporter {
 
     static final String LOG_TAG = "EXPORT_FAILURE";
 
+    static final int EXPORT_CODE = 1;
+
     public HTMLExporter(View view){
         this.myView = view;
         this.activityContext = view.getContext();
         this.myRep = DataRepository.getRepository();
     }
 
-    @SuppressWarnings("StringConcatenationInLoop")
-    public void exportToHTML(){
+    private String createHTMLContent() {
         String htmlBody = "";
         List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
         for (XListTagsSharesPojo listPJ : allLists) {
@@ -46,47 +55,32 @@ public class HTMLExporter {
             }
             htmlBody = htmlBody + "<br>";
         }
+        return "<!DOCTYPE html> " +
+                "<html>" +
+                "<head>\n" +
+                "<meta charset=\"UTF-8\">\n" +
+                "</head>\n" +
+                "<body>" +
+                "<h1>"+activityContext.getString(R.string.html_export_title)+"</h1>"+htmlBody+"" +
+                "</body>" +
+                "</html>";
+    }
 
-        String htmlDocument = "<html><body><h1>"+activityContext.getString(R.string.html_export_title)+"</h1>"+htmlBody+"</body></html>";
+    public void saveHTMLtoFile(Uri uri){
+        try{
+            ParcelFileDescriptor exportFile = activityContext.getContentResolver().openFileDescriptor(uri, "w");
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(exportFile.getFileDescriptor()));
 
-        //do the actual exporting
-        try {
-            //get the sd card folder
-            File downloadFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            outputStreamWriter.write(createHTMLContent());
+            outputStreamWriter.close();
+            exportFile.close();
 
-            //get new File
-            String filename = "MyTopXListLists";
-            String extension = "html";
-            File newFile = new File(downloadFolder, filename + "." + extension);
-            int counter = 1;
-            while (newFile.exists()) {
-                newFile = new File(downloadFolder, filename + "_" + counter + "." + extension);
-                counter++;
-            }
-
-            System.out.println(newFile.getPath());
-
-            //try to create the file
-            if (newFile.createNewFile()){
-                //write the htmldocument into the file
-                FileOutputStream fOut = new FileOutputStream(newFile);
-                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
-                myOutWriter.write(htmlDocument);
-                myOutWriter.close();
-
-                //show snackbar on success
-                Snackbar mySnackbar = Snackbar.make(myView,  activityContext.getString(R.string.html_export_success), LENGTH_LONG);
-                mySnackbar.show();
-            } else {
-                //couldn't create document
-                Snackbar mySnackbar = Snackbar.make(myView, R.string.html_export_failure, LENGTH_SHORT);
-                mySnackbar.show();
-            }
-
-        } catch (Exception e) {
-            //external card not accessible
-            Snackbar mySnackbar = Snackbar.make(myView, R.string.html_external_storage_not_accessible, LENGTH_SHORT);
+            Snackbar mySnackbar = Snackbar.make(myView,  activityContext.getString(R.string.html_export_success), LENGTH_LONG);
             mySnackbar.show();
+        } catch (Exception e) {
+            Snackbar mySnackbar = Snackbar.make(myView, R.string.html_export_failure, LENGTH_LONG);
+            mySnackbar.show();
+            e.printStackTrace();
             e.printStackTrace();
         }
     }

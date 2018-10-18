@@ -1,6 +1,9 @@
 package com.whynoteasy.topxlist.listActivities;
 
+import android.graphics.Canvas;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
@@ -43,4 +46,5 @@ class ListTouchHelper extends ItemTouchHelper.Callback {
         void onViewSwipedLeft(int position);
         void onViewSwipedRight(int position);
     }
+
 }

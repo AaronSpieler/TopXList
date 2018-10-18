@@ -46,7 +46,7 @@ public abstract class XRoomDatabase extends RoomDatabase{
                     "SELECT `xListID`, `xListTitle`, `xListShortDescription`, `xListLongDescription`, `xListNum`, `xListMarked` FROM XListModel");
             database.execSQL("ALTER TABLE lists ADD image_loc TEXT ");
             database.execSQL("ALTER TABLE lists ADD language TEXT DEFAULT \"en\" "); //global default language english
-            database.execSQL("ALTER TABLE lists ADD trashed INTEGER NOT NULL ");
+            database.execSQL("ALTER TABLE `lists` ADD `trashed` INTEGER NOT NULL DEFAULT 0");
             database.execSQL("DROP TABLE XListModel");
         }
 
@@ -77,7 +77,7 @@ public abstract class XRoomDatabase extends RoomDatabase{
             database.execSQL("INSERT INTO `elements` (`element_id`, `list_id`, `element_name`, `element_desc`, `element_num`, `marked_status`) " +
                     "SELECT `xElemID`, `xListIDForeign`, `xElemTitle`, `xElemDescription`, `xElemNum`, `xElemMarked` FROM XElemModel");
             database.execSQL("ALTER TABLE elements ADD image_loc TEXT ");
-            database.execSQL("ALTER TABLE elements ADD trashed INTEGER NOT NULL ");
+            database.execSQL("ALTER TABLE `elements` ADD `trashed` INTEGER NOT NULL DEFAULT 0");
             database.execSQL("DROP TABLE XElemModel");
             database.execSQL("CREATE INDEX `elements_list_idx` ON `elements` (`list_id`)"); //seems to be non deterministic? sometimes sql doesnt creste the index??
         }
