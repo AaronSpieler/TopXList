@@ -7,10 +7,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/recycler_margins"
-    android:layout_marginLeft="@dimen/recycler_margins"
-    android:layout_marginRight="@dimen/recycler_margins"
     tools:context="com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment"
     tools:listitem="@layout/elem_card_final"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    android:paddingBottom="80dp"
-    android:clipToPadding="false"/>
+    android:paddingBottom="8dp"
+    android:clipToPadding="false"
+    android:fillViewport="true"/>

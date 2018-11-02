@@ -37,6 +37,11 @@ public class ListOfElementsFragment extends Fragment {
     //It is pulled onCreate, but should be updated every time it changes
     private List<XElemModel> listOfElements;
 
+    //Interaction Types which the adapter can signal
+    public static final int INTERACTION_CLICK = 0;
+    public static final int INTERACTION_DELETE = 1;
+    public static final int INTERACTION_MARK = 2;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -76,7 +81,7 @@ public class ListOfElementsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_xelem_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_loe, container, false);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -87,11 +92,11 @@ public class ListOfElementsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            LOERecyclerViewAdapter tempAdapRef = new LOERecyclerViewAdapter(listOfElements, mListener, this.getActivity());
-            recyclerView.setAdapter(tempAdapRef);
+            LOERecyclerViewAdapter loeAdapter= new LOERecyclerViewAdapter(listOfElements, mListener, this.getActivity());
+            recyclerView.setAdapter(loeAdapter);
 
             //The ItemTouchHelperAnimation Stuff
-            ElementTouchHelper swipeAndDragHelper = new ElementTouchHelper(tempAdapRef);
+            ElementTouchHelper swipeAndDragHelper = new ElementTouchHelper(loeAdapter);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
             touchHelper.attachToRecyclerView(recyclerView);
 
@@ -121,7 +126,8 @@ public class ListOfElementsFragment extends Fragment {
         mListener = null;
     }
 
+    //So the activity can listen for changes happening in the fragment
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(XElemModel item);
+        void onListFragmentInteraction(LOERecyclerViewAdapter loeAdapter, int position, int interactionType);
     }
 }

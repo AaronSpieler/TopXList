@@ -5,21 +5,31 @@
         <item
             android:id="@+id/nav_all_lists"
             android:icon="@drawable/ic_home_dark_blue_24dp"
-            android:title="@string/sidemenu_all_lists" />
+            android:title="@string/side_menu_all_lists" />
         <!--
         <item
             android:id="@+id/nav_browse_lists"
             android:icon="@drawable/ic_public_dark_blue_24dp"
-            android:title="@string/sidemenu_public_lists" />
+            android:title="@string/side_menu_public_lists" />
         -->
         <item
             android:id="@+id/nav_export_to_html"
-            android:icon="@drawable/ic_insert_drive_file_dark_blue_24dp"
-            android:title="@string/sidemenu_export" />
+            android:icon="@drawable/ic_file_download_dark_blue24dp"
+            android:title="@string/side_menu_export" />
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_dark_blue_24dp"
-            android:title="@string/sidemenu_settings" />
+            android:title="@string/side_menu_settings" />
+        <item
+            android:id="@+id/nav_rate_app"
+            android:icon="@drawable/ic_shop_dark_blue_24dp"
+            android:title="@string/nav_give_feedback_text" />
+        <!--
+        <item
+            android:id="@+id/nav_privacy_policy"
+            android:icon="@drawable/ic_description_dark_blue_24dp"
+            android:title="Privacy policy" />
+            -->
     </group>
 
     <!-- This is how to create categories
@@ -29,6 +39,5 @@
         </menu>
     </item>
     -->
-
 
 </menu>

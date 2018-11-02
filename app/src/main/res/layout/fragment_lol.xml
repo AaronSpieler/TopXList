@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
     android:name="com.whynoteasy.topxlist.listActivity.MainListOfListsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/recycler_margins"
-    android:paddingBottom="80dp"
-    android:layout_marginLeft="@dimen/recycler_margins"
-    android:layout_marginRight="@dimen/recycler_margins"
+    android:paddingBottom="8dp"
     tools:context="com.whynoteasy.topxlist.listActivities.MainListOfListsFragment"
     tools:listitem="@layout/list_card_final"
     android:clipToPadding="false"/>

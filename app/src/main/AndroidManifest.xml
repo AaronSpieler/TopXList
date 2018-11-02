@@ -4,7 +4,7 @@
 
     <!-- Request permission so im able to export to to html -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Request permission so im able to get files from galery -->
+    <!-- Request permission so im able to get files from gallery -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- Request permission so im able to saveFromBitmap file to download folder & sharing functions -->
@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!--Stupid file provider-->
+        <!-- Stupid file provider -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.whynoteasy.topxlist.provider"
@@ -26,7 +26,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
         <activity
@@ -68,35 +68,35 @@
         <activity
             android:name=".elemActivities.XElemCreateActivity"
             android:label="@string/title_activity_xelem_create"
-            android:parentActivityName=".elemActivities.XListViewCollapsingActivity"
+            android:parentActivityName=".elemActivities.XListViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewActivity" />
         </activity>
         <activity
             android:name=".elemActivities.XElemEditActivity"
             android:label="@string/title_activity_xelem_edit"
-            android:parentActivityName=".elemActivities.XListViewCollapsingActivity"
+            android:parentActivityName=".elemActivities.XListViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewActivity" />
         </activity>
         <activity
             android:name=".elemActivities.XElemViewActivity"
             android:label="@string/title_activity_xelem_view"
-            android:parentActivityName=".elemActivities.XListViewCollapsingActivity"
+            android:parentActivityName=".elemActivities.XListViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewActivity" />
         </activity>
         <activity
-            android:name=".elemActivities.XListViewCollapsingActivity"
+            android:name=".elemActivities.XListViewActivity"
             android:label="@string/title_activity_scrolling"
             android:parentActivityName=".general.MainActivity"
             android:screenOrientation="portrait"
@@ -106,14 +106,14 @@
                 android:value="com.whynoteasy.topxlist.general.MainActivity" />
         </activity>
         <activity
-            android:name=".listActivities.XListViewLongDescriptionActivity"
+            android:name=".listActivities.XListViewStoryActivity"
             android:label="@string/title_activity_xlist_view_long_description"
-            android:parentActivityName=".elemActivities.XListViewCollapsingActivity"
+            android:parentActivityName=".elemActivities.XListViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity" />
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewActivity" />
         </activity>
         <activity
             android:name=".general.SettingsActivity"
@@ -129,6 +129,18 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
+        <activity android:name=".listActivities.ImageFullscreenListActivity"
+            android:label="@string/title_activity_image_fullscreen"
+            android:parentActivityName=".listActivities.XListViewStoryActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".elemActivities.ImageFullscreenElemActivity"
+            android:label="@string/title_activity_image_fullscreen"
+            android:parentActivityName=".elemActivities.XElemViewActivity"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

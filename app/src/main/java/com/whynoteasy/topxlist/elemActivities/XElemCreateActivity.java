@@ -118,16 +118,8 @@ public class XElemCreateActivity extends AppCompatActivity {
         descriptionEditView = findViewById(R.id.xelem_desc_input);
 
         //The cancelElem Button
-        Button listCancelButton = findViewById(R.id.xelem_cancel_button);
-        listCancelButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                //exit without saving anything
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
-                intent.putExtra("X_LIST_ID", currentListID);
-                NavUtils.navigateUpTo(thisActivity,intent);
-            }
-        });
+        Button elemCancelButton = findViewById(R.id.xelem_cancel_button);
+        elemCancelButton.setVisibility(View.GONE);
 
         //The saveElem Button
         Button listSaveButton = findViewById(R.id.xelem_save_button);
@@ -189,7 +181,7 @@ public class XElemCreateActivity extends AppCompatActivity {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 //return to xListViewActivity
-                returnToXListViewCollapsingActivity();
+                returnToXListViewActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -200,14 +192,14 @@ public class XElemCreateActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             //return to mainActivity
-            returnToXListViewCollapsingActivity();
+            returnToXListViewActivity();
             return true;
         }
 
         return super.onKeyDown(keyCode, event);
     }
 
-    private void returnToXListViewCollapsingActivity(){
+    private void returnToXListViewActivity(){
         //retrieving the inputs from all the TextViews
         String tempTitle = titleEditView.getText().toString().trim();
         String tempDescription = descriptionEditView.getText().toString().trim();
@@ -215,13 +207,13 @@ public class XElemCreateActivity extends AppCompatActivity {
         //if there is nothing entered so far
         if (!imageSet && tempTitle.length() == 0 && tempDescription.length() == 0){
             //exit without saving anything
-            Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+            Intent intent = new Intent(thisActivity, XListViewActivity.class);
             intent.putExtra("X_LIST_ID", currentListID);
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
                 //exit without saving anything
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                Intent intent = new Intent(thisActivity, XListViewActivity.class);
                 intent.putExtra("X_LIST_ID", currentListID);
                 NavUtils.navigateUpTo(thisActivity,intent);
             } else {
@@ -239,7 +231,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.alert_dialog_exit, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //exit without saving anything
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                Intent intent = new Intent(thisActivity, XListViewActivity.class);
                 intent.putExtra("X_LIST_ID", currentListID);
                 NavUtils.navigateUpTo(thisActivity,intent);
             }
@@ -251,7 +243,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         });
         builder.setNeutralButton(R.string.alert_dialog_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                saveElemFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveElemFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }
         });
         builder.show();
@@ -313,7 +305,7 @@ public class XElemCreateActivity extends AppCompatActivity {
         }
 
         //return to parent activity
-        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
         intent.putExtra("X_LIST_ID", currentListID);
         NavUtils.navigateUpTo(thisActivity,intent);
     }

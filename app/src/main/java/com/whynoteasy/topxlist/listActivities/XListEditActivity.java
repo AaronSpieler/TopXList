@@ -305,7 +305,7 @@ public class XListEditActivity extends AppCompatActivity {
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
                 //save changes without asking
-                saveListFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveListFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             } else {
                 alertUserUnsavedChanges();
             }
@@ -416,7 +416,7 @@ public class XListEditActivity extends AppCompatActivity {
         });
         builder.setNeutralButton(R.string.alert_dialog_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                saveListFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveListFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }
         });
         builder.show();

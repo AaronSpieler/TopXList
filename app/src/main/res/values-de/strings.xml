@@ -58,7 +58,7 @@
     <string name="xelem_num_input_hint_alt">Standard is: erste Element</string>
 
 
-    <!--List View Collapsing Toolbar Stuff-->
+    <!--List View Button_Mode Toolbar Stuff-->
     <string name="xlist_long_desc_view_label">Lange Beschreibung:</string>
     <string name="topxlist_name_logo">App Names Logo</string>
     <string name="collapsing_toolbar_long_description_empty_tip">Bearbeite die Liste um die lange Beschreibung hier anzeigenzulassen.</string>
@@ -82,11 +82,10 @@
         Wische nach Links um zu löschen und Rechts um die Liste zu markieren.
         Mit der oberen Suchzeile kannst du deine Listen filtern und finden.
         Denk an eine Zahl zwische 1 und 10 und dann click mich.]]></string>
-    <string name="start_list_long_desc">Lange Beschreibungen können ziehmlich lang sein.
-        Also wirst du nur die ersten 7 Zeilen hier sehen.
-        Tippe dieses Feld um die komplette Beschreibung zu sehen.
-        Tippe den \"+\" Knopf in der rechten unteren Ecke an um neue Listenelemente zu erstellen.
-        Die folgende Liste handelt über die besten Eigenschaften dieser App.</string>
+    <string name="start_list_long_desc">Lange Beschreibungen können richtig lang werden.
+        Also hast du genug platz um deine ganze Geschichte hinter der Liste zu erzählen.
+        Du kannst das Bild hierdrüber anclicken um es im Vollbildschirb-modus anzuschauen.
+        Clicke den Editierknop unten rechts, um die Liste zu bearbeiten.</string>
     <string name="start_list_start_tag">listenKönnenTagsHaben</string>
     <string name="start_list_1_title">Intuitiv</string>
     <string name="start_list_2_title">Simpel</string>
@@ -94,7 +93,10 @@
     <string name="start_list_4_title">Drag and Drop</string>
     <string name="start_list_5_title">Nach links und rechts wischen</string>
     <string name="start_list_6_title">Bearbeiten</string>
-    <string name="start_list_7_title">Visuell ansprechen</string>
+    <string name="start_list_7_title">Visuell ansprechend</string>
+    <string name="start_list_8_title">Bilder</string>
+    <string name="start_list_9_title">Einstellungen</string>
+
     <string name="start_list_1_desc">Um sofort anzufangen</string>
     <string name="start_list_2_desc">Unsere Leben sind kopliziert genug</string>
     <string name="start_list_3_desc">Zum organisieren</string>
@@ -102,6 +104,8 @@
     <string name="start_list_5_desc">Es macht einfach Spaß</string>
     <string name="start_list_6_desc">Errare humanum est…</string>
     <string name="start_list_7_desc">Zumindest war das meine Absicht…</string>
+    <string name="start_list_8_desc">Ein Bild sagt mehr als tausend Worte…</string>
+    <string name="start_list_9_desc">Stells dir ein wie du es magst</string>
 
     <!--Alert Dialog Delete List-->
     <string name="alert_dialog_delete_list_title">Liste Löschen?</string>
@@ -142,14 +146,14 @@
     <string name="no_proper_number_entered">Es wurde keine gültige Nummer eingegeben.</string>
 
     <string name="html_export_title">Meine Top X List Listen:</string>
-    <string name="html_external_storage_not_accessible">Kein Zugriff auf externen Speicher vorhanden</string>
-    <string name="html_export_success">Listen erfolgreich in den DOWNLOADS Ordner exportiert.</string>
+    <string name="html_external_storage_not_accessible">Kein Zugriff auf externen Speicher vorhanden.</string>
+    <string name="html_export_success">HTML export erfolgreicht.</string>
     <string name="html_export_failure">HTML export gescheitert; konnte Dokument nicht erstellen.</string>
     <string name="export_file_chooser_title">Exportiere Dokument</string>
 
 
-    <string name="sidemenu_all_lists">Alle Listen</string>
-    <string name="sidemenu_export">Exportieren (HTML)</string>
+    <string name="side_menu_all_lists">Alle Listen</string>
+    <string name="side_menu_export">Exportieren (HTML)</string>
 
     <string name="image_description">dein Bild</string>
     <string name="image_pane_delete_button_text">Löschen</string>
@@ -158,7 +162,7 @@
     <string name="image_panel_desc">Bild: </string>
 
     <!--Concerned with the preferences/settings-->
-    <string name="sidemenu_settings">Einstellungen</string>
+    <string name="side_menu_settings">Einstellungen</string>
 
     <string name="preference_layout_usability">Handhabung</string>
     <string name="usability_category_title">Usability Settings:</string>
@@ -173,9 +177,16 @@
     <string name="appearance_category_title">Aussehen</string>
 
     <string name="pref_title_image_size">Bildgröße</string>
-    <string name="pref_summary_image_size">Bildgröße in Pixel. Mehr sieht besser aus, kostet aber mehr Speicherplatz und Ladezeit Bildverhältnis immer 16x9.</string>
+    <string name="pref_summary_image_size">Bildgröße in Pixel. Mehr sieht besser aus, kostet aber mehr Speicherplatz und Ladezeit. Bildverhältnis immer 16x9.</string>
 
     <string name="pref_title_new_obj_num">Listen sind Schlangen</string>
     <string name="pref_summary_new_obj_num">Neue Elemente werden standardmäßig ans Ende der Liste gepackt, anstatt an den Anfang.</string>
+
+    <string name="story_button_text">Die ganze Geschichte ansehen…</string>
+    <string name="nothing_to_show_elem_view">Nichts da zum sehen…</string>
+
+    <string name="nav_give_feedback_text">Feedback geben</string>
+    <string name="title_activity_image_fullscreen">Bild</string>
+    <string name="your_image_fullscreen_hint">Dein Bild</string>
 
 </resources>

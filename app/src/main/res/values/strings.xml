@@ -14,9 +14,9 @@
     <string name="title_activity_scrolling">View List</string>
     <string name="title_activity_xlist_view_long_description">View List Long Description</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_image_fullscreen">Image</string>
 
-
-    <!--Navigation Draver-->
+    <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Settings</string>
@@ -42,7 +42,6 @@
     <string name="xelem_create_and_edit_num_label">Number:</string>
     <string name="xelem_desc_title">Description:</string>
     <string name="xelem_mark_text">Mark Done</string>
-    <string name="xelem_delete_text">Delete</string>
     <string name="mark_not_done">Mark Not Done</string>
     <string name="mark_done">Mark Done</string>
 
@@ -59,7 +58,7 @@
     <string name="xelem_num_input_hint_alt">default is: first one</string>
 
 
-    <!--List View Collapsing Toolbar Stuff-->
+    <!--List View Button_Mode Toolbar Stuff-->
     <string name="xlist_long_desc_view_label">Long Description:</string>
     <string name="topxlist_name_logo">App Name Logo</string>
     <string name="collapsing_toolbar_long_description_empty_tip">Edit List to display long description here.</string>
@@ -82,12 +81,11 @@
         Reorder your lists via Drag & Drop.
         Swipe Left to delete and Right to mark lists as done.
         Use the Search Field at the top to filter and find lists.
-        Think of a number between 1 and 10 and then click me.]]></string>
+        Click this list to see its elements.]]></string>
     <string name="start_list_long_desc">Long Descriptions can be really long.
-        So you will only see the first 7 lines of it here.
-        Click this to see all of the long description.
-        Tap on the \"+\" button in the bottom right corner to add a new list element.
-        The following list is about the best features of this App.</string>
+        So you have all the space you need to tell the full story behind your list.
+        You can click the image above, to view it in fullscreen-mode.
+        Tap on the edit button in the bottom right corner to edit this list.</string>
     <string name="start_list_start_tag">listsCanHaveTags</string>
     <string name="start_list_1_title">Intuitive</string>
     <string name="start_list_2_title">Simple</string>
@@ -96,6 +94,9 @@
     <string name="start_list_5_title">Swipe left and right</string>
     <string name="start_list_6_title">Edit</string>
     <string name="start_list_7_title">Visually pleasing</string>
+    <string name="start_list_8_title">Images</string>
+    <string name="start_list_9_title">Settings</string>
+
     <string name="start_list_1_desc">To get started right away</string>
     <string name="start_list_2_desc">Our lives are complicated enough</string>
     <string name="start_list_3_desc">Keep track of the best</string>
@@ -103,6 +104,8 @@
     <string name="start_list_5_desc">Its just fun</string>
     <string name="start_list_6_desc">Errare humanum est…</string>
     <string name="start_list_7_desc">At least that\'s what I was aiming for…</string>
+    <string name="start_list_8_desc">A picture tells more than a thousand words…</string>
+    <string name="start_list_9_desc">Make it work for you</string>
 
     <!--Alert Dialog Delete List-->
     <string name="alert_dialog_delete_list_title">Delete List?</string>
@@ -135,6 +138,7 @@
     <string name="alert_dialog_cancel">Cancel</string>
     <string name="alert_dialog_exit">Exit</string>
 
+    <!--List Create And Edit error messages-->
     <string name="no_title_entered">Not title was entered.</string>
     <string name="title_already_exists">Title already exists.</string>
     <string name="no_tag_title_entered">No tag name was entered.</string>
@@ -142,17 +146,14 @@
     <string name="tag_title_already_exists_for_list">Duplicate Tag</string>
     <string name="no_proper_number_entered">No proper number was entered for Element</string>
 
+    <!--HTML export error messages-->
     <string name="html_export_title">My Top X List Lists:</string>
     <string name="html_external_storage_not_accessible">External storage not accessible</string>
     <string name="html_export_success">HTML export successful .</string>
     <string name="html_export_failure">HTML export failed; could\'nt create File.</string>
     <string name="export_file_chooser_title">Export File</string>
 
-
-    <string name="sidemenu_all_lists">All Lists</string>
-    <string name="sidemenu_export">Export (HTML)</string>
-
-
+    <!--Image related texts-->
     <string name="image_description">your image</string>
     <string name="image_pane_delete_button_text">Delete</string>
     <string name="image_pane_select_button_text">Select</string>
@@ -160,8 +161,12 @@
     <string name="image_panel_desc">Image: </string>
 
     <!--Concerned with the preferences/settings-->
-    <string name="sidemenu_settings">Settings</string>
+    <string name="side_menu_all_lists">All Lists</string>
+    <string name="side_menu_export">Export (HTML)</string>
+    <string name="side_menu_settings">Settings</string>
+    <string name="nav_give_feedback_text">Give Feedback</string>
 
+    <!--Preferences related tests-->
     <string name="preference_layout_usability">Usability</string>
     <string name="usability_category_title">Usability</string>
 
@@ -180,5 +185,11 @@
     <string name="pref_title_new_obj_num">Lists are Queues</string>
     <string name="pref_summary_new_obj_num">New elements get appended to the end of the list rather than to the front.</string>
 
+    <!--Story button related-->
+    <string name="story_button_text">View the whole story…</string>
+    <string name="nothing_to_show_elem_view">Nothing to show…</string>
+
+    <!--Image activity related-->
+    <string name="your_image_fullscreen_hint">Your image</string>
 
 </resources>

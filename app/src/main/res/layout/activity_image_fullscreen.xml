@@ -2,23 +2,23 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_activity_fragment_placeholder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.whynoteasy.topxlist.general.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context=".listActivities.ImageFullscreenListActivity"
+    android:background="@color/lightBlue">
 
     <ImageView
-        android:id="@+id/image_background"
-        android:layout_width="0dp"
+        android:id="@+id/main_image"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="50dp"
         android:adjustViewBounds="true"
+        android:foregroundGravity="center"
         android:scaleType="fitXY"
+        android:src="@drawable/stock_15768651"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/your_image_fullscreen_hint"/>
 
 </android.support.constraint.ConstraintLayout>
