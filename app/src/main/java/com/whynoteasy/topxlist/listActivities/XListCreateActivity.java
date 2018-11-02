@@ -86,6 +86,7 @@ public class XListCreateActivity extends AppCompatActivity {
 
         //set up the title edit text so no new lines are entered
         titleEditText = findViewById(R.id.xlist_title_input);
+        titleEditText.requestFocus(); //request focus
         //titleEditText = TopXListApplication.configureEditText(titleEditText,shortDescEditText, thisActivity);
 
         //set up the tag edit text so no new lines are entered
@@ -104,13 +105,7 @@ public class XListCreateActivity extends AppCompatActivity {
 
         //The cancelList Button
         Button listCancelButton = findViewById(R.id.xlist_cancel_button);
-        listCancelButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                //exit without saving anything
-                NavUtils.navigateUpFromSameTask(thisActivity);
-            }
-        });
+        listCancelButton.setVisibility(View.GONE);
 
         //The saveList Button
         Button listSaveButton = findViewById(R.id.xlist_save_button);
@@ -120,8 +115,6 @@ public class XListCreateActivity extends AppCompatActivity {
                 saveListFinally(view); //saves everything persistently
             }
         });
-
-        //FROM HERE ON STUFF RELATED TO IMAGE
 
         //The image View
         imageView = findViewById(R.id.xlist_image_panel_image);
@@ -330,7 +323,7 @@ public class XListCreateActivity extends AppCompatActivity {
         });
         builder.setNeutralButton("Save", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                saveListFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveListFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }
         });
         builder.show();

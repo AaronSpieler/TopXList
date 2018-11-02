@@ -20,10 +20,10 @@ import android.widget.TextView;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
-import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
+import com.whynoteasy.topxlist.elemActivities.XListViewActivity;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 
-public class XListViewLongDescriptionActivity extends AppCompatActivity {
+public class XListViewStoryActivity extends AppCompatActivity {
 
     private int currentListID;
 
@@ -53,7 +53,7 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         }
         //get the List with its Tags
         DataRepository myRep = DataRepository.getRepository();
-        XListModel currentList = myRep.getListByID(currentListID);
+        final XListModel currentList = myRep.getListByID(currentListID);
 
         //set the title
         ActionBar ab = getSupportActionBar();
@@ -82,7 +82,7 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         }
 
         //show image, if there is any
-        ImageView imageView = findViewById(R.id.xlist_image_panel_image);
+        final ImageView imageView = findViewById(R.id.xlist_image_panel_image);
         if (currentList.getXImageLoc() != null) {
             Bitmap bitmap = (new ImageHandler(thisActivity)).loadFileByRelativePath(currentList.getXImageLoc());
             imageView.setImageBitmap(bitmap);
@@ -90,6 +90,15 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
             CardView imageCard = findViewById(R.id.xlist_image_panel);
             imageCard.setVisibility(View.GONE);
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //starting the activity from the this activity context
+                Intent intent = new Intent(thisActivity , ImageFullscreenListActivity.class);
+                intent.putExtra("X_LIST_ID", currentList.getXListID());
+                thisActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -97,8 +106,8 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                //return to xListViewCollapsingActivity
-                returnToXListViewCollapsingActivity();
+                //return to xListViewActivity
+                returnToXListViewActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -109,17 +118,16 @@ public class XListViewLongDescriptionActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             //return to mainActivity
-            returnToXListViewCollapsingActivity();
+            returnToXListViewActivity();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private void returnToXListViewCollapsingActivity(){
+    private void returnToXListViewActivity(){
         //exit without saving anything
-        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
         intent.putExtra("X_LIST_ID", currentListID);
         NavUtils.navigateUpTo(thisActivity,intent);
     }
-
 }

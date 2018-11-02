@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.whynoteasy.topxlist.listActivities.XListViewLongDescriptionActivity"
+    tools:context="com.whynoteasy.topxlist.listActivities.XListViewStoryActivity"
     tools:showIn="@layout/activity_xlist_view_long_description"
     android:importantForAutofill="no"
     tools:targetApi="o">

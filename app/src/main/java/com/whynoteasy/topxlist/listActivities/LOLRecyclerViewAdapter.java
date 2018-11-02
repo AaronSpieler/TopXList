@@ -23,6 +23,7 @@ import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.general.SettingsActivity;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
@@ -41,11 +42,13 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
     private final OnListFragmentInteractionListener mListener;
     private final Context activityContext;
     private final CustomListFilter mFilter = new CustomListFilter();
+    private final LOLRecyclerViewAdapter lolAdapterSelf;
 
     public LOLRecyclerViewAdapter(List<XListTagsSharesPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
         mValues = items;
         mListener = listener;
         this.activityContext = activityContext;
+        lolAdapterSelf = this;
     }
 
     //I guess this method is done?
@@ -92,7 +95,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(lolAdapterSelf, holder.getAdapterPosition(), MainListOfListsFragment.INTERACTION_CLICK);
                 }
             }
         });
@@ -141,6 +144,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
             imgButton = itemView.findViewById(R.id.xList_popup_button);
         }
+
 
     }
 
@@ -311,19 +315,16 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
 
         deleteCorrespondingElementImages(activityContext,tempPojo.getXListModel().getXListID());
 
-        DataRepository myRep = DataRepository.getRepository();
-        //myRep.deleteElementsByListID(tempPojo.getXListModel().getXListID()); //unnecessary because of propagation?
-        //myRep.deleteTags(tempPojo.getXTagModelList()); //unnecessary because of propagation?
-
+        DataRepository myRep = DataRepository.getRepository(); //propagation removes rest
         myRep.deleteList(tempPojo.getXListModel());
-
-        //remove the List from the activity cache and notify the adapter
-        //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
+
+        //notify activity that element has been deleted in fragment
+        mListener.onListFragmentInteraction(lolAdapterSelf, position , MainListOfListsFragment.INTERACTION_DELETE);
     }
 
-    public void deleteCorrespondingElementImages(Context context, int ListID) {
+    private void deleteCorrespondingElementImages(Context context, int ListID) {
         ImageHandler imgSaver = new ImageHandler(context);
         DataRepository myRep = DataRepository.getRepository();
         List<XElemModel> elemModelList = myRep.getElementsByListID(ListID);
@@ -332,6 +333,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
                 imgSaver.deleteFileByRelativePath(elemModel.getXImageLoc());
             }
         }
+    }
+
+    public XListModel getItemAtPosition (int position) {
+        return mValues.get(position).getXListModel();
     }
 
 }

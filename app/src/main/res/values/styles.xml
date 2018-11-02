@@ -1,5 +1,4 @@
 <resources>
-
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!--changes color of all kinds of text but also some background colors-->
@@ -13,6 +12,10 @@
         <!--Chante text font to open sans-->
         <item name="android:textViewStyle">@style/OpenSansTextViewStyle</item>
         <item name="android:buttonStyle">@style/OpenSansButtonStyle</item>
+
+        <!--click highlight-->
+        <item name="colorControlHighlight">@color/lightBlue</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />

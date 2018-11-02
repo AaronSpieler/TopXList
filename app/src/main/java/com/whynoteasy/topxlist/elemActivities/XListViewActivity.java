@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -14,16 +14,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
-import com.whynoteasy.topxlist.listActivities.XListViewLongDescriptionActivity;
+import com.whynoteasy.topxlist.listActivities.XListViewStoryActivity;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 
-public class XListViewCollapsingActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
+
+public class XListViewActivity extends AppCompatActivity implements ListOfElementsFragment.OnListFragmentInteractionListener{
 
     private int currentListID;
     private Activity thisActivity;
@@ -31,9 +34,9 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_xlist_view_collapsing);
+        setContentView(R.layout.activity_xlist_view_button_mode);
 
-        Toolbar toolbar = findViewById(R.id.toolbar_collapsing);
+        Toolbar toolbar = findViewById(R.id.toolbar_list_view);
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
@@ -63,6 +66,20 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         DataRepository myRep = DataRepository.getRepository();
         XListModel currentList = myRep.getListByID(currentListID);
 
+        //story button redirects to xListViewStory
+        Button storyButton = findViewById(R.id.story_button);
+        storyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(thisActivity, XListViewStoryActivity.class);
+                intent.putExtra("X_LIST_ID", currentListID);
+                thisActivity.startActivity(intent);
+            }
+        });
+        if (currentList.getXListLongDescription().isEmpty() && currentList.getXImageLoc() == null) { //if no image and no description => no point in going there
+            storyButton.setVisibility(View.GONE);
+        }
+
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -70,47 +87,47 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
             ab.setTitle(currentList.getXListTitle());
         }
 
-        //the long description is clickable
-        TextView collapsingText = findViewById(R.id.collapsing_toolbar_text_view);
-        collapsingText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(thisActivity, XListViewLongDescriptionActivity.class);
-                intent.putExtra("X_LIST_ID", currentListID);
-                thisActivity.startActivity(intent);
-            }
-        });
-
-        //If the long description is too long not everything is shown, only 7 lines
-        if (currentList.getXListLongDescription().trim().length() == 0) {
-            collapsingText.setText(R.string.collapsing_toolbar_long_description_empty_tip);
-        } else {
-            collapsingText.setText(currentList.getXListLongDescription());
-        }
-
-        //the collapsing toolbar
-        CollapsingToolbarLayout collapsingTB = findViewById(R.id.xlist_view_collapsing_toolbar_layout);
-        collapsingTB.setTitleEnabled(false);
-        collapsingTB.setBackgroundColor(getResources().getColor(R.color.middleDarkBlue));
-
-        //Set the Fragment
-        //However, the fragment should not be readded on rotation
+        //Set the Fragment //the fragment should not be readded on rotation
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             //with the newInstance function I pass on the relevant ListID
             ListOfElementsFragment LOE_fragment = ListOfElementsFragment.newInstance(1, currentListID);
-            fragmentTransaction.add(R.id.xlist_view_collapsing_container, LOE_fragment);
+            fragmentTransaction.add(R.id.xlist_view_container, LOE_fragment);
             fragmentTransaction.commit();
+        }
+
+        //TODO FIX IF WRONG
+        if (myRep.getElementsByListID(currentListID).size() == 0) {
+            updateBackground(true);
+        } else {
+            updateBackground(false);
         }
     }
 
     @Override
-    public void onListFragmentInteraction(XElemModel item) {
-        Intent viewIntent = new Intent(this.getApplicationContext(), XElemViewActivity.class);
-        viewIntent.putExtra("X_ELEM_ID", item.getXElemID());
-        startActivity(viewIntent);
+    public void onListFragmentInteraction(LOERecyclerViewAdapter loeAdapter, int position, int interactionType) {
+        switch (interactionType) {
+            case 0: //item has been clicked
+                XElemModel item = loeAdapter.getItemAtPosition(position);
+                if (!item.getXElemDescription().isEmpty() || !(item.getXImageLoc() == null)) {
+                    Intent viewIntent = new Intent(this.getApplicationContext(), XElemViewActivity.class);
+                    viewIntent.putExtra("X_ELEM_ID", item.getXElemID());
+                    startActivity(viewIntent);
+                } else {
+                    Snackbar mySnackbar = Snackbar.make(this.findViewById(R.id.fab_elements), R.string.nothing_to_show_elem_view, LENGTH_SHORT);
+                    mySnackbar.show();
+                }
+                break;
+            case 1: //item has been deleted
+                //TODO check wheter necessary
+                //If last element has been deleted, set background
+                if (loeAdapter.getItemCount() == 0) {
+                    updateBackground(true);
+                }
+                break;
+        }
     }
 
     @Override
@@ -137,5 +154,15 @@ public class XListViewCollapsingActivity extends AppCompatActivity implements Li
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void updateBackground(boolean empty) {
+        ImageView img_view = findViewById(R.id.image_background);
+        if (empty) {
+            img_view.setImageResource(R.drawable.light_bulb_edited);
+            img_view.setVisibility(View.VISIBLE);
+        } else {
+            img_view.setVisibility(View.GONE);
+        }
     }
 }

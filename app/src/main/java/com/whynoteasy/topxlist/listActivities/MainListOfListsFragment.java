@@ -33,6 +33,11 @@ public class MainListOfListsFragment extends Fragment {
 
     private LOLRecyclerViewAdapter adapterRef;
 
+    //Interaction Types which the adapter can signal
+    public static final int INTERACTION_CLICK = 0;
+    public static final int INTERACTION_DELETE = 1;
+    public static final int INTERACTION_MARK = 2;
+
     //Mandatory empty constructor
     public MainListOfListsFragment() {
     }
@@ -82,6 +87,8 @@ public class MainListOfListsFragment extends Fragment {
             ListTouchHelper swipeAndDragHelper = new ListTouchHelper(adapterRef);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
             touchHelper.attachToRecyclerView((RecyclerView) view);
+
+            return recyclerView;
         }
         return view;
     }
@@ -105,7 +112,7 @@ public class MainListOfListsFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(XListTagsSharesPojo item);
+        void onListFragmentInteraction(LOLRecyclerViewAdapter lolAdapter, int position, int interactionType);
     }
 
     //This is to get the adapter reference through the fragment: needed so the main view can tell the adapter to redraw

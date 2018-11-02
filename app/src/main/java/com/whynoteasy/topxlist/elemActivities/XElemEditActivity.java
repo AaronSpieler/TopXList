@@ -78,7 +78,7 @@ public class XElemEditActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                System.err.println("Edit List Activity cannot proceed without ELEM_ID");
+                System.err.println("Edit Elem Activity cannot proceed without X_ELEM_ID");
                 System.exit(0);
             } else {
                 currentElementID = extras.getInt("X_ELEM_ID");
@@ -109,7 +109,7 @@ public class XElemEditActivity extends AppCompatActivity {
 
         //set focus on title not num
         titleEditView = findViewById(R.id.xelem_title_input);
-        titleEditView.requestFocus();
+        //titleEditView.requestFocus(); //rather not in editing
 
         //get the shortDescEditText to focus next
         descriptionEditView = findViewById(R.id.xelem_desc_input);
@@ -158,7 +158,7 @@ public class XElemEditActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //exit without saving anything
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                Intent intent = new Intent(thisActivity, XListViewActivity.class);
                 intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
                 NavUtils.navigateUpTo(thisActivity,intent);
             }
@@ -229,7 +229,7 @@ public class XElemEditActivity extends AppCompatActivity {
 
         if (id == android.R.id.home) {
             //return to xListViewActivity
-            returnToXListViewCollapsingActivity();
+            returnToXListViewActivity();
             return true;
         } else if (id == R.id.delete_action_xelem) {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
@@ -247,13 +247,13 @@ public class XElemEditActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             //return to mainActivity
-            returnToXListViewCollapsingActivity();
+            returnToXListViewActivity();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private void returnToXListViewCollapsingActivity(){
+    private void returnToXListViewActivity(){
         //retrieving the inputs from all the TextViews
         String tempTitle = titleEditView.getText().toString().trim();
         String tempDescription = descriptionEditView.getText().toString().trim();
@@ -261,13 +261,13 @@ public class XElemEditActivity extends AppCompatActivity {
         //if there is nothing entered so far
         if (!(!imageSet && imageWasSet) && !imageChanged && !markWasEdited && currentElement.getXElemTitle().equals(tempTitle) && currentElement.getXElemDescription().equals(tempDescription)){
             //exit without saving anything
-            Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+            Intent intent = new Intent(thisActivity, XListViewActivity.class);
             intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
             NavUtils.navigateUpTo(thisActivity,intent);
         } else {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_AUTO_SAVING, true)) {
                 //save changes without asking
-                saveElemFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveElemFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             } else {
                 alertUserUnsavedChanges();
             }
@@ -283,7 +283,7 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.alert_dialog_exit, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //exit without saving anything
-                Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+                Intent intent = new Intent(thisActivity, XListViewActivity.class);
                 intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
                 NavUtils.navigateUpTo(thisActivity,intent);
             }
@@ -295,7 +295,7 @@ public class XElemEditActivity extends AppCompatActivity {
         });
         builder.setNeutralButton(R.string.alert_dialog_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                saveElemFinally((View) findViewById(R.id.xelem_create_and_edit_cards_scroller));
+                saveElemFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }
         });
         builder.show();
@@ -347,7 +347,7 @@ public class XElemEditActivity extends AppCompatActivity {
         myRep.deleteElem(currentElement);
 
         //exit to listView
-        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
         intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
         NavUtils.navigateUpTo(thisActivity,intent);
     }
@@ -421,7 +421,7 @@ public class XElemEditActivity extends AppCompatActivity {
         }
 
         //return to parent activity
-        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
         intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
         NavUtils.navigateUpTo(thisActivity,intent);
     }

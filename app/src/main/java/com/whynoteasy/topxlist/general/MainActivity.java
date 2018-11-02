@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -23,18 +24,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.HTMLExporter;
+import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.elemActivities.XListViewActivity;
 import com.whynoteasy.topxlist.listActivities.LOLRecyclerViewAdapter;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
-import com.whynoteasy.topxlist.elemActivities.XListViewCollapsingActivity;
-import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
+//Created with lolFragment in mind, if other fragment set, restructuring needed
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
 
@@ -81,17 +84,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Set up the LOL Fragment
-        FragmentManager manager = getSupportFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        lolFragment = MainListOfListsFragment.newInstance(1);
-        //very important, so the fragments dont stack
-        if (savedInstanceState == null) {
-            transaction.add(R.id.main_activity_fragment_placeholder, lolFragment);
-        } else {
-            transaction.replace(R.id.main_activity_fragment_placeholder, lolFragment);
-        }
-        transaction.commit();
+        //Set up the LOL Fragment by default
+        setUpLolFragment(savedInstanceState != null); //replace if savedInstanceState exists
     }
 
     @Override
@@ -184,8 +178,15 @@ public class MainActivity extends AppCompatActivity
             //deal with the activity_settings
             Intent openSettings = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(openSettings);
-
+        } else if (id == R.id.nav_rate_app) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://play.google.com/store/apps/details?id=com.whynoteasy.topxlist"));
+            //intent.setPackage("com.whynoteasy.topxlist"); //lock to play store
+            startActivity(intent);
+        } /*else if (id == R.id.nav_privacy_policy) {
+            //not used so far
         }
+        */
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -193,11 +194,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onListFragmentInteraction(XListTagsSharesPojo item) {
-        //Start XListViewCollapsingActivity
-        Intent intent = new Intent(this.getApplicationContext(), XListViewCollapsingActivity.class);
-        intent.putExtra("X_LIST_ID", item.getXListModel().getXListID());
-        startActivity(intent);
+    public void onListFragmentInteraction(LOLRecyclerViewAdapter lolAdapter, int position, int interactionType) {
+        switch (interactionType) {
+            case 0: //item has been clicked
+                XListModel item = lolAdapter.getItemAtPosition(position);
+                //Start XListViewActivity
+                Intent intent = new Intent(this.getApplicationContext(), XListViewActivity.class);
+                intent.putExtra("X_LIST_ID", item.getXListID());
+                startActivity(intent);
+                break;
+            case 1: // item has been deleted
+                //TODO check whether necessary
+                updateBackground();
+                break;
+        }
     }
 
     //EVERY TIME BUT THE FIRST TIME THIS ACTIVITY IS CREATED THIS METHOD IS CALLED
@@ -234,7 +244,6 @@ public class MainActivity extends AppCompatActivity
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request.
         }
@@ -265,5 +274,41 @@ public class MainActivity extends AppCompatActivity
                 htmlExporter.saveHTMLtoFile(data.getData());
             }
         }
+    }
+
+    private void updateBackground() {
+        //wenn wir ein lolFragment haben
+        if (lolFragment != null) {
+            boolean empty = (myRep.getListsWithTagsShares().size() == 0);
+            ImageView img_view = findViewById(R.id.image_background);
+            if (empty) {
+                img_view.setImageResource(R.drawable.light_bulb_edited);
+                img_view.setVisibility(View.VISIBLE);
+            } else {
+                img_view.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void setUpLolFragment(boolean replace){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        lolFragment = MainListOfListsFragment.newInstance(1);
+        //very important, so the fragments dont stack
+        if (!replace) {
+            transaction.add(R.id.main_activity_fragment_placeholder, lolFragment);
+        } else {
+            transaction.replace(R.id.main_activity_fragment_placeholder, lolFragment);
+        }
+        transaction.commit();
+
+        //change background appropriately
+        updateBackground();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateBackground();
     }
 }

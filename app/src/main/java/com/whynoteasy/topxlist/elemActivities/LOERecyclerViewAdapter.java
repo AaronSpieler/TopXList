@@ -34,11 +34,13 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     private final List<XElemModel> mValues;
     private final OnListFragmentInteractionListener mListener;
     private final Context activityContext;
+    private final LOERecyclerViewAdapter loeAdapterSelf;
 
     public LOERecyclerViewAdapter(List<XElemModel> items, OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
         this.activityContext = context;
+        loeAdapterSelf = this;
     }
 
     @NonNull
@@ -51,7 +53,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
@@ -87,7 +89,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(loeAdapterSelf, holder.getAdapterPosition(), ListOfElementsFragment.INTERACTION_CLICK);
                 }
             }
         });
@@ -157,7 +159,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
             deleteAtPositionIfConfirmed(position);
         } else {
-            deleteListImmediately(position);
+            deleteElementImmediately(position);
         }
     }
 
@@ -188,13 +190,6 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         }
     }
 
-    private void makeNumChangesVisibleOnDeletion(int posOfDel){
-        for (int i = posOfDel; i <= mValues.size()-1; i++){
-            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
-            notifyItemChanged(i);
-        }
-    }
-
     //TODO modify when temporarily deleting
     private void deleteAtPositionIfConfirmed(final int position) {
         XElemModel theElement = mValues.get(position);
@@ -204,7 +199,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                deleteListImmediately(position);
+                deleteElementImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -221,22 +216,33 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         builder.show();
     }
 
-    private void deleteListImmediately(int position) {
+    private void deleteElementImmediately(int position) {
         XElemModel theElement = mValues.get(position);
+
         //Delete corresponding Image
         if (theElement.getXImageLoc() != null) {
             (new ImageHandler(activityContext)).deleteFileByRelativePath(theElement.getXImageLoc());
         }
 
         DataRepository myRep = DataRepository.getRepository();
-
         myRep.deleteElem(theElement);
-
-        //remove the List from the activity cache and notify the adapter
-        //ATTENTION: CARD_POSITION IS NOT EQUAL TO INDEX IN THE mVALUES LIST!!!
         mValues.remove(theElement);
         notifyItemRemoved(position);
 
+        //change numbers and set background
         makeNumChangesVisibleOnDeletion(position);
+    }
+
+    private void makeNumChangesVisibleOnDeletion(int posOfDel){
+        for (int i = posOfDel; i <= mValues.size()-1; i++){
+            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been deleted in fragment
+        mListener.onListFragmentInteraction(loeAdapterSelf, posOfDel , ListOfElementsFragment.INTERACTION_DELETE);
+    }
+
+    public XElemModel getItemAtPosition (int position) {
+        return mValues.get(position);
     }
 }

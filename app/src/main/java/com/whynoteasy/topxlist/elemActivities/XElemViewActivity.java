@@ -87,6 +87,15 @@ public class XElemViewActivity extends AppCompatActivity {
             CardView imageCard = findViewById(R.id.xelem_image_panel);
             imageCard.setVisibility(View.GONE);
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //starting the activity from the this activity context
+                Intent intent = new Intent(thisActivity , ImageFullscreenElemActivity.class);
+                intent.putExtra("X_ELEM_ID", currentElementID);
+                thisActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -94,8 +103,7 @@ public class XElemViewActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
-                //return to xListViewCollapsingActivity
-                returnToXListViewCollapsingActivity();
+                returnToXListViewActivity();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -106,15 +114,15 @@ public class XElemViewActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event)  {
         if (keyCode == KeyEvent.KEYCODE_BACK ) {
             //return to mainActivity
-            returnToXListViewCollapsingActivity();
+            returnToXListViewActivity();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private void returnToXListViewCollapsingActivity(){
+    private void returnToXListViewActivity(){
         //exit without saving anything
-        Intent intent = new Intent(thisActivity, XListViewCollapsingActivity.class);
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
         intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
         NavUtils.navigateUpTo(thisActivity,intent);
     }
