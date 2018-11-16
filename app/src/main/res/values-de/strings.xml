@@ -189,4 +189,13 @@
     <string name="title_activity_image_fullscreen">Bild</string>
     <string name="your_image_fullscreen_hint">Dein Bild</string>
 
+    <!--Trash related-->
+    <string name="trash_activity_label">Element Papierkorb</string>
+    <string name="trash">Papierkorb</string>
+    <string name="restore_icon_hint">Wiederherstellen oder permanent Elemente löschen.</string>
+    <string name="deletion_sucessfull">Element erfolgreich gelöscht.</string>
+    <string name="restoration_sucessfull">Element erfolgreich wiederhergestellt.</string>
+
+
+
 </resources>

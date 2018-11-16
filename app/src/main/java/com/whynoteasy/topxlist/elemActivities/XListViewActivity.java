@@ -19,6 +19,7 @@ import android.widget.ImageView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
+import com.whynoteasy.topxlist.elemTrashActivities.TrashedElementsActivity;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewStoryActivity;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
@@ -46,7 +47,7 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
         Bundle extras = getIntent().getExtras();
 
         if(extras == null) {
-            System.err.println("View List Activity cannot proceed without LIST_ID");
+            new Error("View List Activity cannot proceed without X_LIST_ID").printStackTrace();
             System.exit(0);
         } else {
             currentListID = extras.getInt("X_LIST_ID");
@@ -133,7 +134,7 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.collapsinng_toolbar_menu, menu);
+        getMenuInflater().inflate(R.menu.button_elements_view_toolbar_menu, menu);
         return true;
     }
 
@@ -149,6 +150,14 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
             //start list edit activity
             Intent intent = new Intent(thisActivity , XListEditActivity.class);
             intent.putExtra("X_LIST_ID", currentListID);
+            thisActivity.startActivity(intent);
+            return true;
+        }
+        if (id == R.id.restore_action) {
+            //start list edit activity
+            Intent intent = new Intent(thisActivity , TrashedElementsActivity.class);
+            intent.putExtra("X_LIST_ID", currentListID);
+            System.out.println("ID: "+currentListID);
             thisActivity.startActivity(intent);
             return true;
         }

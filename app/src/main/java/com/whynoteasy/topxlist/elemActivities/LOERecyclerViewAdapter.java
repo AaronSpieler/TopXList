@@ -149,7 +149,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         mValues.add(newPosition, tempElem);
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
-        myRep.changeAllListNumbersUpdateElem(tempElem,newPosition+1,oldPosition+1);
+        myRep.changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(tempElem,newPosition+1,oldPosition+1);
         this.changeNumbersVisibly(newPosition, oldPosition);
     }
 
@@ -159,7 +159,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
             deleteAtPositionIfConfirmed(position);
         } else {
-            deleteElementImmediately(position);
+            trashElementImmediately(position);
         }
     }
 
@@ -199,7 +199,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                deleteElementImmediately(position);
+                trashElementImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -226,6 +226,19 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
         DataRepository myRep = DataRepository.getRepository();
         myRep.deleteElem(theElement);
+        mValues.remove(theElement);
+        notifyItemRemoved(position);
+
+        //change numbers and set background
+        makeNumChangesVisibleOnDeletion(position);
+    }
+
+    private void trashElementImmediately(int position) {
+        XElemModel theElement = mValues.get(position);
+        DataRepository myRep = DataRepository.getRepository();
+
+        //remove & trash element
+        myRep.trashElement(theElement);
         mValues.remove(theElement);
         notifyItemRemoved(position);
 

@@ -186,8 +186,8 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    //changesAllListNumbersAndUpdatesElement
-    public void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos){
+    //CHANGES ALL CORRESPONDING NUMBERS SO THE INPUTTED ELEMENT HAS THE INPUTTED NEW POSITION
+    public void changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(XElemModel xElemModel, int newPos, int oldPos){
         new UpdateElemNumAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, newPos, oldPos));
     }
     private static class UpdateElemNumAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
@@ -264,6 +264,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
+    /*Not used, also mistake because pos not updated after delete
     //DELETE ELEMENTS BY LIST_ID
     public void deleteElementsByListID(Integer listID) {
         new DeleteElementsByListIDAsyncTask(xRoomDatabase).execute(listID);
@@ -279,6 +280,7 @@ public class DataRepository implements DatabaseSpecification {
             return null;
         }
     }
+    */
 
     //UPDATE ELEMENT
     public void updateElem(XElemModel xElemModel) {
@@ -315,6 +317,89 @@ public class DataRepository implements DatabaseSpecification {
             return db.xElementsModel().getNumberOfElementsOfList(params[0].toString());
         }
     }
+
+    @Override //TODO test
+    public void trashElement(XElemModel xElemModel) {
+        new TrashElemAsyncTask(xRoomDatabase).execute(xElemModel);
+    }
+    private static class TrashElemAsyncTask extends AsyncTask<XElemModel, Void, Void> {
+        private final XRoomDatabase db;
+        TrashElemAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XElemModel... params) {
+            //update positions
+            Integer posOfDel = params[0].getXElemNum();
+            db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign()))+1), Integer.toString(posOfDel));
+
+            //mark element as trashed
+            params[0].setXElemTrashed(true);
+            db.xElementsModel().updateXElem(params[0]);
+
+            return null;
+
+        }
+    }
+
+    @Override //TODO test
+    public void restoreElement(XElemModel xElemModel, int newPos) {
+        new RestoreElemAsyncTask(xRoomDatabase,this).execute(new NumElemUpdateParameters(xElemModel, newPos, newPos)); //supplementary object to pass multiple parameters
+    }
+    private static class RestoreElemAsyncTask extends AsyncTask<NumElemUpdateParameters, Void, Void> {
+        private final XRoomDatabase db;
+        private final DataRepository myRep;
+        RestoreElemAsyncTask(XRoomDatabase xRoomDatabase, DataRepository myRep) {
+            db = xRoomDatabase;
+            this.myRep = myRep;
+        }
+        @Override
+        protected Void doInBackground(final NumElemUpdateParameters... params) {
+            //mark element as not trashed
+            params[0].xElemModel.setXElemTrashed(false);
+
+            //change other elements positions
+            int hypotheticalOldPos = db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].xElemModel.getXListIDForeign())) + 1;
+            if (params[0].newPos <= hypotheticalOldPos) {
+                db.xElementsModel().updateIncrementNumOfeElemFromToSmallerPos(Integer.toString(params[0].xElemModel.getXListIDForeign()), Integer.toString(params[0].newPos), Integer.toString(hypotheticalOldPos));
+            }
+
+            //change own pos
+            if (params[0].newPos > hypotheticalOldPos) { //new Pos too big
+                params[0].xElemModel.setXElemNum(hypotheticalOldPos);
+            } else {
+                params[0].xElemModel.setXElemNum(params[0].newPos);
+            }
+
+            //commit changes
+            db.xElementsModel().updateXElem(params[0].xElemModel);
+
+            return null;
+        }
+    }
+
+    //GET TRASHED ELEMENTS LIST CORRESPONDING TO SPECIFIC ID ONLY TRASHED
+    public List<XElemModel> getTrashedElementsByListID(int listID) {
+        try{
+            //the rowId which is the primaryKey is returned
+            return new GetTrashedElementsListByIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetTrashedElementsListByIDAsyncTask extends AsyncTask<Integer, Void, List<XElemModel>> {
+        private final XRoomDatabase db;
+        GetTrashedElementsListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected List<XElemModel> doInBackground(final Integer... params) {
+            return db.xElementsModel().loadTrashedElementsByListID(Integer.toString(params[0]));
+        }
+    }
+
+
 
     //---------------------------------Lists--------------------------
 
@@ -356,7 +441,7 @@ public class DataRepository implements DatabaseSpecification {
             this.oldPos = oldPos;
         }
     }
-    public void changeAllListNumbersList(XListModel xListModel, int newPos, int oldPos){
+    public void changeAllListNumbersAndUpdateListToNewPos(XListModel xListModel, int newPos, int oldPos){
         new UpdateListNumAsyncTask(xRoomDatabase).execute(new NumListUpdateParameters(xListModel, newPos, oldPos));
     }
     private static class UpdateListNumAsyncTask extends  AsyncTask<NumListUpdateParameters, Void, Void>{
@@ -456,6 +541,63 @@ public class DataRepository implements DatabaseSpecification {
                 System.out.println("Num of Tags" + db.xTagModel().getNumberOfTagsTotal());
             }
             return db.xListModel().getNumberOfLists();
+        }
+    }
+
+    @Override //TODO test
+    public void trashList(XListModel xListModel) {
+        new TrashListAsyncTask(xRoomDatabase).execute(xListModel);
+    }
+    private static class TrashListAsyncTask extends AsyncTask<XListModel, Void, Void> {
+        private final XRoomDatabase db;
+        TrashListAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XListModel... params) {
+            //mark element as trashed
+            params[0].setXListTrashed(true);
+            db.xListModel().updateXList(params[0]);
+            //update positions
+            Integer posOfDel = params[0].getXListNum();
+            db.xListModel().updateIncrementNumOfListsFromToHigherPos(Integer.toString(db.xListModel().getNumberOfLists()+1), Integer.toString(posOfDel));
+            return null;
+        }
+    }
+
+    @Override //TODO test
+    public void restoreList(XListModel xListModel, int newPos) {
+        new RestoreListAsyncTask(xRoomDatabase, this).execute(new NumListUpdateParameters(xListModel, newPos, newPos)); //supplementary object to pass multiple parameters
+    }
+    private static class RestoreListAsyncTask extends AsyncTask<NumListUpdateParameters, Void, Void> {
+        private final XRoomDatabase db;
+        private final DataRepository myRep;
+        RestoreListAsyncTask(XRoomDatabase xRoomDatabase, DataRepository myRep) {
+            db = xRoomDatabase;
+            this.myRep = myRep;
+        }
+        @Override
+        protected Void doInBackground(final NumListUpdateParameters... params) {
+            //mark element as not trashed
+            params[0].xListModel.setXListTrashed(false);
+
+            //change other elements positions
+            int hypotheticalOldPos = db.xListModel().getNumberOfLists()+1;
+            if (params[0].newPos <= hypotheticalOldPos) {
+                db.xListModel().updateIncrementNumOfListsFromToSmallerPos(Integer.toString(params[0].newPos), Integer.toString(hypotheticalOldPos));
+            }
+
+            //change own pos
+            if (params[0].newPos > hypotheticalOldPos) { //new Pos too big
+                params[0].xListModel.setXListNum(hypotheticalOldPos);
+            } else {
+                params[0].xListModel.setXListNum(params[0].newPos);
+            }
+
+            //commit changes
+            db.xListModel().updateXList(params[0].xListModel);
+
+            return null;
         }
     }
 
