@@ -158,7 +158,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         mValues.add(newPosition, tempPojo);
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
-        myRep.changeAllListNumbersList(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
+        myRep.changeAllListNumbersAndUpdateListToNewPos(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
     }
 
     @Override

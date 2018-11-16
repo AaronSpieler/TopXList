@@ -235,7 +235,7 @@ public class XElemEditActivity extends AppCompatActivity {
             if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
                 deleteElemIfConfirmed();
             } else {
-                deleteListImmediately();
+                trashElementImmediately();
             }
             return true;
         }
@@ -326,7 +326,7 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+currentElement.getXElemTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                deleteListImmediately();
+                trashElementImmediately();
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -337,13 +337,22 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.show();
     }
 
+    private void trashElementImmediately() {
+        myRep = DataRepository.getRepository();
+        myRep.trashElement(currentElement);
+
+        //exit to listView
+        Intent intent = new Intent(thisActivity, XListViewActivity.class);
+        intent.putExtra("X_LIST_ID", currentElement.getXListIDForeign());
+        NavUtils.navigateUpTo(thisActivity,intent);
+    }
+
     private void deleteListImmediately() {
         if (currentElement.getXImageLoc() != null) {
             (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
         }
 
         myRep = DataRepository.getRepository();
-
         myRep.deleteElem(currentElement);
 
         //exit to listView
@@ -417,7 +426,7 @@ public class XElemEditActivity extends AppCompatActivity {
             currentElement.setXElemTitle(tempTitle);
             currentElement.setXElemMarked(mMarked);
 
-            myRep.changeAllListNumbersUpdateElem(currentElement, newPos, oldPos);
+            myRep.changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(currentElement, newPos, oldPos);
         }
 
         //return to parent activity

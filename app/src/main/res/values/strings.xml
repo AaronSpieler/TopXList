@@ -192,4 +192,12 @@
     <!--Image activity related-->
     <string name="your_image_fullscreen_hint">Your image</string>
 
+    <!--Trash related-->
+    <string name="trash_activity_label">Element Trash</string>
+    <string name="trash">Trash</string>
+    <string name="restore_icon_hint">Restore or permanently delete elements.</string>
+    <string name="deletion_sucessfull">Element deleted successfully.</string>
+    <string name="restoration_sucessfull">Element restored successfully.</string>
+
+
 </resources>
