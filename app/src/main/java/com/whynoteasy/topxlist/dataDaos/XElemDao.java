@@ -28,7 +28,7 @@ public interface XElemDao {
     List<XElemModel> loadElementsByListID(String xListIDInp);
 
     //TODO check new
-    //order by list id, because it might reflect more the recency of deletion
+    //list_id might be more relevant => implies recency of creation
     @Query("SELECT * FROM elements WHERE list_id = :xListIDInp AND trashed != 0 ORDER BY list_id ASC")
     List<XElemModel> loadTrashedElementsByListID(String xListIDInp);
 

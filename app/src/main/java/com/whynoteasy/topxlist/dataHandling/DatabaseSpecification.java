@@ -52,6 +52,9 @@ public interface DatabaseSpecification {
         //DELETE ELEMENT
         void deleteElem(XElemModel xElemModel);
 
+        //DELETE ELEMENT FINALLY
+        void deleteElemFinally(XElemModel xElemModel);
+
         //DELETE ELEMENTS BY LIST_ID
         //void deleteElementsByListID(Integer listID); //NOT USED
 
@@ -69,9 +72,6 @@ public interface DatabaseSpecification {
 
         //---------------------------------Lists--------------------------
 
-        //GET THE LIST OF LISTS
-        List<XListModel> getLists();
-
         //GET LIST BY ID
         XListModel getListByID(int listID);
 
@@ -81,8 +81,11 @@ public interface DatabaseSpecification {
         //INSERT
         long insertList(XListModel xListModel);
 
-        //DELETE
+        //DELETE LIST
         void deleteList(XListModel xListModel);
+
+        //DELETE LIST FINALLY
+        void deleteListFinally(XListModel xListModel);
 
         //UPDATE
         void updateList(XListModel xListModel);
@@ -98,10 +101,13 @@ public interface DatabaseSpecification {
 
         //---------------------------------ListTagPojo-----------------------
 
-        //GET THE LIST OF LISTS
+        //GET THE LIST OF XLISTS
         List<XListTagsSharesPojo> getListsWithTagsShares();
 
         //GET LIST BY ID
         XListTagsSharesPojo getListWithTagsSharesByID(int listID);
+
+        //GET THE LIST OF TRASHED XLISTS
+        List<XListTagsSharesPojo> getTrashedXListsWithTagsShares();
 
 }

@@ -19,7 +19,7 @@ import android.widget.ImageView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
-import com.whynoteasy.topxlist.elemTrashActivities.TrashedElementsActivity;
+import com.whynoteasy.topxlist.xObjectTrashManagement.XElemTrashActivity;
 import com.whynoteasy.topxlist.listActivities.XListEditActivity;
 import com.whynoteasy.topxlist.listActivities.XListViewStoryActivity;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
@@ -155,7 +155,7 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
         }
         if (id == R.id.restore_action) {
             //start list edit activity
-            Intent intent = new Intent(thisActivity , TrashedElementsActivity.class);
+            Intent intent = new Intent(thisActivity , XElemTrashActivity.class);
             intent.putExtra("X_LIST_ID", currentListID);
             System.out.println("ID: "+currentListID);
             thisActivity.startActivity(intent);

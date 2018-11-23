@@ -8,20 +8,17 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment.OnListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
+import com.whynoteasy.topxlist.general.ElemViewHolder;
 import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.util.List;
@@ -29,7 +26,7 @@ import java.util.List;
 /**
  * specified {@link OnListFragmentInteractionListener}.
  */
-public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerViewAdapter.ViewHolder> implements ElementTouchHelper.ActionCompletionContract{
+public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder> implements ElementTouchHelper.ActionCompletionContract{
 
     private final List<XElemModel> mValues;
     private final OnListFragmentInteractionListener mListener;
@@ -45,15 +42,15 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ElemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.elem_card_final, parent, false);
-        return new ViewHolder(view);
+        return new ElemViewHolder(view, false);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ElemViewHolder holder, final int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
@@ -71,7 +68,6 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
             holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded));
             holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
         }
-
 
         holder.elemTitle.setText(mValues.get(position).getXElemTitle());
         holder.elemNum.setText(mValues.get(position).getXElemNum()+".");
@@ -108,37 +104,6 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<LOERecyclerView
     @Override
     public int getItemCount() {
         return mValues.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
-        final CardView elemCard;
-        final TextView elemNum;
-        final TextView elemTitle;
-        final TextView elemDescription;
-        final ImageView elemImage;
-
-        //possibly useful to have a reference to the object itself later on
-        XElemModel mItem;
-
-        //the button which when clicked opens menu
-        final ImageButton imgButton;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            mView = itemView;
-            elemCard = itemView.findViewById(R.id.xElem_card);
-            elemNum = itemView.findViewById(R.id.xElem_num);
-            elemTitle = itemView.findViewById(R.id.xElem_title);
-            elemDescription = itemView.findViewById(R.id.xElem_description);
-            elemImage = itemView.findViewById(R.id.xElem_image);
-
-            imgButton = itemView.findViewById(R.id.xElem_popup_button);
-
-        }
-
     }
 
     @Override
