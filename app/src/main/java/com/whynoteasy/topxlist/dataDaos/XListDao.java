@@ -26,7 +26,7 @@ public interface XListDao {
     List<XListModel> loadAllLists();
 
     //TODO check new
-    @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY list_num ASC")
+    @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY list_id ASC")
     List<XListModel> loadAllTrashedLists();
 
     @Query("SELECT * FROM lists WHERE list_id = :xListIDInp")

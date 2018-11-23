@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.elemTrashActivities;
+package com.whynoteasy.topxlist.xObjectTrashManagement;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -7,19 +7,19 @@ import android.content.DialogInterface;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
+import com.whynoteasy.topxlist.general.ElemViewHolder;
+import com.whynoteasy.topxlist.general.GeneralTrashTouchHelper;
 import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.util.List;
@@ -30,14 +30,14 @@ import static android.support.design.widget.Snackbar.LENGTH_LONG;
  * Special Adapter Class for Trashed Elements
  */
 
-public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerViewAdapter.ViewHolder> implements TrashElementTouchHelper.ActionCompletionContract{
+public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder> implements GeneralTrashTouchHelper.ActionCompletionContract{
 
     private final List<XElemModel> mValues;
-    //private final OnListFragmentInteractionListener mListener;
+    //private final OnMainListFragmentInteractionListener mListener;
     private final Context activityContext;
     private final LOTERecyclerViewAdapter loteAdapterSelf;
 
-    public LOTERecyclerViewAdapter(List<XElemModel> items, /*OnListFragmentInteractionListener listener,*/ Context context) {
+    public LOTERecyclerViewAdapter(List<XElemModel> items, /*OnMainListFragmentInteractionListener listener,*/ Context context) {
         mValues = items;
         //mListener = listener;
         this.activityContext = context;
@@ -46,16 +46,31 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerVi
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ElemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.elem_card_final, parent, false);
-        return new ViewHolder(view);
+        return new ElemViewHolder(view, true);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ElemViewHolder holder, final int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
+
+        //Xlist_card, set background color if marked
+        if (holder.mItem.isXElemMarked()) {
+            //Now marked
+            holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightGreen));
+            holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkGreen));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded_green));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_card_tick));
+        } else {
+            //Now unmarked
+            holder.elemCard.setCardBackgroundColor(activityContext.getResources().getColor(R.color.middleLightBlue));
+            holder.elemTitle.setTextColor(activityContext.getResources().getColor(R.color.superDarkBlue));
+            holder.mView.findViewById(R.id.xElem_num).setBackground(ContextCompat.getDrawable(activityContext, R.drawable.card_top_left_number_rounded));
+            holder.imgButton.setImageDrawable(ContextCompat.getDrawable(activityContext, R.drawable.ic_mode_edit_white_24dp));
+        }
 
         holder.elemTitle.setText(mValues.get(position).getXElemTitle());
         holder.elemNum.setText(mValues.get(position).getXElemNum()+".");
@@ -70,6 +85,7 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerVi
         }
     }
 
+    /*
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -98,6 +114,13 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerVi
             elemImage = itemView.findViewById(R.id.xElem_image);
         }
     }
+    */
+
+    @Override
+    public int getItemCount() {
+        return mValues.size();
+    }
+
 
     @Override
     public void onViewSwipedLeft(int position) {
@@ -167,7 +190,7 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerVi
         }
 
         DataRepository myRep = DataRepository.getRepository();
-        myRep.deleteElem(theElement);
+        myRep.deleteElemFinally(theElement);
         mValues.remove(theElement);
         notifyItemRemoved(position);
 
@@ -178,4 +201,5 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<LOTERecyclerVi
     public XElemModel getItemAtPosition (int position) {
         return mValues.get(position);
     }
+
 }

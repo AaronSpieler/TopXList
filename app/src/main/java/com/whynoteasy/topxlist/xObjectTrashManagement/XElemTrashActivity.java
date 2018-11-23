@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.elemTrashActivities;
+package com.whynoteasy.topxlist.xObjectTrashManagement;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -20,10 +20,11 @@ import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.elemActivities.XListViewActivity;
+import com.whynoteasy.topxlist.general.GeneralTrashTouchHelper;
 
 import java.util.List;
 
-public class TrashedElementsActivity extends AppCompatActivity {
+public class XElemTrashActivity extends AppCompatActivity {
 
     Activity thisActivity;
     int currentListID;
@@ -81,7 +82,7 @@ public class TrashedElementsActivity extends AppCompatActivity {
         recyclerView.setAdapter(loeAdapter);
 
         //The ItemTouchHelperAnimation Stuff
-        TrashElementTouchHelper swipeAndDragHelper = new TrashElementTouchHelper(loeAdapter);
+        GeneralTrashTouchHelper swipeAndDragHelper = new GeneralTrashTouchHelper(loeAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
         touchHelper.attachToRecyclerView(recyclerView);
     }

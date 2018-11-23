@@ -1,18 +1,18 @@
-package com.whynoteasy.topxlist.elemTrashActivities;
+package com.whynoteasy.topxlist.general;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 /**
- * Custom Item Touch Helper for permanently deleting or un-trashing elements
+ * Custom Item Touch Helper for permanently deleting or un-trashing xElements or xLists
  */
 
-class TrashElementTouchHelper extends ItemTouchHelper.Callback {
+public class GeneralTrashTouchHelper extends ItemTouchHelper.Callback {
 
     private final ActionCompletionContract contract;
 
-    public TrashElementTouchHelper(ActionCompletionContract contract) {
+    public GeneralTrashTouchHelper(ActionCompletionContract contract) {
         this.contract = contract;
     }
     @Override

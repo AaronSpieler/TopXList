@@ -1,4 +1,4 @@
-package com.whynoteasy.topxlist.listActivities;
+package com.whynoteasy.topxlist.xObjectTrashManagement;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,23 +15,24 @@ import android.view.ViewGroup;
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
+import com.whynoteasy.topxlist.general.GeneralTrashTouchHelper;
+import com.whynoteasy.topxlist.listActivities.LOLRecyclerViewAdapter;
 
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
+ * List of trashed xLists
  */
-public class MainListOfListsFragment extends Fragment {
+
+public class XListTrashFragment extends Fragment {
 
     //column count could be used so that on larger devices the cards are not stretched too wide
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
 
-    private OnMainListFragmentInteractionListener mListener;
-
+    private LOTLRecyclerViewAdapter.OnTrashListFragmentInteractionListener mListener;
     private List<XListTagsSharesPojo> listOfListWithTags;
-
-    private LOLRecyclerViewAdapter adapterRef;
+    private LOTLRecyclerViewAdapter adapterRef;
 
     //Interaction Types which the adapter can signal
     public static final int INTERACTION_CLICK = 0;
@@ -39,11 +40,11 @@ public class MainListOfListsFragment extends Fragment {
     public static final int INTERACTION_MARK = 2;
 
     //Mandatory empty constructor
-    public MainListOfListsFragment() {
+    public XListTrashFragment() {
     }
 
-    public static MainListOfListsFragment newInstance(int columnCount) {
-        MainListOfListsFragment fragment = new MainListOfListsFragment();
+    public static XListTrashFragment newInstance(int columnCount) {
+        XListTrashFragment fragment = new XListTrashFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -56,12 +57,14 @@ public class MainListOfListsFragment extends Fragment {
 
         DataRepository myRep = DataRepository.getRepository();
 
-        //get the ListsWithTags for the Adapter
-        listOfListWithTags = myRep.getListsWithTagsShares();
+        //get the trashed XLists with Tags and Shares for the Adapter
+        listOfListWithTags = myRep.getTrashedXListsWithTagsShares();
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        System.out.println("ON create trash done");
+
     }
 
     @Override
@@ -80,13 +83,15 @@ public class MainListOfListsFragment extends Fragment {
             }
 
             //Instantiate and set the adapter
-            adapterRef = new LOLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
+            adapterRef = new LOTLRecyclerViewAdapter(listOfListWithTags, mListener, this.getActivity());
             recyclerView.setAdapter(adapterRef);
 
             //The ItemTouchHelperAnimation Stuff
-            ListTouchHelper swipeAndDragHelper = new ListTouchHelper(adapterRef);
-            ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
+            GeneralTrashTouchHelper swipeHelper = new GeneralTrashTouchHelper(adapterRef);
+            ItemTouchHelper touchHelper = new ItemTouchHelper(swipeHelper);
             touchHelper.attachToRecyclerView((RecyclerView) view);
+
+            System.out.println("ON create view trash done");
 
             return recyclerView;
         }
@@ -97,11 +102,12 @@ public class MainListOfListsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnMainListFragmentInteractionListener) {
-            mListener = (OnMainListFragmentInteractionListener) context;
+
+        if (context instanceof LOTLRecyclerViewAdapter.OnTrashListFragmentInteractionListener) {
+            mListener = (LOTLRecyclerViewAdapter.OnTrashListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnMainListFragmentInteractionListener");
+                    + " must implement OnTrashListFragmentInteractionListener");
         }
     }
 
@@ -116,7 +122,7 @@ public class MainListOfListsFragment extends Fragment {
     }
 
     //This is to get the adapter reference through the fragment: needed so the main view can tell the adapter to redraw
-    public LOLRecyclerViewAdapter getAdapterRef(){
+    public LOTLRecyclerViewAdapter getAdapterRef(){
         return adapterRef;
     }
 

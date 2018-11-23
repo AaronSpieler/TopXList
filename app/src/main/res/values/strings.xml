@@ -199,5 +199,11 @@
     <string name="deletion_sucessfull">Element deleted successfully.</string>
     <string name="restoration_sucessfull">Element restored successfully.</string>
 
+    <string name="nav_trashed_lists_title">Trashed Lists</string>
+    <string name="list_restore_successfull">List restored successfully.</string>
+    <string name="list_deleted_successfullly">List deleted successfully.</string>
+    <string name="main_activity_title">My Lists</string>
+    <string name="main_activity_trash_fragment_title">Trash: My Lists</string>
+
 
 </resources>
