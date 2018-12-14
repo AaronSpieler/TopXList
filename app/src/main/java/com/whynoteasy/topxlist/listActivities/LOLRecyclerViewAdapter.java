@@ -1,11 +1,13 @@
 package com.whynoteasy.topxlist.listActivities;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +21,7 @@ import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment;
 import com.whynoteasy.topxlist.general.CustomListFilter;
 import com.whynoteasy.topxlist.general.ListViewHolder;
 import com.whynoteasy.topxlist.general.SettingsActivity;
@@ -27,6 +30,8 @@ import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnMainList
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
 import java.util.List;
+
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link XListTagsSharesPojo} and makes a call to the
@@ -151,6 +156,24 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         }
     }
 
+    private void changeNumbersForConsistencyOnDeletion(int posOfDel){
+        for (int i = posOfDel; i <= mValues.size()-1; i++){
+            mValues.get(i).getXListModel().setXListNum(mValues.get(i).getXListModel().getXListNum()-1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been deleted in fragment
+        mListener.onListFragmentInteraction(lolAdapterSelf, posOfDel , MainListOfListsFragment.INTERACTION_DELETE);
+    }
+
+    private void changeNumbersForConsistencyOnInsertion(int posOfInsertion){
+        for (int i = posOfInsertion+1; i <= mValues.size()-1; i++){
+            mValues.get(i).getXListModel().setXListNum(mValues.get(i).getXListModel().getXListNum()+1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been inserted in fragment
+        mListener.onListFragmentInteraction(lolAdapterSelf, posOfInsertion , ListOfElementsFragment.INTERACTION_INSERTION);
+    }
+
     @Override
     public void onViewSwipedLeft(int position) {
         if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
@@ -214,6 +237,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
     }
 
     private void deleteXListImmediately(final int position) {
+        DataRepository myRep = DataRepository.getRepository();
         XListTagsSharesPojo tempPojo = mValues.get(position);
         //Delete corresponding Image
         if (tempPojo.getXListModel().getXImageLoc() != null) {
@@ -223,10 +247,13 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         //delete all the images of all the xElements
         deleteCorrespondingElementImages(activityContext,tempPojo.getXListModel().getXListID());
 
-        DataRepository myRep = DataRepository.getRepository(); //propagation removes rest
-        myRep.deleteList(tempPojo.getXListModel());
+        //remove XList finally
+        myRep.deleteList(tempPojo.getXListModel());  //propagation removes rest
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
+
+        //necessary to change all number in a consistent way, even if not visible to user
+        changeNumbersForConsistencyOnDeletion(position);
 
         //notify activity that element has been deleted in fragment
         mListener.onListFragmentInteraction(lolAdapterSelf, position , MainListOfListsFragment.INTERACTION_DELETE);
@@ -236,6 +263,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
     private void trashXListImmediately(int position) {
         DataRepository myRep = DataRepository.getRepository();
         XListTagsSharesPojo tempPojo = mValues.get(position);
+        final int xlist_id = tempPojo.getXListModel().getXListID();
 
         //remove oldest xList from trash if necessary
         deleteOldestListFromTrashIfNecessary();
@@ -244,6 +272,19 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         myRep.trashList(tempPojo.getXListModel());
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
+
+        //necessary to change all number in a consistent way, even if not visible to user
+        changeNumbersForConsistencyOnDeletion(position);
+
+        //Show snackbar with option to restore element
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout),  R.string.list_trashed_successfully, LENGTH_LONG);
+        mySnackbar.setAction(activityContext.getString(R.string.trashed_undo_button_text), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restoreXList(xlist_id);
+            }
+        });
+        mySnackbar.show();
     }
 
     private void deleteOldestListFromTrashIfNecessary(){
@@ -282,4 +323,30 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         return mValues.get(position).getXListModel();
     }
 
+    private void restoreXList(int list_id) {
+        DataRepository myRep = DataRepository.getRepository();
+        XListTagsSharesPojo tempPojo = myRep.getListWithTagsSharesByID(list_id);
+
+        //save to first position or last or original based on preference
+        int newPos = tempPojo.getXListModel().getXListNum();
+        if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_RESTORE_POS, true)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+                newPos = 1;
+            } else {
+                newPos = myRep.getListCount() + 1;
+            }
+        }
+
+        //restore with new position
+        myRep.restoreList(tempPojo.getXListModel(), newPos);
+        int restore_index = newPos-1;
+        mValues.add(restore_index,myRep.getListWithTagsSharesByID(list_id));
+        changeNumbersForConsistencyOnInsertion(restore_index);
+
+        //notify adapter of insertion
+        notifyItemInserted(restore_index);
+
+        Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
+        mySnackbar.show();
+    }
 }

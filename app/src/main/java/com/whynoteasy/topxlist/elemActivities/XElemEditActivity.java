@@ -36,6 +36,7 @@ import com.whynoteasy.topxlist.general.SettingsActivity;
 import java.io.File;
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 public class XElemEditActivity extends AppCompatActivity {
@@ -477,4 +478,5 @@ public class XElemEditActivity extends AppCompatActivity {
         imageSelectChangeButton.setBackground(ContextCompat.getDrawable(this, R.drawable.create_and_edit_right_bottom_rounded));
         imageSelectChangeButton.setText(R.string.image_pane_change_button_text);
     }
+
 }

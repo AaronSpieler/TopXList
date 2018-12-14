@@ -1,11 +1,13 @@
 package com.whynoteasy.topxlist.elemActivities;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -24,12 +26,14 @@ import com.whynoteasy.topxlist.general.TopXListApplication;
 
 import java.util.List;
 
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
+
 /**
  * specified {@link OnListFragmentInteractionListener}.
  */
 public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder> implements ElementTouchHelper.ActionCompletionContract{
 
-    private final List<XElemModel> mValues;
+    private List<XElemModel> mValues;
     private final OnListFragmentInteractionListener mListener;
     private final Context activityContext;
     private final LOERecyclerViewAdapter loeAdapterSelf;
@@ -121,7 +125,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
         myRep.changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(tempElem,newPosition+1,oldPosition+1);
-        this.changeNumbersVisibly(newPosition, oldPosition);
+        this.makeNumChangesVisibleOnMove(newPosition, oldPosition);
     }
 
     @Override
@@ -150,7 +154,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         this.notifyItemChanged(position);
     }
 
-    private void changeNumbersVisibly(int newPos, int oldPos){
+    private void makeNumChangesVisibleOnMove(int newPos, int oldPos){
         if (newPos >= oldPos) {
             for (int i = oldPos; i <= newPos; i++){
                 mValues.get(i).setXElemNum(i+1);
@@ -162,6 +166,24 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
                 notifyItemChanged(i);
             }
         }
+    }
+
+    private void makeNumChangesVisibleOnDeletion(int posOfDel){
+        for (int i = posOfDel; i <= mValues.size()-1; i++){
+            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been deleted in fragment
+        mListener.onListFragmentInteraction(loeAdapterSelf, posOfDel , ListOfElementsFragment.INTERACTION_DELETE);
+    }
+
+    private void makeNumChangesVisibleOnInsertion(int posOfInsertion){
+        for (int i = posOfInsertion+1; i <= mValues.size()-1; i++){
+            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()+1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been inserted in fragment
+        mListener.onListFragmentInteraction(loeAdapterSelf, posOfInsertion , ListOfElementsFragment.INTERACTION_INSERTION);
     }
 
     private void deleteXElementAtPositionIfConfirmed(final int position) {
@@ -208,8 +230,9 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
     }
 
     private void trashXElementImmediately(int position) {
-        XElemModel theElement = mValues.get(position);
         DataRepository myRep = DataRepository.getRepository();
+        XElemModel theElement = mValues.get(position);
+        final int element_id = theElement.getXElemID();
 
         //remove elements from trash based on preferences
         deleteOldestFromTrashIfNecessary(theElement.getXListIDForeign());
@@ -221,6 +244,16 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
 
         //change numbers and set background
         makeNumChangesVisibleOnDeletion(position);
+
+        //Show snackbar with option to restore element
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  R.string.element_trashed_successfully, LENGTH_LONG);
+        mySnackbar.setAction(activityContext.getString(R.string.trashed_undo_button_text), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restoreXElement(element_id);
+            }
+        });
+        mySnackbar.show();
     }
 
     private void deleteOldestFromTrashIfNecessary(int xlist_id){
@@ -244,16 +277,35 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
 
     }
 
-    private void makeNumChangesVisibleOnDeletion(int posOfDel){
-        for (int i = posOfDel; i <= mValues.size()-1; i++){
-            mValues.get(i).setXElemNum(mValues.get(i).getXElemNum()-1);
-            notifyItemChanged(i);
-        }
-        //notify activity that element has been deleted in fragment
-        mListener.onListFragmentInteraction(loeAdapterSelf, posOfDel , ListOfElementsFragment.INTERACTION_DELETE);
-    }
-
     public XElemModel getItemAtPosition (int position) {
         return mValues.get(position);
+    }
+
+    private void restoreXElement(int elem_id) {
+        DataRepository myRep = DataRepository.getRepository();
+        XElemModel tempElem = myRep.getElemByID(elem_id);
+
+        //save to first position or last or original based on preference
+        int newPos = tempElem.getXElemNum();
+        if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_RESTORE_POS, true)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+                newPos = 1;
+            } else {
+                newPos = myRep.getElemCountByListID(tempElem.getXListIDForeign()) + 1;
+            }
+        }
+
+        //restore with new position
+        myRep.restoreElement(tempElem,newPos);
+        int restore_index = newPos-1;
+        mValues.add(restore_index,myRep.getElemByID(elem_id));
+        makeNumChangesVisibleOnInsertion(restore_index);
+
+
+        //notify adapter of insertion
+        notifyItemInserted(restore_index);
+
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_sucessfull), LENGTH_LONG);
+        mySnackbar.show();
     }
 }

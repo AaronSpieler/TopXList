@@ -21,11 +21,9 @@ import static android.arch.persistence.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface XListDao {
 
-    //TODO check changes
     @Query("SELECT * FROM lists WHERE trashed = 0 ORDER BY list_num ASC")
     List<XListModel> loadAllLists();
 
-    //TODO check new
     @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY list_id ASC")
     List<XListModel> loadAllTrashedLists();
 
@@ -43,23 +41,19 @@ public interface XListDao {
 
     //LOGIC FOR UPDATEING ALL OTHER LIST NUMBERS AFTER LIST ITEM HAS BEEN MOVED
 
-    //TODO check changes
     //from should be the new position of the list item, to should be the old position, In the case the new position < old position
     @Query("UPDATE lists SET list_num = list_num + 1 WHERE trashed = 0 AND list_num >= :newPos AND list_num < :oldPos")
     void updateIncrementNumOfListsFromToSmallerPos(String newPos, String oldPos);
 
-    //TODO check changes
     //from should be the old position of the list item, to should be the new position, In the case the new position > old position
     @Query("UPDATE lists SET list_num = list_num - 1 WHERE trashed = 0 AND list_num > :oldPos AND list_num <= :newPos")
     void updateIncrementNumOfListsFromToHigherPos(String newPos, String oldPos);
 
-    //TODO check changes
-    //basically how many lists there are so far
+    //basically how many non trashed lists there are so far
     @Query("SELECT COUNT(*) FROM lists WHERE trashed = 0 AND list_id IS NOT NULL")
     int getNumberOfLists();
 
-    //TODO check new
-    //basically how many lists there are so far
+    //basically how many trashed lists there are so far
     @Query("SELECT COUNT(*) FROM lists WHERE trashed != 0 AND list_id IS NOT NULL")
     int getNumberOfTrashedLists();
 

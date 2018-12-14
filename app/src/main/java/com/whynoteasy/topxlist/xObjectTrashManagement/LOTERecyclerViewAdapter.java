@@ -85,37 +85,6 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
         }
     }
 
-    /*
-    @Override
-    public int getItemCount() {
-        return mValues.size();
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
-        final CardView elemCard;
-        final TextView elemNum;
-        final TextView elemTitle;
-        final TextView elemDescription;
-        final ImageView elemImage;
-
-        //possibly useful to have a reference to the object itself later on
-        XElemModel mItem;
-
-        ViewHolder(View itemView) {
-            super(itemView);
-
-            mView = itemView;
-            elemCard = itemView.findViewById(R.id.xElem_card);
-            elemNum = itemView.findViewById(R.id.xElem_num);
-            elemTitle = itemView.findViewById(R.id.xElem_title);
-            elemDescription = itemView.findViewById(R.id.xElem_description);
-            elemImage = itemView.findViewById(R.id.xElem_image);
-        }
-    }
-    */
-
     @Override
     public int getItemCount() {
         return mValues.size();

@@ -218,5 +218,8 @@
     <string name="trash_guide_seperator">|</string>
     <string name="trash_guide_restore">Restore →</string>
 
+    <string name="trashed_undo_button_text">UNDO</string>
+    <string name="element_trashed_successfully">Element moved to trash successfully.</string>
+    <string name="list_trashed_successfully">List moved to trash successfully.</string>
 
 </resources>
