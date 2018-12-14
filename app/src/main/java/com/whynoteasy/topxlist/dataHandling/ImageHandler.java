@@ -36,7 +36,6 @@ public class ImageHandler {
     private final int smallImageSize = 480;
     private final int normalImageQuality = 720;
     private final int largeImageSize = 1080;
-    private final int defaultImageQuality = 3;
     private final int imageQuality = 90;
 
 
@@ -46,13 +45,13 @@ public class ImageHandler {
         this.context = context;
 
         //setting up the image sizes
-        int imageSetting = defaultImageQuality;
+        int default_image_setting = SettingsActivity.DEFAULT_IMAGE_SETTING;
         try {
-            imageSetting = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(SettingsActivity.KEY_PREF_IMAGE_SIZE, Integer.toString(defaultImageQuality))); //default option 3
+            default_image_setting = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(context).getString(SettingsActivity.KEY_PREF_IMAGE_SIZE, Integer.toString(default_image_setting))); //default option 3
         }catch (Error e) {
             e.printStackTrace();
         }
-        switch (imageSetting) {
+        switch (default_image_setting) {
             case 1:
                 MaxImageHeight = verSmallImageSize;
                 MaxImageWidth = Math.round(verSmallImageSize*((float) ImageRatioX/ImageRatioY));

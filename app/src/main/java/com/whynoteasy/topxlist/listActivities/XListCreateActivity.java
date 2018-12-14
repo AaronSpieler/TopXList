@@ -277,8 +277,9 @@ public class XListCreateActivity extends AppCompatActivity {
 
         long listID = myRep.insertList(new XListModel(tempTitle,tempShortDesc,tempLongDesc,tempNewPos,relativePath));
 
+        //TODO maybe error?? because of list numbers?
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
-            myRep.changeAllListNumbersList(myRep.getListByID((int)listID),1,tempNewPos);
+            myRep.changeAllListNumbersAndUpdateListToNewPos(myRep.getListByID((int)listID),1,tempNewPos);
         }
 
         //ATTENTION: THIS COULD BE A MAJOR MISTAKE CONVERTING LONG TO INT,

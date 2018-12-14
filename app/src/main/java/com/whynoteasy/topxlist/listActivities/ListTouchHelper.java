@@ -12,12 +12,15 @@ import android.view.ViewPropertyAnimator;
  * Created by Whatever on 29.03.2018.
  */
 
-class ListTouchHelper extends ItemTouchHelper.Callback {
+public class ListTouchHelper extends ItemTouchHelper.Callback {
 
     private final ActionCompletionContract contract;
 
     private boolean first = true; //first draw of cardView?
     private boolean last = false; //last draw of cardView?
+
+    //globally available variable to control listTouchHelper
+    public static boolean temporarilyDisableHelper = false;
 
     public ListTouchHelper(ActionCompletionContract contract) {
         this.contract = contract;
@@ -26,6 +29,10 @@ class ListTouchHelper extends ItemTouchHelper.Callback {
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
+        if (temporarilyDisableHelper) {
+            //Disables any dragging and swiping while search field is focused => avoids mixing up numbers when moving or deleting
+            return makeMovementFlags(0,0);
+        }
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
