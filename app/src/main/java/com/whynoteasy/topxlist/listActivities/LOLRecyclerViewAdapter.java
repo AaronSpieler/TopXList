@@ -22,6 +22,7 @@ import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.general.CustomListFilter;
 import com.whynoteasy.topxlist.general.ListViewHolder;
 import com.whynoteasy.topxlist.general.SettingsActivity;
+import com.whynoteasy.topxlist.general.TopXListApplication;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnMainListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
@@ -59,7 +60,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         //reference to the object itself
         holder.mItem = mValues.get(position);
 
-        System.out.println("MyPosition: "+holder.mItem.getXListModel().getXListNum());
+        if (TopXListApplication.DEBUG_APPLICATION) {
+            System.out.println("MyPosition: "+holder.mItem.getXListModel().getXListNum());
+
+        }
 
         //xlist_card, set background color if marked
         if (holder.mItem.getXListModel().isXListMarked()) {
@@ -119,8 +123,6 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         notifyDataSetChanged();
     }
 
-
-
     //EVERYTHING THAT HAS TO DO WITH THE DRAG AND DROP ANIMATIONS
 
     @Override
@@ -132,14 +134,33 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
         myRep.changeAllListNumbersAndUpdateListToNewPos(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
+        changeNumbersForConsistency(newPosition,oldPosition);
+    }
+
+    private void changeNumbersForConsistency(int newPos, int oldPos){
+        if (newPos >= oldPos) {
+            for (int i = oldPos; i <= newPos; i++){
+                mValues.get(i).getXListModel().setXListNum(i+1);
+                notifyItemChanged(i);
+            }
+        } else {
+            for (int i = newPos; i <= oldPos; i++){
+                mValues.get(i).getXListModel().setXListNum(i+1);
+                notifyItemChanged(i);
+            }
+        }
     }
 
     @Override
     public void onViewSwipedLeft(int position) {
-        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
-            deleteAtPositionIfConfirmed(position);
-        } else {
+        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
             trashXListImmediately(position);
+        } else {
+            if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                deleteXListAtPositionIfConfirmed(position);
+            } else {
+                deleteXListImmediately(position);
+            }
         }
     }
 
@@ -155,23 +176,19 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         this.mValues.add(position,tempPojo);
         this.notifyItemChanged(position);
     }
-
-
+    
     //important so that an activity can tell the adapter what to show
     public void setValues(List<XListTagsSharesPojo> newValues) {
         mValues = newValues;
         notifyDataSetChanged();
     }
 
-
-
     @Override
     public CustomListFilter getFilter() {
         return mFilter;
     }
 
-    //TODO modify when temporarily deleting
-    private void deleteAtPositionIfConfirmed(final int position) {
+    private void deleteXListAtPositionIfConfirmed(final int position) {
         XListTagsSharesPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
@@ -179,7 +196,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+tempPojo.getXListModel().getXListTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                trashXListImmediately(position);
+                deleteXListImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -196,7 +213,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         builder.show();
     }
 
-    private void deleteListImmediately(final int position) {
+    private void deleteXListImmediately(final int position) {
         XListTagsSharesPojo tempPojo = mValues.get(position);
         //Delete corresponding Image
         if (tempPojo.getXListModel().getXImageLoc() != null) {
@@ -220,10 +237,34 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         DataRepository myRep = DataRepository.getRepository();
         XListTagsSharesPojo tempPojo = mValues.get(position);
 
+        //remove oldest xList from trash if necessary
+        deleteOldestListFromTrashIfNecessary();
+
         //remove from cache & trash XList
         myRep.trashList(tempPojo.getXListModel());
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
+    }
+
+    private void deleteOldestListFromTrashIfNecessary(){
+        DataRepository myRep = DataRepository.getRepository();
+        List<XListTagsSharesPojo> trashed_xLists = myRep.getTrashedXListsWithTagsShares();
+        int curr_trash_limit = SettingsActivity.DEFAULT_TRASH_SIZE;
+        try {
+            curr_trash_limit = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(activityContext).getString(SettingsActivity.KEY_PREF_TRASH_SIZE, Integer.toString(curr_trash_limit)));
+        }catch (Error e) {
+            e.printStackTrace();
+        }
+        if (trashed_xLists.size() >= curr_trash_limit) {
+            XListTagsSharesPojo oldestXList = trashed_xLists.get(0);
+            for (XListTagsSharesPojo cur_elem: trashed_xLists) {
+                if (cur_elem.getXListModel().getXListID() < oldestXList.getXListModel().getXListID()) {
+                    oldestXList = cur_elem;
+                }
+            }
+            myRep.deleteListFinally(oldestXList.getXListModel());
+        }
+
     }
 
     private void deleteCorrespondingElementImages(Context context, int ListID) {

@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         transaction.replace(R.id.main_activity_fragment_placeholder, currentFragment);
         transaction.commit();
         updateBackground();
-        System.out.println("I DID GET HERE");
     }
 
     //EVERY TIME BUT THE FIRST TIME THIS ACTIVITY IS CREATED THIS METHOD IS CALLED

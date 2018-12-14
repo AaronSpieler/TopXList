@@ -39,6 +39,11 @@
             android:title="@string/pref_title_trash_first"
             android:summary="@string/pref_summary_trash_first"
             android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_restore_pos"
+            android:title="@string/pref_title_restore_pos"
+            android:summary="@string/pref_summary_restore_pos"
+            android:defaultValue="true"/>
         <ListPreference
             android:key="pref_trash_size"
             android:title="@string/pref_title_trash_size"
@@ -46,11 +51,6 @@
             android:entries="@array/trashSize"
             android:entryValues="@array/trashSizeData"
             android:defaultValue="3"/>
-        <SwitchPreference
-            android:key="pref_restore_pos"
-            android:title="@string/pref_title_restore_pos"
-            android:summary="@string/pref_summary_restore_pos"
-            android:defaultValue="true"/>
 
     </PreferenceCategory>
 

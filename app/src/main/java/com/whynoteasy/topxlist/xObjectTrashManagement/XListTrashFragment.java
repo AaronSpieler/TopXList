@@ -63,8 +63,6 @@ public class XListTrashFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        System.out.println("ON create trash done");
-
     }
 
     @Override
@@ -90,8 +88,6 @@ public class XListTrashFragment extends Fragment {
             GeneralTrashTouchHelper swipeHelper = new GeneralTrashTouchHelper(adapterRef);
             ItemTouchHelper touchHelper = new ItemTouchHelper(swipeHelper);
             touchHelper.attachToRecyclerView((RecyclerView) view);
-
-            System.out.println("ON create view trash done");
 
             return recyclerView;
         }

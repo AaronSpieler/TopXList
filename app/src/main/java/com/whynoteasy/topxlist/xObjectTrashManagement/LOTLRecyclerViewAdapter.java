@@ -114,11 +114,11 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
 
         //save to first position or last or original based on preference
         int newPos = tempPojo.getXListModel().getXListNum();
-        //TODO update according to settings regarding restoring later
-        if (false) {
-            newPos = myRep.getListCount() + 1;
+        if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_RESTORE_POS, true)) {
             if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
                 newPos = 1;
+            } else {
+                newPos = myRep.getListCount() + 1;
             }
         }
 
@@ -143,7 +143,6 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
         return mFilter;
     }
 
-    //TODO modify when temporarily deleting
     private void deleteAtPositionIfConfirmed(final int position) {
         XListTagsSharesPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;

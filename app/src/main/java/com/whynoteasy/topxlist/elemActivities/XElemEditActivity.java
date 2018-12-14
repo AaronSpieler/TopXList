@@ -232,10 +232,14 @@ public class XElemEditActivity extends AppCompatActivity {
             returnToXListViewActivity();
             return true;
         } else if (id == R.id.delete_action_xelem) {
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
-                deleteElemIfConfirmed();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
+                trashXElementImmediately();
             } else {
-                trashElementImmediately();
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                    deleteXElementIfConfirmed();
+                } else {
+                    deleteXElementImmediately();
+                }
             }
             return true;
         }
@@ -318,15 +322,14 @@ public class XElemEditActivity extends AppCompatActivity {
         return true;
     }
 
-    //TODO modify when temporarily deleting
-    private void deleteElemIfConfirmed() {
+    private void deleteXElementIfConfirmed() {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(thisActivity.getString(R.string.alert_dialog_delete_element_title));
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+currentElement.getXElemTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                trashElementImmediately();
+                deleteXElementImmediately();
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -337,9 +340,12 @@ public class XElemEditActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void trashElementImmediately() {
+    private void trashXElementImmediately() {
         myRep = DataRepository.getRepository();
         myRep.trashElement(currentElement);
+
+        //remove elements from trash based on preferences
+        deleteOldestFromTrashIfNecessary(currentElement.getXListIDForeign());
 
         //exit to listView
         Intent intent = new Intent(thisActivity, XListViewActivity.class);
@@ -347,7 +353,28 @@ public class XElemEditActivity extends AppCompatActivity {
         NavUtils.navigateUpTo(thisActivity,intent);
     }
 
-    private void deleteListImmediately() {
+    private void deleteOldestFromTrashIfNecessary(int xlist_id){
+        DataRepository myRep = DataRepository.getRepository();
+        List<XElemModel> trash_xElements_list = myRep.getTrashedElementsByListID(xlist_id);
+        int curr_trash_limit = SettingsActivity.DEFAULT_TRASH_SIZE;
+        try {
+            curr_trash_limit = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(thisActivity).getString(SettingsActivity.KEY_PREF_TRASH_SIZE, Integer.toString(curr_trash_limit)));
+        }catch (Error e) {
+            e.printStackTrace();
+        }
+        if (trash_xElements_list.size() >= curr_trash_limit) {
+            XElemModel oldestElement = trash_xElements_list.get(0);
+            for (XElemModel cur_elem: trash_xElements_list) {
+                if (cur_elem.getXElemID() < oldestElement.getXElemID()) {
+                    oldestElement = cur_elem;
+                }
+            }
+            myRep.deleteElemFinally(oldestElement);
+        }
+
+    }
+
+    private void deleteXElementImmediately() {
         if (currentElement.getXImageLoc() != null) {
             (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentElement.getXImageLoc());
         }
