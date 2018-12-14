@@ -99,7 +99,6 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
             fragmentTransaction.commit();
         }
 
-        //TODO FIX IF WRONG
         if (myRep.getElementsByListID(currentListID).size() == 0) {
             updateBackground(true);
         } else {
@@ -122,7 +121,6 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
                 }
                 break;
             case 1: //item has been deleted
-                //TODO check wheter necessary
                 //If last element has been deleted, set background
                 if (loeAdapter.getItemCount() == 0) {
                     updateBackground(true);

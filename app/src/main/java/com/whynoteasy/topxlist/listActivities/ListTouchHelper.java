@@ -31,7 +31,7 @@ public class ListTouchHelper extends ItemTouchHelper.Callback {
         int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         if (temporarilyDisableHelper) {
             //Disables any dragging and swiping while search field is focused => avoids mixing up numbers when moving or deleting
-            return makeMovementFlags(0,0); //TODO remove if stupid
+            return makeMovementFlags(0,0);
         }
         return makeMovementFlags(dragFlags, swipeFlags);
     }

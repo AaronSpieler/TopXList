@@ -41,6 +41,7 @@ public class ListOfElementsFragment extends Fragment {
     public static final int INTERACTION_CLICK = 0;
     public static final int INTERACTION_DELETE = 1;
     public static final int INTERACTION_MARK = 2;
+    public static final int INTERACTION_INSERTION = 3;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the

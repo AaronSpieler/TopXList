@@ -219,6 +219,8 @@
     <!--Image activity related-->
     <string name="your_image_fullscreen_hint">Dein Bild</string>
 
-
+    <string name="trashed_undo_button_text">ZURÜCK</string>
+    <string name="element_trashed_successfully">Element erfolgreich in den Papierkorb verschoben.</string>
+    <string name="list_trashed_successfully">Liste erfolgreich in den Papierkorb verschoben.</string>
 
 </resources>

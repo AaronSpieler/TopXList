@@ -336,7 +336,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    @Override //TODO test
+    @Override
     public void trashElement(XElemModel xElemModel) {
         new TrashElemAsyncTask(xRoomDatabase).execute(xElemModel);
     }
@@ -360,7 +360,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    @Override //TODO test
+    @Override
     public void restoreElement(XElemModel xElemModel, int newPos) {
         new RestoreElemAsyncTask(xRoomDatabase,this).execute(new NumElemUpdateParameters(xElemModel, newPos, newPos)); //supplementary object to pass multiple parameters
     }
@@ -396,8 +396,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    //TODO check new
-    //GET TRASHED ELEMENTS LIST CORRESPONDING TO SPECIFIC ID ONLY TRASHED
+    //GET TRASHED ELEMENTS LIST CORRESPONDING TO SPECIFIC  LIST-ID
     public List<XElemModel> getTrashedElementsByListID(int listID) {
         try{
             //the rowId which is the primaryKey is returned
@@ -577,7 +576,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    @Override //TODO test
+    @Override
     public void trashList(XListModel xListModel) {
         new TrashListAsyncTask(xRoomDatabase).execute(xListModel);
     }
@@ -598,7 +597,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    @Override //TODO test
+    @Override
     public void restoreList(XListModel xListModel, int newPos) {
         new RestoreListAsyncTask(xRoomDatabase, this).execute(new NumListUpdateParameters(xListModel, newPos, newPos)); //supplementary object to pass multiple parameters
     }

@@ -71,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //get guide view reference (top text view that informs users how to to use trash views)
         guide_view = findViewById(R.id.trash_guide_layout);
 
-        //TODO make invisible when other fragment active
         //This floating action button is used to trigger the add list activity!!!
         fab = findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -146,29 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return true;
             }
         });
-
-        /*TODO check whether necessary
-        //This is what is called when the back button is pressed in the searchView
-        MenuItem searchItem = menu.findItem(R.id.search_main);
-        //noinspection deprecation
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
-                if (tempAdapter != null) {
-                    tempAdapter.setValues(myRep.getListsWithTagsShares());
-                }
-                return true;
-            }
-
-        });
-        */
-
         return true;
     }
 
@@ -367,7 +343,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             transaction.replace(R.id.main_activity_fragment_placeholder, currentFragment);
         }
-
         transaction.commit();
         updateBackground();
     }
@@ -390,7 +365,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case 1: // item has been deleted
-                //TODO check whether necessary
                 updateBackground(); //when last element was deleted?
                 break;
         }
@@ -403,7 +377,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void onSearchViewExpand() {
         if (currentFragment.getClass() == MainListOfListsFragment.class) {
-            //TODO make undraggable
             //Temporarily disable dragging and swiping when in filter mode
             ListTouchHelper.temporarilyDisableHelper = true;
         }
@@ -411,8 +384,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void onSearchViewCollapse() {
         if (currentFragment.getClass() == MainListOfListsFragment.class) {
-            //TODO make undradaggable
-            //Reenable dragging and swiping
+            //enable dragging and swiping
             ListTouchHelper.temporarilyDisableHelper = false;
         }
     }
