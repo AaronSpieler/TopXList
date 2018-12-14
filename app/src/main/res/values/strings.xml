@@ -160,7 +160,7 @@
     <string name="image_pane_change_button_text">Change</string>
     <string name="image_panel_desc">Image: </string>
 
-    <!--Concerned with the preferences/settings-->
+    <!--Side navigation bar-->
     <string name="side_menu_all_lists">All Lists</string>
     <string name="side_menu_export">Export (HTML)</string>
     <string name="side_menu_settings">Settings</string>
@@ -170,20 +170,29 @@
     <string name="preference_layout_usability">Usability</string>
     <string name="usability_category_title">Usability</string>
 
-    <string name="auto_save_setting_title">Automatically save Changes</string>
+    <string name="auto_save_setting_title">Automatically save changes</string>
     <string name="auto_save_setting_summary">Changes are automatically saved when editing, unless canceled.</string>
 
-    <string name="pref_title_confirm_delete">Confirm Deletion</string>
+    <string name="pref_title_confirm_delete">Confirm deletion</string>
     <string name="pref_summary_confirm_delete">You will be prompted to confirm deletions of any kind.</string>
 
     <string name="preference_layout_appearance">Appearance</string>
     <string name="appearance_category_title">Appearance</string>
 
-    <string name="pref_title_image_size">Image Size</string>
+    <string name="pref_title_image_size">Image size</string>
     <string name="pref_summary_image_size">Image height in pixel. More looks better but costs more storage and loading time. Image aspect always 16x9.</string>
 
-    <string name="pref_title_new_obj_num">Lists are Queues</string>
+    <string name="pref_title_new_obj_num">Lists are queues</string>
     <string name="pref_summary_new_obj_num">New elements get appended to the end of the list rather than to the front.</string>
+
+    <string name="pref_title_trash_first">Trash before permanent deletion.</string>
+    <string name="pref_summary_trash_first">Items get trashed first. They can be permanently deleted later from the trash.</string>
+
+    <string name="pref_title_trash_size">Max number of items per trash.</string>
+    <string name="pref_summary_trash_size">If the specified number of items is about to succeeded the oldest items get permanently deleted from trash.</string>
+
+    <string name="pref_title_restore_pos">Trash restore old position.</string>
+    <string name="pref_summary_restore_pos">Items get restored to their old positions. Otherwise, new position is based on \'Lists are Queues\' preference.</string>
 
     <!--Story button related-->
     <string name="story_button_text">View the whole story…</string>
@@ -204,6 +213,10 @@
     <string name="list_deleted_successfullly">List deleted successfully.</string>
     <string name="main_activity_title">My Lists</string>
     <string name="main_activity_trash_fragment_title">Trash: My Lists</string>
+
+    <string name="trash_guide_delete">← Delete</string>
+    <string name="trash_guide_seperator">|</string>
+    <string name="trash_guide_restore">Restore →</string>
 
 
 </resources>
