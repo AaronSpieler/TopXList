@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment currentFragment;
     private DataRepository myRep;
     static final int EXPORT_CODE = 1;
+    FloatingActionButton fab;
+    ConstraintLayout guide_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +68,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //set up the repository
         myRep = DataRepository.getRepository();
 
+        //get guide view reference (top text view that informs users how to to use trash views)
+        guide_view = findViewById(R.id.trash_guide_layout);
+
         //TODO make invisible when other fragment active
         //This floating action button is used to trigger the add list activity!!!
-        FloatingActionButton fab = findViewById(R.id.fab_main);
+        fab = findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,12 +223,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
 
-        //Set new Title
+        //Set new Title, Change visibility of Floating Action Button, and change Trash Guide Visibility
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         if (newFragment.getClass() == MainListOfListsFragment.class) {
             toolbar.setTitle(R.string.main_activity_title);
+            guide_view.setVisibility(View.GONE);
+            fab.show();
         } else if (newFragment.getClass()  == XListTrashFragment.class) {
             toolbar.setTitle(R.string.main_activity_trash_fragment_title);
+            guide_view.setVisibility(View.VISIBLE);
+            fab.hide();
         }
 
         //if fragment needs change:
