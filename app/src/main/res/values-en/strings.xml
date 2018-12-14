@@ -185,14 +185,14 @@
     <string name="pref_title_new_obj_num">Lists are queues</string>
     <string name="pref_summary_new_obj_num">New elements get appended to the end of the list rather than to the front.</string>
 
-    <string name="pref_title_trash_first">Trash before permanent deletion.</string>
+    <string name="pref_title_trash_first">Trash before permanent deletion</string>
     <string name="pref_summary_trash_first">Items get trashed first. They can be permanently deleted later from the trash.</string>
 
-    <string name="pref_title_trash_size">Max number of items per trash.</string>
+    <string name="pref_title_trash_size">Max number of items per trash</string>
     <string name="pref_summary_trash_size">If the specified number of items is about to succeeded the oldest items get permanently deleted from trash.</string>
 
-    <string name="pref_title_restore_pos">Trash restore old position.</string>
-    <string name="pref_summary_restore_pos">Items get restored to their old positions. Otherwise, new position is based on \'Lists are Queues\' preference.</string>
+    <string name="pref_title_restore_pos">Trash restore old position</string>
+    <string name="pref_summary_restore_pos">Items get restored to their old positions. Otherwise, new position is based on \'Lists are queues\' preference.</string>
 
     <!--Story button related-->
     <string name="story_button_text">View the whole story…</string>

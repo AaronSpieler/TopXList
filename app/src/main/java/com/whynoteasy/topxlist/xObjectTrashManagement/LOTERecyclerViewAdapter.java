@@ -138,11 +138,11 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
 
         //save to first position or last or original based on preference
         int newPos = tempElem.getXElemNum();
-        //TODO update according to settings regarding restoring later
-        if (false) {
-            newPos = myRep.getElemCountByListID(tempElem.getXListIDForeign()) + 1;
+        if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_RESTORE_POS, true)) {
             if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
                 newPos = 1;
+            } else {
+                newPos = myRep.getElemCountByListID(tempElem.getXListIDForeign()) + 1;
             }
         }
 

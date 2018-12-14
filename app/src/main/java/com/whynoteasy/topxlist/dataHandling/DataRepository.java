@@ -465,6 +465,7 @@ public class DataRepository implements DatabaseSpecification {
         }
         @Override
         protected Void doInBackground(final NumListUpdateParameters... params) {
+            System.out.println("OldPos: "+params[0].oldPos+"NewPos: "+params[0].newPos);
             if(params[0].newPos < params[0].oldPos){ //depending on whether new position is smaller than old different quarries have to be executed
                 db.xListModel().updateIncrementNumOfListsFromToSmallerPos(Integer.toString(params[0].newPos), Integer.toString(params[0].oldPos));
             } else {

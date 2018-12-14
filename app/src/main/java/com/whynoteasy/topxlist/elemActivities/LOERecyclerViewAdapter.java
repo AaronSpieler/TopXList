@@ -20,6 +20,7 @@ import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.general.ElemViewHolder;
 import com.whynoteasy.topxlist.general.SettingsActivity;
+import com.whynoteasy.topxlist.general.TopXListApplication;
 
 import java.util.List;
 
@@ -53,6 +54,11 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
     public void onBindViewHolder(@NonNull final ElemViewHolder holder, final int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
+
+        if (TopXListApplication.DEBUG_APPLICATION) {
+            System.out.println("MyPosition: "+holder.mItem.getXElemNum());
+
+        }
 
         //Xlist_card, set background color if marked
         if (holder.mItem.isXElemMarked()) {
@@ -120,11 +126,14 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
 
     @Override
     public void onViewSwipedLeft(int position) {
-
-        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
-            deleteAtPositionIfConfirmed(position);
+        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
+            trashXElementImmediately(position);
         } else {
-            trashElementImmediately(position);
+            if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                deleteXElementAtPositionIfConfirmed(position);
+            } else {
+                deleteXElementImmediately(position);
+            }
         }
     }
 
@@ -155,8 +164,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         }
     }
 
-    //TODO modify when temporarily deleting
-    private void deleteAtPositionIfConfirmed(final int position) {
+    private void deleteXElementAtPositionIfConfirmed(final int position) {
         XElemModel theElement = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
@@ -164,7 +172,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                trashElementImmediately(position);
+                deleteXElementImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -181,7 +189,8 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         builder.show();
     }
 
-    private void deleteElementImmediately(int position) {
+
+    private void deleteXElementImmediately(int position) {
         XElemModel theElement = mValues.get(position);
 
         //Delete corresponding Image
@@ -198,9 +207,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         makeNumChangesVisibleOnDeletion(position);
     }
 
-    private void trashElementImmediately(int position) {
+    private void trashXElementImmediately(int position) {
         XElemModel theElement = mValues.get(position);
         DataRepository myRep = DataRepository.getRepository();
+
+        //remove elements from trash based on preferences
+        deleteOldestFromTrashIfNecessary(theElement.getXListIDForeign());
 
         //remove & trash element
         myRep.trashElement(theElement);
@@ -209,6 +221,27 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
 
         //change numbers and set background
         makeNumChangesVisibleOnDeletion(position);
+    }
+
+    private void deleteOldestFromTrashIfNecessary(int xlist_id){
+        DataRepository myRep = DataRepository.getRepository();
+        List<XElemModel> trash_xElements_list = myRep.getTrashedElementsByListID(xlist_id);
+        int curr_trash_limit = SettingsActivity.DEFAULT_TRASH_SIZE;
+        try {
+            curr_trash_limit = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(activityContext).getString(SettingsActivity.KEY_PREF_TRASH_SIZE, Integer.toString(curr_trash_limit)));
+        }catch (Error e) {
+        e.printStackTrace();
+    }
+        if (trash_xElements_list.size() >= curr_trash_limit) {
+            XElemModel oldestElement = trash_xElements_list.get(0);
+            for (XElemModel cur_elem: trash_xElements_list) {
+                if (cur_elem.getXElemID() < oldestElement.getXElemID()) {
+                    oldestElement = cur_elem;
+                }
+            }
+            myRep.deleteElemFinally(oldestElement);
+        }
+
     }
 
     private void makeNumChangesVisibleOnDeletion(int posOfDel){
