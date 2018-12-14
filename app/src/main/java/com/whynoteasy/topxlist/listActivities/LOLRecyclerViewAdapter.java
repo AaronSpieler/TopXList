@@ -1,68 +1,74 @@
 package com.whynoteasy.topxlist.listActivities;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.whynoteasy.topxlist.R;
 import com.whynoteasy.topxlist.dataHandling.DataRepository;
 import com.whynoteasy.topxlist.dataHandling.ImageHandler;
 import com.whynoteasy.topxlist.dataObjects.XElemModel;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
+import com.whynoteasy.topxlist.elemActivities.ListOfElementsFragment;
+import com.whynoteasy.topxlist.general.CustomListFilter;
+import com.whynoteasy.topxlist.general.ListViewHolder;
 import com.whynoteasy.topxlist.general.SettingsActivity;
-import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnListFragmentInteractionListener;
+import com.whynoteasy.topxlist.general.TopXListApplication;
+import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment.OnMainListFragmentInteractionListener;
 import com.whynoteasy.topxlist.dataObjects.XListTagsSharesPojo;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
+
+import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link XListTagsSharesPojo} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * specified {@link MainListOfListsFragment.OnMainListFragmentInteractionListener}.
  */
-public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerViewAdapter.XListViewHolder> implements ListTouchHelper.ActionCompletionContract, Filterable {
+public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder> implements ListTouchHelper.ActionCompletionContract, Filterable, CustomListFilter.CustomFilterContract {
 
     private List<XListTagsSharesPojo> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final OnMainListFragmentInteractionListener mListener;
     private final Context activityContext;
-    private final CustomListFilter mFilter = new CustomListFilter();
+    private final CustomListFilter mFilter;
     private final LOLRecyclerViewAdapter lolAdapterSelf;
 
-    public LOLRecyclerViewAdapter(List<XListTagsSharesPojo> items, OnListFragmentInteractionListener listener, Context activityContext) {
+    public LOLRecyclerViewAdapter(List<XListTagsSharesPojo> items, MainListOfListsFragment.OnMainListFragmentInteractionListener listener, Context activityContext) {
         mValues = items;
         mListener = listener;
         this.activityContext = activityContext;
         lolAdapterSelf = this;
+        mFilter = new CustomListFilter(this, false);
     }
 
-    //I guess this method is done?
     @NonNull
     @Override
-    public XListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_card_final, parent, false);
-        return new XListViewHolder(view);
+        return new ListViewHolder(view, false);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final XListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
         //reference to the object itself
         holder.mItem = mValues.get(position);
+
+        if (TopXListApplication.DEBUG_APPLICATION) {
+            System.out.println("MyPosition: "+holder.mItem.getXListModel().getXListNum());
+
+        }
 
         //xlist_card, set background color if marked
         if (holder.mItem.getXListModel().isXListMarked()) {
@@ -116,36 +122,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         return mValues.size();
     }
 
-    //It must be the ViewHolder that implements the MenuClickListener because
-    //this it the best way to get a reference of the XList that is relevant to the menu
-    public class XListViewHolder extends RecyclerView.ViewHolder {
-        final View mView;
-        final CardView listCard;
-        final TextView listTitle;
-        final TextView listShortDesc;
-        final TextView listTags;
-        final ImageView listImage;
-
-        //possibly useful to have a reference to the object itself later on
-        XListTagsSharesPojo mItem;
-
-        //the button which when clicked opens menu
-        final ImageButton imgButton;
-
-        XListViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-
-            listCard = itemView.findViewById(R.id.xList_card);
-            listTitle = itemView.findViewById(R.id.xList_title);
-            listShortDesc = itemView.findViewById(R.id.xList_short_description);
-            listTags = itemView.findViewById(R.id.xList_tags);
-            listImage = itemView.findViewById(R.id.xList_image);
-
-            imgButton = itemView.findViewById(R.id.xList_popup_button);
-        }
-
-
+    @Override
+    public void publishResults(List<XListTagsSharesPojo> values) {
+        mValues = values;
+        notifyDataSetChanged();
     }
 
     //EVERYTHING THAT HAS TO DO WITH THE DRAG AND DROP ANIMATIONS
@@ -158,15 +138,52 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         mValues.add(newPosition, tempPojo);
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
-        myRep.changeAllListNumbersList(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
+        myRep.changeAllListNumbersAndUpdateListToNewPos(tempPojo.getXListModel(),newPosition+1,oldPosition+1);
+        changeNumbersForConsistency(newPosition,oldPosition);
+    }
+
+    private void changeNumbersForConsistency(int newPos, int oldPos){
+        if (newPos >= oldPos) {
+            for (int i = oldPos; i <= newPos; i++){
+                mValues.get(i).getXListModel().setXListNum(i+1);
+                notifyItemChanged(i);
+            }
+        } else {
+            for (int i = newPos; i <= oldPos; i++){
+                mValues.get(i).getXListModel().setXListNum(i+1);
+                notifyItemChanged(i);
+            }
+        }
+    }
+
+    private void changeNumbersForConsistencyOnDeletion(int posOfDel){
+        for (int i = posOfDel; i <= mValues.size()-1; i++){
+            mValues.get(i).getXListModel().setXListNum(mValues.get(i).getXListModel().getXListNum()-1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been deleted in fragment
+        mListener.onListFragmentInteraction(lolAdapterSelf, posOfDel , MainListOfListsFragment.INTERACTION_DELETE);
+    }
+
+    private void changeNumbersForConsistencyOnInsertion(int posOfInsertion){
+        for (int i = posOfInsertion+1; i <= mValues.size()-1; i++){
+            mValues.get(i).getXListModel().setXListNum(mValues.get(i).getXListModel().getXListNum()+1);
+            notifyItemChanged(i);
+        }
+        //notify activity that element has been inserted in fragment
+        mListener.onListFragmentInteraction(lolAdapterSelf, posOfInsertion , ListOfElementsFragment.INTERACTION_INSERTION);
     }
 
     @Override
     public void onViewSwipedLeft(int position) {
-        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
-            deleteAtPositionIfConfirmed(position);
+        if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
+            trashXListImmediately(position);
         } else {
-            deleteListImmediately(position);
+            if (PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                deleteXListAtPositionIfConfirmed(position);
+            } else {
+                deleteXListImmediately(position);
+            }
         }
     }
 
@@ -182,97 +199,11 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         this.mValues.add(position,tempPojo);
         this.notifyItemChanged(position);
     }
-
-
-    //important so that an acclivity can tell the adapter what to show
+    
+    //important so that an activity can tell the adapter what to show
     public void setValues(List<XListTagsSharesPojo> newValues) {
         mValues = newValues;
         notifyDataSetChanged();
-    }
-
-    //this is so the lists can be filtered
-    public class CustomListFilter extends Filter {
-        @Override
-        public FilterResults performFiltering(CharSequence constraint) {
-            FilterResults results = new FilterResults();
-            DataRepository myRep = DataRepository.getRepository();
-            List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
-            //We dont want duplicated and we want the set to be ordered by insertion order
-            LinkedHashSet<XListTagsSharesPojo> searchResults = new LinkedHashSet<>();
-
-            String query = constraint.toString().toLowerCase().trim();
-
-            //use the query to search your data somehow
-            if (query.startsWith("#") && !query.contains(" ")) {
-                //Filter results based on a single hashtag
-                for (XListTagsSharesPojo tempList : allLists) {
-                    if (tempList.tagsToString().toLowerCase().contains(query)) {
-                        searchResults.add(tempList);
-                    }
-                }
-            } else {
-                //Filter results based on words:
-                //priority one: hashtag
-                //priority two: title
-                //priority three: short description
-                //priority four: long description
-
-                //Split the search query by spaces:
-                String[] searchTokens = query.split("\\s+");
-
-                //priority one: hashtag
-                for (String token : searchTokens) {
-                    for (XListTagsSharesPojo tempList : allLists) {
-                        if (tempList.tagsToString().toLowerCase().contains(query)) {
-                            searchResults.add(tempList);
-                        }
-                    }
-                }
-
-                //priority two: title
-                for (String token : searchTokens) {
-                    for (XListTagsSharesPojo tempList : allLists) {
-                        if (tempList.getXListModel().getXListTitle().toLowerCase().contains(token)) {
-                            searchResults.add(tempList);
-                        }
-                    }
-                }
-
-                //priority three: short description
-                for (String token : searchTokens) {
-                    for (XListTagsSharesPojo tempList : allLists) {
-                        if (tempList.getXListModel().getXListShortDescription().toLowerCase().contains(token)) {
-                            searchResults.add(tempList);
-                        }
-                    }
-                }
-
-                //priority four: long description
-                for (String token : searchTokens) {
-                    for (XListTagsSharesPojo tempList : allLists) {
-                        if (tempList.getXListModel().getXListLongDescription().toLowerCase().contains(token)) {
-                            searchResults.add(tempList);
-                        }
-                    }
-                }
-            }
-            //Convert the LinkedHashset to ArrayList
-            ArrayList<XListTagsSharesPojo> tempResult = new ArrayList<>();
-            tempResult.addAll(0,searchResults);
-
-            //set the results
-            results.values = tempResult;
-            results.count = tempResult.size();
-
-            return results;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public void publishResults(CharSequence constraint, FilterResults results) {
-            mValues = (List<XListTagsSharesPojo>) results.values;
-            notifyDataSetChanged();
-        }
     }
 
     @Override
@@ -280,8 +211,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         return mFilter;
     }
 
-    //TODO modify when temporarily deleting
-    private void deleteAtPositionIfConfirmed(final int position) {
+    private void deleteXListAtPositionIfConfirmed(final int position) {
         XListTagsSharesPojo tempPojo = mValues.get(position);
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
@@ -289,7 +219,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+tempPojo.getXListModel().getXListTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                deleteListImmediately(position);
+                deleteXListImmediately(position);
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -306,22 +236,76 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         builder.show();
     }
 
-    private void deleteListImmediately(final int position) {
+    private void deleteXListImmediately(final int position) {
+        DataRepository myRep = DataRepository.getRepository();
         XListTagsSharesPojo tempPojo = mValues.get(position);
         //Delete corresponding Image
         if (tempPojo.getXListModel().getXImageLoc() != null) {
             (new ImageHandler(activityContext)).deleteFileByRelativePath(tempPojo.getXListModel().getXImageLoc());
         }
 
+        //delete all the images of all the xElements
         deleteCorrespondingElementImages(activityContext,tempPojo.getXListModel().getXListID());
 
-        DataRepository myRep = DataRepository.getRepository(); //propagation removes rest
-        myRep.deleteList(tempPojo.getXListModel());
+        //remove XList finally
+        myRep.deleteList(tempPojo.getXListModel());  //propagation removes rest
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
 
+        //necessary to change all number in a consistent way, even if not visible to user
+        changeNumbersForConsistencyOnDeletion(position);
+
         //notify activity that element has been deleted in fragment
         mListener.onListFragmentInteraction(lolAdapterSelf, position , MainListOfListsFragment.INTERACTION_DELETE);
+    }
+
+    //Move XList to trash
+    private void trashXListImmediately(int position) {
+        DataRepository myRep = DataRepository.getRepository();
+        XListTagsSharesPojo tempPojo = mValues.get(position);
+        final int xlist_id = tempPojo.getXListModel().getXListID();
+
+        //remove oldest xList from trash if necessary
+        deleteOldestListFromTrashIfNecessary();
+
+        //remove from cache & trash XList
+        myRep.trashList(tempPojo.getXListModel());
+        mValues.remove(tempPojo);
+        notifyItemRemoved(position);
+
+        //necessary to change all number in a consistent way, even if not visible to user
+        changeNumbersForConsistencyOnDeletion(position);
+
+        //Show snackbar with option to restore element
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout),  R.string.list_trashed_successfully, LENGTH_LONG);
+        mySnackbar.setAction(activityContext.getString(R.string.trashed_undo_button_text), new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                restoreXList(xlist_id);
+            }
+        });
+        mySnackbar.show();
+    }
+
+    private void deleteOldestListFromTrashIfNecessary(){
+        DataRepository myRep = DataRepository.getRepository();
+        List<XListTagsSharesPojo> trashed_xLists = myRep.getTrashedXListsWithTagsShares();
+        int curr_trash_limit = SettingsActivity.DEFAULT_TRASH_SIZE;
+        try {
+            curr_trash_limit = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(activityContext).getString(SettingsActivity.KEY_PREF_TRASH_SIZE, Integer.toString(curr_trash_limit)));
+        }catch (Error e) {
+            e.printStackTrace();
+        }
+        if (trashed_xLists.size() >= curr_trash_limit) {
+            XListTagsSharesPojo oldestXList = trashed_xLists.get(0);
+            for (XListTagsSharesPojo cur_elem: trashed_xLists) {
+                if (cur_elem.getXListModel().getXListID() < oldestXList.getXListModel().getXListID()) {
+                    oldestXList = cur_elem;
+                }
+            }
+            myRep.deleteListFinally(oldestXList.getXListModel());
+        }
+
     }
 
     private void deleteCorrespondingElementImages(Context context, int ListID) {
@@ -339,4 +323,30 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<LOLRecyclerView
         return mValues.get(position).getXListModel();
     }
 
+    private void restoreXList(int list_id) {
+        DataRepository myRep = DataRepository.getRepository();
+        XListTagsSharesPojo tempPojo = myRep.getListWithTagsSharesByID(list_id);
+
+        //save to first position or last or original based on preference
+        int newPos = tempPojo.getXListModel().getXListNum();
+        if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_RESTORE_POS, true)) {
+            if (!PreferenceManager.getDefaultSharedPreferences(activityContext).getBoolean(SettingsActivity.KEY_PREF_NEW_OBJECT_NUMBER, true)) {
+                newPos = 1;
+            } else {
+                newPos = myRep.getListCount() + 1;
+            }
+        }
+
+        //restore with new position
+        myRep.restoreList(tempPojo.getXListModel(), newPos);
+        int restore_index = newPos-1;
+        mValues.add(restore_index,myRep.getListWithTagsSharesByID(list_id));
+        changeNumbersForConsistencyOnInsertion(restore_index);
+
+        //notify adapter of insertion
+        notifyItemInserted(restore_index);
+
+        Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
+        mySnackbar.show();
+    }
 }

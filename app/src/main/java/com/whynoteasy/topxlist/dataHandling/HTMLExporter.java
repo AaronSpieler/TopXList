@@ -35,12 +35,14 @@ public class HTMLExporter {
         String htmlBody = "";
         List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
         for (XListTagsSharesPojo listPJ : allLists) {
+            //noinspection StringConcatenationInLoop
             htmlBody = htmlBody + "<h2>"+listPJ.getXListModel().getXListTitle()+"</h2>\n" +
                     "<p>"+listPJ.getXListModel().getXListShortDescription()+"</p>\n" +
                     "<p>"+listPJ.getXListModel().getXListLongDescription()+"</p>\n" +
                     "<p>"+listPJ.tagsToString()+"</p>\n";
             List<XElemModel> allElems = myRep.getElementsByListID(listPJ.getXListModel().getXListID());
             for (XElemModel elem : allElems) {
+                //noinspection StringConcatenationInLoop
                 htmlBody = htmlBody + "<h3>"+"("+elem.getXElemNum()+".) "+elem.getXElemTitle()+"</h3>\n" +
                         "<p>"+elem.getXElemDescription()+"</p>\n";
             }

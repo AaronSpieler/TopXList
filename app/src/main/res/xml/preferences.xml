@@ -2,27 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="@string/usability_category_title"
-        android:key="pref_usability_settings"
-        android:layout="@layout/preference_category_usability">
-        <SwitchPreference
-            android:key="pref_auto_saving"
-            android:title="@string/auto_save_setting_title"
-            android:summary="@string/auto_save_setting_summary"
-            android:defaultValue="true"/>
-        <SwitchPreference
-            android:key="pref_confirm_delete"
-            android:title="@string/pref_title_confirm_delete"
-            android:summary="@string/pref_summary_confirm_delete"
-            android:defaultValue="true"/>
-        <SwitchPreference
-            android:key="pref_new_object_number"
-            android:title="@string/pref_title_new_obj_num"
-            android:summary="@string/pref_summary_new_obj_num"
-            android:defaultValue="true"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory
         android:title="@string/appearance_category_title"
         android:key="pref_appearance_settings"
         android:layout="@layout/preference_category_appearance"
@@ -34,6 +13,45 @@
             android:entries="@array/imageSize"
             android:entryValues="@array/imageSizeData"
             android:defaultValue="3"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/usability_category_title"
+        android:key="pref_usability_settings"
+        android:layout="@layout/preference_category_usability">
+        <SwitchPreference
+            android:key="pref_auto_saving"
+            android:title="@string/auto_save_setting_title"
+            android:summary="@string/auto_save_setting_summary"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_new_object_number"
+            android:title="@string/pref_title_new_obj_num"
+            android:summary="@string/pref_summary_new_obj_num"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_confirm_delete"
+            android:title="@string/pref_title_confirm_delete"
+            android:summary="@string/pref_summary_confirm_delete"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_trash_first"
+            android:title="@string/pref_title_trash_first"
+            android:summary="@string/pref_summary_trash_first"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="pref_restore_pos"
+            android:title="@string/pref_title_restore_pos"
+            android:summary="@string/pref_summary_restore_pos"
+            android:defaultValue="true"/>
+        <ListPreference
+            android:key="pref_trash_size"
+            android:title="@string/pref_title_trash_size"
+            android:summary="@string/pref_summary_trash_size"
+            android:entries="@array/trashSize"
+            android:entryValues="@array/trashSizeData"
+            android:defaultValue="3"/>
+
     </PreferenceCategory>
 
 </PreferenceScreen>

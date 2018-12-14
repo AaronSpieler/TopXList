@@ -272,10 +272,14 @@ public class XListEditActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.delete_action_xlist) {
             //delete List based on preference
-            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
-                deleteListIfConfirmed();
+            if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_TRASH_FIRST, true)) {
+                trashXListImmediately();
             } else {
-                deleteListImmediately();
+                if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SettingsActivity.KEY_PREF_CONFIRM_DELETE, true)) {
+                    deleteXListIfConfirmed();
+                } else {
+                    deleteXListImmediately();
+                }
             }
             return true;
         }
@@ -360,15 +364,14 @@ public class XListEditActivity extends AppCompatActivity {
         return true;
     }
 
-    //TODO modify when temporarily deleting
-    private void deleteListIfConfirmed(){
+    private void deleteXListIfConfirmed(){
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(thisActivity.getString(R.string.alert_dialog_delete_list_title));
         builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                deleteListImmediately();
+                deleteXListImmediately();
             }
         });
         builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -379,7 +382,40 @@ public class XListEditActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void deleteListImmediately(){
+    //Move XList to trash
+    private void trashXListImmediately() {
+        myRep = DataRepository.getRepository();
+        myRep.trashList(currentList.getXListModel());
+
+        //remove oldest xList from trash if necessary
+        deleteOldestListFromTrashIfNecessary();
+
+        //return to activity
+        NavUtils.navigateUpFromSameTask(thisActivity);
+    }
+
+    private void deleteOldestListFromTrashIfNecessary(){
+        DataRepository myRep = DataRepository.getRepository();
+        List<XListTagsSharesPojo> trashed_xLists = myRep.getTrashedXListsWithTagsShares();
+        int curr_trash_limit = SettingsActivity.DEFAULT_TRASH_SIZE;
+        try {
+            curr_trash_limit = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(thisActivity).getString(SettingsActivity.KEY_PREF_TRASH_SIZE, Integer.toString(curr_trash_limit)));
+        }catch (Error e) {
+            e.printStackTrace();
+        }
+        if (trashed_xLists.size() >= curr_trash_limit) {
+            XListTagsSharesPojo oldestXList = trashed_xLists.get(0);
+            for (XListTagsSharesPojo cur_elem: trashed_xLists) {
+                if (cur_elem.getXListModel().getXListID() < oldestXList.getXListModel().getXListID()) {
+                    oldestXList = cur_elem;
+                }
+            }
+            myRep.deleteListFinally(oldestXList.getXListModel());
+        }
+
+    }
+
+    private void deleteXListImmediately(){
         //Delete the List Image
         if (currentList.getXListModel().getXImageLoc() != null) {
             (new ImageHandler(thisActivity)).deleteFileByRelativePath(currentList.getXListModel().getXImageLoc());
@@ -388,11 +424,14 @@ public class XListEditActivity extends AppCompatActivity {
         //Delete All The Images Of The Elements
         deleteCorrespondingElementImages(thisActivity,currentListID);
 
-        myRep.deleteList(currentList.getXListModel()); //deletionPropagates
+        //Delete XList; deletion propagates trough XElements and XTags
+        myRep.deleteList(currentList.getXListModel());
 
+        //Debugging code
         if (TopXListApplication.DEBUG_APPLICATION) {
             myRep.getListCount();
         }
+
         //return to activity
         NavUtils.navigateUpFromSameTask(thisActivity);
     }

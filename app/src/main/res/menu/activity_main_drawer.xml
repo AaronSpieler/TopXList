@@ -5,7 +5,13 @@
         <item
             android:id="@+id/nav_all_lists"
             android:icon="@drawable/ic_home_dark_blue_24dp"
-            android:title="@string/side_menu_all_lists" />
+            android:title="@string/side_menu_all_lists"
+            android:checkable="false"/>
+        <item
+            android:id="@+id/nav_trashed_lists"
+            android:icon="@drawable/trash_can_outline_sym"
+            android:title="@string/nav_trashed_lists_title"
+            android:checkable="false"/>
         <!--
         <item
             android:id="@+id/nav_browse_lists"
@@ -15,15 +21,18 @@
         <item
             android:id="@+id/nav_export_to_html"
             android:icon="@drawable/ic_file_download_dark_blue24dp"
-            android:title="@string/side_menu_export" />
+            android:title="@string/side_menu_export"
+            android:checkable="false"/>
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_dark_blue_24dp"
-            android:title="@string/side_menu_settings" />
+            android:title="@string/side_menu_settings"
+            android:checkable="false"/>
         <item
             android:id="@+id/nav_rate_app"
             android:icon="@drawable/ic_shop_dark_blue_24dp"
-            android:title="@string/nav_give_feedback_text" />
+            android:title="@string/nav_give_feedback_text"
+            android:checkable="false"/>
         <!--
         <item
             android:id="@+id/nav_privacy_policy"

@@ -8,8 +8,10 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
@@ -24,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Filterable;
 import android.widget.ImageView;
 
 import com.whynoteasy.topxlist.R;
@@ -32,22 +35,22 @@ import com.whynoteasy.topxlist.dataHandling.HTMLExporter;
 import com.whynoteasy.topxlist.dataObjects.XListModel;
 import com.whynoteasy.topxlist.elemActivities.XListViewActivity;
 import com.whynoteasy.topxlist.listActivities.LOLRecyclerViewAdapter;
+import com.whynoteasy.topxlist.listActivities.ListTouchHelper;
 import com.whynoteasy.topxlist.listActivities.MainListOfListsFragment;
 import com.whynoteasy.topxlist.listActivities.XListCreateActivity;
+import com.whynoteasy.topxlist.xObjectTrashManagement.LOTLRecyclerViewAdapter;
+import com.whynoteasy.topxlist.xObjectTrashManagement.XListTrashFragment;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
 //Created with lolFragment in mind, if other fragment set, restructuring needed
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnListFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainListOfListsFragment.OnMainListFragmentInteractionListener, LOTLRecyclerViewAdapter.OnTrashListFragmentInteractionListener {
 
-    //the adapter of the recycler view
-    private MainListOfListsFragment lolFragment;
-
-    //the repository
+    private Fragment currentFragment;
     private DataRepository myRep;
-
     static final int EXPORT_CODE = 1;
+    FloatingActionButton fab;
+    ConstraintLayout guide_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,14 +61,18 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar_main);
+        toolbar.setTitle(R.string.main_activity_title);
         toolbar.setBackgroundColor(getResources().getColor(R.color.darkBlue));
         setSupportActionBar(toolbar);
 
         //set up the repository
         myRep = DataRepository.getRepository();
 
+        //get guide view reference (top text view that informs users how to to use trash views)
+        guide_view = findViewById(R.id.trash_guide_layout);
+
         //This floating action button is used to trigger the add list activity!!!
-        FloatingActionButton fab = findViewById(R.id.fab_main);
+        fab = findViewById(R.id.fab_main);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,10 +91,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Set up the LOL Fragment by default
-        setUpLolFragment(savedInstanceState != null); //replace if savedInstanceState exists
+        //Set up the all xLists by default
+        setUpFragment(savedInstanceState); //replace if savedInstanceState exists
+        System.out.println("set up after");
     }
 
+    //What happens when the user presses the back button: "<-"
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -98,14 +107,16 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Set up the toolbar menu. Specific configuration needed to to search box.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_search_menu, menu);
 
-        // Associate searchable configuration with the SearchView
+        // Associate searchable configuration with the SearchView!!!
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search_main).getActionView();
+        CustomSearchView searchView = (CustomSearchView) menu.findItem(R.id.search_main).getActionView();
+        searchView.setMyActivity(this);
         if (searchManager != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         }
@@ -117,37 +128,23 @@ public class MainActivity extends AppCompatActivity
                 //not necessary to do anything, onQuarryTextChange is more than enough
                 return true;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
-                LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
+                Filterable tempAdapter = null;
+
+                //get the adapter as filter based on fragment class
+                if (currentFragment.getClass() == MainListOfListsFragment.class) {
+                    tempAdapter = (Filterable)((MainListOfListsFragment)currentFragment).getAdapterRef();
+                } else if (currentFragment.getClass() == XListTrashFragment.class){
+                    tempAdapter = (Filterable)((XListTrashFragment)currentFragment).getAdapterRef();
+                }
+
                 if (tempAdapter != null) {
                     tempAdapter.getFilter().filter(newText.trim());
                 }
                 return true;
             }
         });
-
-        //This is what is called when the back button is pressed in the searchView
-        MenuItem searchItem = menu.findItem(R.id.search_main);
-        //noinspection deprecation
-        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
-                if (tempAdapter != null) {
-                    tempAdapter.setValues(myRep.getListsWithTagsShares());
-                }
-                return true;
-            }
-
-        });
-
         return true;
     }
 
@@ -163,11 +160,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_all_lists) {
-            //start main activity and clear activities on stack
-            Intent returnHome = new Intent(this, MainActivity.class);
-            returnHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(returnHome);
+        if (id == R.id.nav_all_lists) { //switch to main fragment
+            //change fragment to all xLists fragment
+            changeFragmentTo(MainListOfListsFragment.newInstance(1));
+        } else if (id == R.id.nav_trashed_lists) { //switch to trash fragment
+            //change fragment to all xLists fragment
+            changeFragmentTo(XListTrashFragment.newInstance(1));
         } else if (id == R.id.nav_export_to_html) {
             //Get the required permissions
             if (TopXListApplication.getExternalStorageWritePermission(this)) {
@@ -187,46 +185,69 @@ public class MainActivity extends AppCompatActivity
             //not used so far
         }
         */
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public void onListFragmentInteraction(LOLRecyclerViewAdapter lolAdapter, int position, int interactionType) {
-        switch (interactionType) {
-            case 0: //item has been clicked
-                XListModel item = lolAdapter.getItemAtPosition(position);
-                //Start XListViewActivity
-                Intent intent = new Intent(this.getApplicationContext(), XListViewActivity.class);
-                intent.putExtra("X_LIST_ID", item.getXListID());
-                startActivity(intent);
-                break;
-            case 1: // item has been deleted
-                //TODO check whether necessary
-                updateBackground();
-                break;
+    //Changes current Fragment to newFragment, if currentFragment had different class.
+    private void changeFragmentTo(Fragment newFragment) {
+        //if already correct fragment
+        if (newFragment != null && currentFragment != null) {
+            if (currentFragment.getClass() == newFragment.getClass()) {
+                return;
+            }
         }
+
+        //Set new Title, Change visibility of Floating Action Button, and change Trash Guide Visibility
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        if (newFragment.getClass() == MainListOfListsFragment.class) {
+            toolbar.setTitle(R.string.main_activity_title);
+            guide_view.setVisibility(View.GONE);
+            fab.show();
+        } else if (newFragment.getClass()  == XListTrashFragment.class) {
+            toolbar.setTitle(R.string.main_activity_trash_fragment_title);
+            guide_view.setVisibility(View.VISIBLE);
+            fab.hide();
+        }
+
+        //if fragment needs change:
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        currentFragment = newFragment;
+        transaction.replace(R.id.main_activity_fragment_placeholder, currentFragment);
+        transaction.commit();
+        updateBackground();
     }
 
     //EVERY TIME BUT THE FIRST TIME THIS ACTIVITY IS CREATED THIS METHOD IS CALLED
     @Override
     protected void onNewIntent(Intent intent) {
-        handleIntent(intent);
+        handleDatasetChange();
     }
 
     //This IS BECAUSE OF THE SEARCH BAR
-    private void handleIntent(Intent intent) {
-        //this should always be called because if we return to this activity from some other activity
-        //like the add or edit activity the dadaist may have changed
-        LOLRecyclerViewAdapter tempAdapter = lolFragment.getAdapterRef();
-        //have to check if its null, because on first call it might not have been initialised yet
-        if (tempAdapter != null) {
-            tempAdapter.setValues(myRep.getListsWithTagsShares());
+    private void handleDatasetChange() {
+        //exit when no fragment
+        if (currentFragment == null) {
+            return;
+        }
+
+        //appropriate behavior based on Fragment class
+        if (currentFragment.getClass() == MainListOfListsFragment.class) {
+            LOLRecyclerViewAdapter tempAdapter = ((MainListOfListsFragment)currentFragment).getAdapterRef();
+            if (tempAdapter != null) {
+                tempAdapter.setValues(myRep.getListsWithTagsShares());
+            }
+        } else if (currentFragment.getClass() == XListTrashFragment.class){
+            LOTLRecyclerViewAdapter tempAdapter = ((XListTrashFragment)currentFragment).getAdapterRef();
+            if (tempAdapter != null) {
+                tempAdapter.setValues(myRep.getListsWithTagsShares());
+            }
         }
     }
 
+    //request appropriate permissions for export or image selection
     @SuppressWarnings("UnnecessaryReturnStatement")
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], int[] grantResults) {
@@ -249,6 +270,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Called when the user wants to export all Data
     public void startFileSelectorForHTMLExport(){
         Intent saveFileIntent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         saveFileIntent.setType("text/html");
@@ -264,6 +286,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //called whenever the user returns back from another activity to this one
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -276,33 +299,51 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //Update background image, based on whats going on in the fragments
     private void updateBackground() {
-        //wenn wir ein lolFragment haben
-        if (lolFragment != null) {
+        //exit when no fragment
+        if (currentFragment == null) {
+            return;
+        }
+
+        //get reference on the possible background image
+        ImageView img_view = findViewById(R.id.image_background);
+
+        //appropriate behavior based on Fragment class
+        if (currentFragment.getClass() == MainListOfListsFragment.class) {
             boolean empty = (myRep.getListsWithTagsShares().size() == 0);
-            ImageView img_view = findViewById(R.id.image_background);
             if (empty) {
                 img_view.setImageResource(R.drawable.light_bulb_edited);
                 img_view.setVisibility(View.VISIBLE);
             } else {
                 img_view.setVisibility(View.GONE);
             }
+        } else if (currentFragment.getClass() == XListTrashFragment.class){
+            img_view.setVisibility(View.GONE);
         }
     }
 
-    private void setUpLolFragment(boolean replace){
+    //Sets up fragment based on which fragment was loaded previously, or the default fragment, if nothing has been loaded so far.
+    private void setUpFragment(Bundle savedInstanceState){
+        boolean replace = (savedInstanceState != null);
+
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        lolFragment = MainListOfListsFragment.newInstance(1);
+
         //very important, so the fragments dont stack
         if (!replace) {
-            transaction.add(R.id.main_activity_fragment_placeholder, lolFragment);
+            //default fragment
+            currentFragment = MainListOfListsFragment.newInstance(1);
+            transaction.add(R.id.main_activity_fragment_placeholder, currentFragment);
         } else {
-            transaction.replace(R.id.main_activity_fragment_placeholder, lolFragment);
+            if (currentFragment.getClass() == MainListOfListsFragment.class) {
+                currentFragment = MainListOfListsFragment.newInstance(1);
+            } else if (currentFragment.getClass() == XListTrashFragment.class) {
+                currentFragment = XListTrashFragment.newInstance(1);
+            }
+            transaction.replace(R.id.main_activity_fragment_placeholder, currentFragment);
         }
         transaction.commit();
-
-        //change background appropriately
         updateBackground();
     }
 
@@ -311,4 +352,42 @@ public class MainActivity extends AppCompatActivity
         super.onResume();
         updateBackground();
     }
+
+    //SO far the only use of onListFragmentInteraction listener
+    @Override
+    public void onListFragmentInteraction(LOLRecyclerViewAdapter lolAdapter, int position, int interactionType) {
+        switch (interactionType) {
+            case 0: //item has been clicked
+                XListModel item = lolAdapter.getItemAtPosition(position);
+                //Start XListViewActivity
+                Intent intent = new Intent(this.getApplicationContext(), XListViewActivity.class);
+                intent.putExtra("X_LIST_ID", item.getXListID());
+                startActivity(intent);
+                break;
+            case 1: // item has been deleted
+                updateBackground(); //when last element was deleted?
+                break;
+        }
+    }
+
+    @Override
+    public void onListFragmentInteraction(LOTLRecyclerViewAdapter lolAdapter, int position, int interactionType) {
+        //nothing to do so far
+    }
+
+    public void onSearchViewExpand() {
+        if (currentFragment.getClass() == MainListOfListsFragment.class) {
+            //Temporarily disable dragging and swiping when in filter mode
+            ListTouchHelper.temporarilyDisableHelper = true;
+        }
+    }
+
+    public void onSearchViewCollapse() {
+        if (currentFragment.getClass() == MainListOfListsFragment.class) {
+            //enable dragging and swiping
+            ListTouchHelper.temporarilyDisableHelper = false;
+        }
+    }
 }
+
+

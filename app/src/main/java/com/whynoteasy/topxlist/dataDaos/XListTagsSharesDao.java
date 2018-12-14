@@ -20,11 +20,16 @@ public interface XListTagsSharesDao {
 
     //since we defined @Realtion for the Tags ONLY the appropriate Tags are fetched
     @Transaction
-    @Query("SELECT * FROM lists ORDER BY list_num ASC")
+    @Query("SELECT * FROM lists WHERE trashed = 0 ORDER BY list_num ASC")
     List<XListTagsSharesPojo> loadAllListsWithTagsAndShares();
 
     @Transaction
     @Query("SELECT * FROM lists WHERE list_id = :xListIDInp")
     XListTagsSharesPojo loadListWithTagAndSharesByID(String xListIDInp);
+
+    //order by list id, because it might reflect more the recency of deletion
+    @Transaction
+    @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY list_id ASC")
+    List<XListTagsSharesPojo> loadAllTrashedListsWithTagsAndShares();
 
 }

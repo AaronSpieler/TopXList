@@ -186,8 +186,8 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    //changesAllListNumbersAndUpdatesElement
-    public void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos){
+    //CHANGES ALL CORRESPONDING NUMBERS SO THE INPUTTED ELEMENT HAS THE INPUTTED NEW POSITION
+    public void changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(XElemModel xElemModel, int newPos, int oldPos){
         new UpdateElemNumAsyncTask(xRoomDatabase).execute(new NumElemUpdateParameters(xElemModel, newPos, oldPos));
     }
     private static class UpdateElemNumAsyncTask extends  AsyncTask<NumElemUpdateParameters, Void, Void>{
@@ -264,6 +264,25 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
+    //DELETE ELEMENT
+    public void deleteElemFinally(XElemModel xElemModel) {
+        new DeleteElemFinallyAsyncTask(xRoomDatabase).execute(xElemModel);
+    }
+    private static class DeleteElemFinallyAsyncTask extends AsyncTask<XElemModel, Void, Void> {
+        private final XRoomDatabase db;
+        DeleteElemFinallyAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XElemModel... params) {
+            Integer posOfDel = params[0].getXElemNum();
+            db.xElementsModel().deleteXElem(params[0]);
+            //dont update positions, because deletion doesn't affect elements whose number currently matters
+            return null;
+        }
+    }
+
+    /*Not used, also mistake because pos not updated after delete
     //DELETE ELEMENTS BY LIST_ID
     public void deleteElementsByListID(Integer listID) {
         new DeleteElementsByListIDAsyncTask(xRoomDatabase).execute(listID);
@@ -279,6 +298,7 @@ public class DataRepository implements DatabaseSpecification {
             return null;
         }
     }
+    */
 
     //UPDATE ELEMENT
     public void updateElem(XElemModel xElemModel) {
@@ -316,12 +336,90 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    //---------------------------------Lists--------------------------
-
-    //GET THE LIST OF LISTS
-    public List<XListModel> getLists() {
-        return xRoomDatabase.xListModel().loadAllLists();
+    @Override
+    public void trashElement(XElemModel xElemModel) {
+        new TrashElemAsyncTask(xRoomDatabase).execute(xElemModel);
     }
+    private static class TrashElemAsyncTask extends AsyncTask<XElemModel, Void, Void> {
+        private final XRoomDatabase db;
+        TrashElemAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XElemModel... params) {
+            //update positions
+            Integer posOfDel = params[0].getXElemNum();
+            db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign()))+1), Integer.toString(posOfDel));
+
+            //mark element as trashed
+            params[0].setXElemTrashed(true);
+            db.xElementsModel().updateXElem(params[0]);
+
+            return null;
+
+        }
+    }
+
+    @Override
+    public void restoreElement(XElemModel xElemModel, int newPos) {
+        new RestoreElemAsyncTask(xRoomDatabase,this).execute(new NumElemUpdateParameters(xElemModel, newPos, newPos)); //supplementary object to pass multiple parameters
+    }
+    private static class RestoreElemAsyncTask extends AsyncTask<NumElemUpdateParameters, Void, Void> {
+        private final XRoomDatabase db;
+        private final DataRepository myRep;
+        RestoreElemAsyncTask(XRoomDatabase xRoomDatabase, DataRepository myRep) {
+            db = xRoomDatabase;
+            this.myRep = myRep;
+        }
+        @Override
+        protected Void doInBackground(final NumElemUpdateParameters... params) {
+            //mark element as not trashed
+            params[0].xElemModel.setXElemTrashed(false);
+
+            //change other elements positions
+            int hypotheticalOldPos = db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].xElemModel.getXListIDForeign())) + 1;
+            if (params[0].newPos <= hypotheticalOldPos) {
+                db.xElementsModel().updateIncrementNumOfeElemFromToSmallerPos(Integer.toString(params[0].xElemModel.getXListIDForeign()), Integer.toString(params[0].newPos), Integer.toString(hypotheticalOldPos));
+            }
+
+            //change own pos
+            if (params[0].newPos > hypotheticalOldPos) { //new Pos too big
+                params[0].xElemModel.setXElemNum(hypotheticalOldPos);
+            } else {
+                params[0].xElemModel.setXElemNum(params[0].newPos);
+            }
+
+            //commit changes
+            db.xElementsModel().updateXElem(params[0].xElemModel);
+
+            return null;
+        }
+    }
+
+    //GET TRASHED ELEMENTS LIST CORRESPONDING TO SPECIFIC  LIST-ID
+    public List<XElemModel> getTrashedElementsByListID(int listID) {
+        try{
+            //the rowId which is the primaryKey is returned
+            return new GetTrashedElementsListByIDAsyncTask(xRoomDatabase).execute(listID).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetTrashedElementsListByIDAsyncTask extends AsyncTask<Integer, Void, List<XElemModel>> {
+        private final XRoomDatabase db;
+        GetTrashedElementsListByIDAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected List<XElemModel> doInBackground(final Integer... params) {
+            return db.xElementsModel().loadTrashedElementsByListID(Integer.toString(params[0]));
+        }
+    }
+
+
+
+    //---------------------------------Lists--------------------------
 
     //GET LIST BY ID
     public XListModel getListByID(int listID){
@@ -356,7 +454,7 @@ public class DataRepository implements DatabaseSpecification {
             this.oldPos = oldPos;
         }
     }
-    public void changeAllListNumbersList(XListModel xListModel, int newPos, int oldPos){
+    public void changeAllListNumbersAndUpdateListToNewPos(XListModel xListModel, int newPos, int oldPos){
         new UpdateListNumAsyncTask(xRoomDatabase).execute(new NumListUpdateParameters(xListModel, newPos, oldPos));
     }
     private static class UpdateListNumAsyncTask extends  AsyncTask<NumListUpdateParameters, Void, Void>{
@@ -366,6 +464,7 @@ public class DataRepository implements DatabaseSpecification {
         }
         @Override
         protected Void doInBackground(final NumListUpdateParameters... params) {
+            System.out.println("OldPos: "+params[0].oldPos+"NewPos: "+params[0].newPos);
             if(params[0].newPos < params[0].oldPos){ //depending on whether new position is smaller than old different quarries have to be executed
                 db.xListModel().updateIncrementNumOfListsFromToSmallerPos(Integer.toString(params[0].newPos), Integer.toString(params[0].oldPos));
             } else {
@@ -399,7 +498,7 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
-    //DELETE
+    //DELETE LIST
     public void deleteList(XListModel xListModel) {
         new DeleteListAsyncTask(xRoomDatabase).execute(xListModel);
     }
@@ -414,6 +513,24 @@ public class DataRepository implements DatabaseSpecification {
             db.xListModel().deleteXList(params[0]);
             //update the other positions
             db.xListModel().updateIncrementNumOfListsFromToHigherPos(Integer.toString(db.xListModel().getNumberOfLists()+1), Integer.toString(posOfDel));
+            return null;
+        }
+    }
+
+    //DELETE LIST FINALLY
+    public void deleteListFinally(XListModel xListModel) {
+        new DeleteListFinallyAsyncTask(xRoomDatabase).execute(xListModel);
+    }
+    private static class DeleteListFinallyAsyncTask extends AsyncTask<XListModel, Void, Void> {
+        private final XRoomDatabase db;
+        DeleteListFinallyAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XListModel... params) {
+            Integer posOfDel = params[0].getXListNum();
+            db.xListModel().deleteXList(params[0]);
+            //dont update positions, because deletion doesn't affect elements whose number currently matters
             return null;
         }
     }
@@ -459,6 +576,63 @@ public class DataRepository implements DatabaseSpecification {
         }
     }
 
+    @Override
+    public void trashList(XListModel xListModel) {
+        new TrashListAsyncTask(xRoomDatabase).execute(xListModel);
+    }
+    private static class TrashListAsyncTask extends AsyncTask<XListModel, Void, Void> {
+        private final XRoomDatabase db;
+        TrashListAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected Void doInBackground(final XListModel... params) {
+            //mark element as trashed
+            params[0].setXListTrashed(true);
+            db.xListModel().updateXList(params[0]);
+            //update positions
+            Integer posOfDel = params[0].getXListNum();
+            db.xListModel().updateIncrementNumOfListsFromToHigherPos(Integer.toString(db.xListModel().getNumberOfLists()+1), Integer.toString(posOfDel));
+            return null;
+        }
+    }
+
+    @Override
+    public void restoreList(XListModel xListModel, int newPos) {
+        new RestoreListAsyncTask(xRoomDatabase, this).execute(new NumListUpdateParameters(xListModel, newPos, newPos)); //supplementary object to pass multiple parameters
+    }
+    private static class RestoreListAsyncTask extends AsyncTask<NumListUpdateParameters, Void, Void> {
+        private final XRoomDatabase db;
+        private final DataRepository myRep;
+        RestoreListAsyncTask(XRoomDatabase xRoomDatabase, DataRepository myRep) {
+            db = xRoomDatabase;
+            this.myRep = myRep;
+        }
+        @Override
+        protected Void doInBackground(final NumListUpdateParameters... params) {
+            //mark element as not trashed
+            params[0].xListModel.setXListTrashed(false);
+
+            //change other elements positions
+            int hypotheticalOldPos = db.xListModel().getNumberOfLists()+1;
+            if (params[0].newPos <= hypotheticalOldPos) {
+                db.xListModel().updateIncrementNumOfListsFromToSmallerPos(Integer.toString(params[0].newPos), Integer.toString(hypotheticalOldPos));
+            }
+
+            //change own pos
+            if (params[0].newPos > hypotheticalOldPos) { //new Pos too big
+                params[0].xListModel.setXListNum(hypotheticalOldPos);
+            } else {
+                params[0].xListModel.setXListNum(params[0].newPos);
+            }
+
+            //commit changes
+            db.xListModel().updateXList(params[0].xListModel);
+
+            return null;
+        }
+    }
+
 
     //---------------------------------ListTagPojo-----------------------
 
@@ -499,6 +673,26 @@ public class DataRepository implements DatabaseSpecification {
         @Override
         protected XListTagsSharesPojo doInBackground(Integer... integers) {
             return db.xListsAndTagsAndSharesModel().loadListWithTagAndSharesByID(Integer.toString(integers[0]));  //Quarries only happen with Strings so casting is needed
+        }
+    }
+
+    //GET THE LIST OF LISTS
+    public List<XListTagsSharesPojo> getTrashedXListsWithTagsShares() {
+        try {
+            return new GetTrashedXListsWithTagsSharesAsyncTask(xRoomDatabase).execute().get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    private static class GetTrashedXListsWithTagsSharesAsyncTask extends AsyncTask<Void, Void, List<XListTagsSharesPojo>> {
+        private final XRoomDatabase db;
+        GetTrashedXListsWithTagsSharesAsyncTask(XRoomDatabase xRoomDatabase) {
+            db = xRoomDatabase;
+        }
+        @Override
+        protected List<XListTagsSharesPojo> doInBackground(Void... voids) {
+            return db.xListsAndTagsAndSharesModel().loadAllTrashedListsWithTagsAndShares();
         }
     }
 }

@@ -31,14 +31,17 @@ public interface DatabaseSpecification {
         //GET ALL ELEMENTS
         List<XElemModel> getAllElements();
 
-        //GET ELEMENTS LIST CORRESPONDING TO SPECIFIC ID
+        //GET ELEMENTS LIST CORRESPONDING TO SPECIFIC ID ONLY NOT TRASHED
         List<XElemModel> getElementsByListID(int listID);
+
+        //GET ELEMENTS LIST CORRESPONDING TO SPECIFIC ID ONLX TRASHED
+        List<XElemModel> getTrashedElementsByListID(int listID);
 
         //GET ELEMENT BY ID
         XElemModel getElemByID(int elemID);
 
         //CHANGE lIST NUMBERS AFTER MOVEMENT
-        void changeAllListNumbersUpdateElem(XElemModel xElemModel, int newPos, int oldPos);
+        void changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(XElemModel xElemModel, int newPos, int oldPos);
 
         //INSERT ELEMENT AT POS
         void insertElemAtPos(XElemModel xElemModel, int thePos);
@@ -49,8 +52,11 @@ public interface DatabaseSpecification {
         //DELETE ELEMENT
         void deleteElem(XElemModel xElemModel);
 
+        //DELETE ELEMENT FINALLY
+        void deleteElemFinally(XElemModel xElemModel);
+
         //DELETE ELEMENTS BY LIST_ID
-        void deleteElementsByListID(Integer listID);
+        //void deleteElementsByListID(Integer listID); //NOT USED
 
         //UPDATE ELEMENT
         void updateElem(XElemModel xElemModel);
@@ -58,22 +64,28 @@ public interface DatabaseSpecification {
         //GET ELEM COUNT FOR LIST
         int getElemCountByListID(int listID);
 
-        //---------------------------------Lists--------------------------
+        //TEMPORARILY DELETE ELEMENT
+        void trashElement(XElemModel xElemModel);
 
-        //GET THE LIST OF LISTS
-        List<XListModel> getLists();
+        //RESTORE A TEMPORARILY DELETED ELEMENT
+        void restoreElement(XElemModel xElemModel, int newPos);
+
+        //---------------------------------Lists--------------------------
 
         //GET LIST BY ID
         XListModel getListByID(int listID);
 
         //CHANGE lIST NUMBERS AFTER MOVEMENT
-        void changeAllListNumbersList(XListModel xListModel, int newPos, int oldPos);
+        void changeAllListNumbersAndUpdateListToNewPos(XListModel xListModel, int newPos, int oldPos);
 
         //INSERT
         long insertList(XListModel xListModel);
 
-        //DELETE
+        //DELETE LIST
         void deleteList(XListModel xListModel);
+
+        //DELETE LIST FINALLY
+        void deleteListFinally(XListModel xListModel);
 
         //UPDATE
         void updateList(XListModel xListModel);
@@ -81,12 +93,21 @@ public interface DatabaseSpecification {
         //GET LIST COUNT
         int getListCount();
 
+        //TEMPORARILY DELETE LIST
+        void trashList(XListModel xListModel);
+
+        //RESTORE A TEMPORARILY DELETED LIST
+        void restoreList(XListModel xListModel, int newPos);
+
         //---------------------------------ListTagPojo-----------------------
 
-        //GET THE LIST OF LISTS
+        //GET THE LIST OF XLISTS
         List<XListTagsSharesPojo> getListsWithTagsShares();
 
         //GET LIST BY ID
         XListTagsSharesPojo getListWithTagsSharesByID(int listID);
+
+        //GET THE LIST OF TRASHED XLISTS
+        List<XListTagsSharesPojo> getTrashedXListsWithTagsShares();
 
 }

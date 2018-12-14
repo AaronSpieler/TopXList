@@ -129,18 +129,28 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" /> <!-- optional (needed if default theme has no action bar) -->
-        <activity android:name=".listActivities.ImageFullscreenListActivity"
+        <activity
+            android:name=".listActivities.ImageFullscreenListActivity"
             android:label="@string/title_activity_image_fullscreen"
             android:parentActivityName=".listActivities.XListViewStoryActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".elemActivities.ImageFullscreenElemActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".elemActivities.ImageFullscreenElemActivity"
             android:label="@string/title_activity_image_fullscreen"
             android:parentActivityName=".elemActivities.XElemViewActivity"
             android:screenOrientation="fullSensor"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".xObjectTrashManagement.XElemTrashActivity"
+            android:label="@string/trash_activity_label"
+            android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.elemActivities.XListViewActivity" />
+            </activity>
     </application>
 
 </manifest>

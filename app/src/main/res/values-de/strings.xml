@@ -15,6 +15,7 @@
     <string name="title_activity_scrolling">Listen Ansicht</string>
     <string name="title_activity_xlist_view_long_description">Listen Lange Beschreibung Ansicht</string>
     <string name="title_activity_settings">Einstellungen</string>
+    <string name="title_activity_image_fullscreen">Bild</string>
 
     <!--Navigation Draver-->
     <string name="navigation_drawer_open">Öffne navigations Fenster</string>
@@ -138,6 +139,7 @@
     <string name="alert_dialog_cancel">Abbrechen</string>
     <string name="alert_dialog_exit">Verlassen</string>
 
+    <!--List Create And Edit error messages-->
     <string name="no_title_entered">Es wurde kein Titel eingegeben.</string>
     <string name="title_already_exists">Titel existiert bereits.</string>
     <string name="no_tag_title_entered">Es wurde kein Tag-Name eingegeben.</string>
@@ -145,16 +147,19 @@
     <string name="tag_title_already_exists_for_list">Doppelter Tag</string>
     <string name="no_proper_number_entered">Es wurde keine gültige Nummer eingegeben.</string>
 
+    <!--HTML export error messages-->
     <string name="html_export_title">Meine Top X List Listen:</string>
     <string name="html_external_storage_not_accessible">Kein Zugriff auf externen Speicher vorhanden.</string>
     <string name="html_export_success">HTML export erfolgreicht.</string>
     <string name="html_export_failure">HTML export gescheitert; konnte Dokument nicht erstellen.</string>
     <string name="export_file_chooser_title">Exportiere Dokument</string>
 
-
+    <!--Side navigation bar-->
     <string name="side_menu_all_lists">Alle Listen</string>
     <string name="side_menu_export">Exportieren (HTML)</string>
+    <string name="nav_give_feedback_text">Feedback geben</string>
 
+    <!--Image related texts-->
     <string name="image_description">dein Bild</string>
     <string name="image_pane_delete_button_text">Löschen</string>
     <string name="image_pane_select_button_text">Auswählen</string>
@@ -165,7 +170,7 @@
     <string name="side_menu_settings">Einstellungen</string>
 
     <string name="preference_layout_usability">Handhabung</string>
-    <string name="usability_category_title">Usability Settings:</string>
+    <string name="usability_category_title">Handhabung</string>
 
     <string name="auto_save_setting_title">Änderungen automatisch speichern</string>
     <string name="auto_save_setting_summary">Änderungen werden automatisch gespeichert, außer wenn abgebrochen wird.</string>
@@ -185,8 +190,37 @@
     <string name="story_button_text">Die ganze Geschichte ansehen…</string>
     <string name="nothing_to_show_elem_view">Nichts da zum sehen…</string>
 
-    <string name="nav_give_feedback_text">Feedback geben</string>
-    <string name="title_activity_image_fullscreen">Bild</string>
+    <string name="pref_title_trash_first">Zuerst Papierkorb, dann löschen</string>
+    <string name="pref_summary_trash_first">Elemente werden zuerst in den Papierkorb verschoben. Sie können später permanent gelöscht werden.</string>
+
+    <string name="pref_title_trash_size">Größe der Papierkörbe</string>
+    <string name="pref_summary_trash_size">Wenn die spezifizierte Anzahl an Elementen im Papierkorb bereits erreicht wurde, wird das älteste Element gelöscht befor ein neues hinzugefügt wird.</string>
+
+    <string name="pref_title_restore_pos">Beim wiederherstellen alte Position verwenden</string>
+    <string name="pref_summary_restore_pos">Elemente werden an ihrer alten Position wiederhergestellt. Sonst basiert die Wiederherstellungsposition auf der \'Listen sind Schlangen\' Einstellung.</string>
+
+    <!--Trash related-->
+    <string name="trash_activity_label">Element Papierkorb</string>
+    <string name="trash">Papierkorb</string>
+    <string name="restore_icon_hint">Wiederherstellen oder permanent Elemente löschen.</string>
+    <string name="deletion_sucessfull">Element erfolgreich gelöscht.</string>
+    <string name="restoration_sucessfull">Element erfolgreich wiederhergestellt.</string>
+
+    <string name="nav_trashed_lists_title">Listen Herstellen</string>
+    <string name="list_restore_successfull">Liste erfolgreich wiederhergestellt.</string>
+    <string name="list_deleted_successfullly">Liste erfolgreich geläscht.</string>
+    <string name="main_activity_title">Meine Liste</string>
+    <string name="main_activity_trash_fragment_title">Papierkorb: Meine Liste</string>
+
+    <string name="trash_guide_delete">← Löschen</string>
+    <string name="trash_guide_seperator">|</string>
+    <string name="trash_guide_restore">Wiederherstellen →</string>
+
+    <!--Image activity related-->
     <string name="your_image_fullscreen_hint">Dein Bild</string>
+
+    <string name="trashed_undo_button_text">ZURÜCK</string>
+    <string name="element_trashed_successfully">Element erfolgreich in den Papierkorb verschoben.</string>
+    <string name="list_trashed_successfully">Liste erfolgreich in den Papierkorb verschoben.</string>
 
 </resources>

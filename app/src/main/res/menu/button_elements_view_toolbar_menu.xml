@@ -11,4 +11,11 @@
         android:icon="@drawable/ic_mode_edit_white_24dp"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/restore_action"
+        android:orderInCategory="200"
+        android:title="@string/restore_icon_hint"
+        android:icon="@drawable/trash_can_outline_sym"
+        app:showAsAction="ifRoom"/>
+
 </menu>

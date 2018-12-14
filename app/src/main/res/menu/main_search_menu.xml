@@ -6,7 +6,7 @@
         android:title="@string/search_title_main"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView" />
+        app:actionViewClass="com.whynoteasy.topxlist.general.CustomSearchView" />
 
     <!-- This was there by default but I dont need it right now, maybe later on
     <item
