@@ -303,6 +303,9 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         //adjust number visually
         makeNumChangesVisibleOnInsertion(restore_index);
 
+        //update background
+        mListener.onListFragmentInteraction(loeAdapterSelf, restore_index , ListOfElementsFragment.INTERACTION_INSERTION);
+
         Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_sucessfull), LENGTH_LONG);
         mySnackbar.show();
     }

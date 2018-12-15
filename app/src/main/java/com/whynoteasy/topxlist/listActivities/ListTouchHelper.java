@@ -20,6 +20,7 @@ public class ListTouchHelper extends ItemTouchHelper.Callback {
     private boolean last = false; //last draw of cardView?
 
     //globally available variable to control listTouchHelper
+    //Used in MainActivity to disable movement when in search mode
     public static boolean temporarilyDisableHelper = false;
 
     public ListTouchHelper(ActionCompletionContract contract) {
@@ -44,6 +45,7 @@ public class ListTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        last=true; //fix elevation display
         if (direction == ItemTouchHelper.LEFT) {
             contract.onViewSwipedLeft(viewHolder.getAdapterPosition());
         } else if (direction == ItemTouchHelper.RIGHT) {
