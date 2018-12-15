@@ -166,7 +166,7 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
     private void updateBackground(boolean empty) {
         ImageView img_view = findViewById(R.id.image_background);
         if (empty) {
-            img_view.setImageResource(R.drawable.light_bulb_edited);
+            img_view.setImageResource(R.drawable.light_bulb_edited_m);
             img_view.setVisibility(View.VISIBLE);
         } else {
             img_view.setVisibility(View.GONE);

@@ -30,59 +30,57 @@
             android:id="@+id/trash_guide_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone">
+            android:visibility="gone"
+            android:layout_margin="@dimen/card_defaults">
 
-        <TextView
-            android:id="@+id/text_guide_left"
-            android:elevation="@dimen/card_defaults"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/lightBlue"
-            android:gravity="center"
-            android:padding="@dimen/card_defaults"
-            android:text="@string/trash_guide_delete"
-            android:textColor="@color/darkBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/text_guide"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+            <TextView
+                android:id="@+id/text_guide_left"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/lightBlue"
+                android:gravity="center"
+                android:padding="@dimen/card_defaults"
+                android:text="@string/trash_guide_delete"
+                android:textColor="@color/darkBlue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/text_guide"
+                app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
 
-        <TextView
-            android:id="@+id/text_guide"
-            android:elevation="@dimen/card_defaults"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/lightBlue"
-            android:foregroundGravity="center"
-            android:gravity="center"
-            android:padding="@dimen/card_defaults"
-            android:text="@string/trash_guide_seperator"
-            android:textColor="@color/darkBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/text_guide_left"
-            app:layout_constraintRight_toLeftOf="@id/text_guide_rigth"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+            <TextView
+                android:id="@+id/text_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/lightBlue"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:padding="@dimen/card_defaults"
+                android:text="@string/trash_guide_seperator"
+                android:textColor="@color/darkBlue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/text_guide_left"
+                app:layout_constraintRight_toLeftOf="@id/text_guide_rigth"
+                app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
 
-        <TextView
-            android:id="@+id/text_guide_rigth"
-            android:elevation="@dimen/card_defaults"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/lightBlue"
-            android:gravity="center"
-            android:padding="@dimen/card_defaults"
-            android:text="@string/trash_guide_restore"
-            android:textColor="@color/darkBlue"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/text_guide"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+            <TextView
+                android:id="@+id/text_guide_rigth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/lightBlue"
+                android:gravity="center"
+                android:padding="@dimen/card_defaults"
+                android:text="@string/trash_guide_restore"
+                android:textColor="@color/darkBlue"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/text_guide"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
 
         </android.support.constraint.ConstraintLayout>
 

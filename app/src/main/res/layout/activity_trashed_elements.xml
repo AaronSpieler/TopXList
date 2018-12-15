@@ -22,9 +22,15 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/trash_guide_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/card_defaults"
+        app:layout_constraintTop_toBottomOf="@id/app_bar_main">
+
     <TextView
         android:id="@+id/text_guide_left"
-        android:elevation="@dimen/card_defaults"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/lightBlue"
@@ -34,14 +40,13 @@
         android:textColor="@color/darkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/list"
+        app:layout_constraintTop_toTopOf="@id/trash_guide_layout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@id/text_guide"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+        app:layout_constraintBottom_toBottomOf="@id/trash_guide_layout" />
 
     <TextView
         android:id="@+id/text_guide"
-        android:elevation="@dimen/card_defaults"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/lightBlue"
@@ -52,14 +57,13 @@
         android:textColor="@color/darkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/list"
+        app:layout_constraintTop_toTopOf="@id/trash_guide_layout"
         app:layout_constraintLeft_toRightOf="@id/text_guide_left"
         app:layout_constraintRight_toLeftOf="@id/text_guide_rigth"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+        app:layout_constraintBottom_toBottomOf="@id/trash_guide_layout" />
 
     <TextView
         android:id="@+id/text_guide_rigth"
-        android:elevation="@dimen/card_defaults"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/lightBlue"
@@ -69,10 +73,12 @@
         android:textColor="@color/darkBlue"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/list"
+        app:layout_constraintTop_toTopOf="@id/trash_guide_layout"
         app:layout_constraintLeft_toRightOf="@id/text_guide"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/app_bar_main" />
+        app:layout_constraintBottom_toBottomOf="@id/trash_guide_layout" />
+
+    </android.support.constraint.ConstraintLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
@@ -84,7 +90,7 @@
         android:paddingBottom="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/text_guide"
+        app:layout_constraintTop_toBottomOf="@id/trash_guide_layout"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         tools:context="com.whynoteasy.topxlist.xObjectTrashManagement.XElemTrashActivity"

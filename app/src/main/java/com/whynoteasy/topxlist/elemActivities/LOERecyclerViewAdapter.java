@@ -119,13 +119,12 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
     @Override
     public void onViewMoved(int oldPosition, int newPosition) {
         XElemModel tempElem = mValues.get(oldPosition);
-        //User user = new User(targetUser);
         mValues.remove(oldPosition);
         mValues.add(newPosition, tempElem);
         notifyItemMoved(oldPosition, newPosition);
         DataRepository myRep = DataRepository.getRepository();
         myRep.changeAllCorrespondingElemNumbersAndUpdateElemToNewPos(tempElem,newPosition+1,oldPosition+1);
-        this.makeNumChangesVisibleOnMove(newPosition, oldPosition);
+        makeNumChangesVisibleOnMove(newPosition, oldPosition);
     }
 
     @Override
@@ -299,11 +298,10 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         myRep.restoreElement(tempElem,newPos);
         int restore_index = newPos-1;
         mValues.add(restore_index,myRep.getElemByID(elem_id));
-        makeNumChangesVisibleOnInsertion(restore_index);
-
-
-        //notify adapter of insertion
         notifyItemInserted(restore_index);
+
+        //adjust number visually
+        makeNumChangesVisibleOnInsertion(restore_index);
 
         Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_sucessfull), LENGTH_LONG);
         mySnackbar.show();
