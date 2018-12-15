@@ -126,6 +126,9 @@ public class XListViewActivity extends AppCompatActivity implements ListOfElemen
                     updateBackground(true);
                 }
                 break;
+            case 3: //item has been inserted
+                updateBackground(false);
+                break;
         }
     }
 

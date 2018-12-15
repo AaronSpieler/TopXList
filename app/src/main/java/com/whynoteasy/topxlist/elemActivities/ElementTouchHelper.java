@@ -37,6 +37,7 @@ class ElementTouchHelper extends ItemTouchHelper.Callback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        last=true; //fix elevation display
         if (direction == ItemTouchHelper.LEFT) {
             contract.onViewSwipedLeft(viewHolder.getAdapterPosition());
         } else if (direction == ItemTouchHelper.RIGHT) {

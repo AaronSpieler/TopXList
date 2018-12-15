@@ -346,6 +346,9 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         //adjust numbers
         changeNumbersForConsistencyOnInsertion(restore_index);
 
+        //adjust background
+        mListener.onListFragmentInteraction(lolAdapterSelf, restore_index, MainListOfListsFragment.INTERACTION_INSERTION);
+
         Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
         mySnackbar.show();
     }

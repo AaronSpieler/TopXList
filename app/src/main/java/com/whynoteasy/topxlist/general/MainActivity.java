@@ -350,7 +350,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-        updateBackground();
+        //from settings return to all lists view
+        changeFragmentTo(MainListOfListsFragment.newInstance(1));
     }
 
     //SO far the only use of onListFragmentInteraction listener
@@ -366,6 +367,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 1: // item has been deleted
                 updateBackground(); //when last element was deleted?
+                break;
+            case 3: //item has been inserted/restored
+                updateBackground();
                 break;
         }
     }
@@ -388,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ListTouchHelper.temporarilyDisableHelper = false;
         }
     }
+
 }
 
 
