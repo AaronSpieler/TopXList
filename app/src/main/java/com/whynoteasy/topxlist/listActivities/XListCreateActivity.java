@@ -322,7 +322,7 @@ public class XListCreateActivity extends AppCompatActivity {
                 // do nothing
             }
         });
-        builder.setNeutralButton("Save", new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.alert_dialog_save, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 saveListFinally(findViewById(R.id.xelem_create_and_edit_cards_scroller));
             }

@@ -313,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (currentFragment.getClass() == MainListOfListsFragment.class) {
             boolean empty = (myRep.getListsWithTagsShares().size() == 0);
             if (empty) {
-                img_view.setImageResource(R.drawable.light_bulb_edited);
+                img_view.setImageResource(R.drawable.light_bulb_edited_m);
                 img_view.setVisibility(View.VISIBLE);
             } else {
                 img_view.setVisibility(View.GONE);

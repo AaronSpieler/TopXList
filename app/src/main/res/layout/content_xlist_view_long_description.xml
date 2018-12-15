@@ -33,7 +33,6 @@
                 app:cardCornerRadius="@dimen/card_defaults"
                 app:cardElevation="@dimen/card_elevation_defaults"
                 app:cardUseCompatPadding="true"
-                app:contentPadding="@dimen/negative_content_padding"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -43,6 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:adjustViewBounds="true"
+                    android:scaleType="fitXY"
                     android:contentDescription="@string/image_description"
                     android:src="@drawable/stock_88205654"
                     app:layout_constraintEnd_toEndOf="parent"

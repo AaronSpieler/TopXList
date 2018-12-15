@@ -341,10 +341,10 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         myRep.restoreList(tempPojo.getXListModel(), newPos);
         int restore_index = newPos-1;
         mValues.add(restore_index,myRep.getListWithTagsSharesByID(list_id));
-        changeNumbersForConsistencyOnInsertion(restore_index);
-
-        //notify adapter of insertion
         notifyItemInserted(restore_index);
+
+        //adjust numbers
+        changeNumbersForConsistencyOnInsertion(restore_index);
 
         Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
         mySnackbar.show();

@@ -110,29 +110,29 @@
 
     <!--Alert Dialog Delete List-->
     <string name="alert_dialog_delete_list_title">Liste Löschen?</string>
-    <string name="alert_dialog_delete_list_message_pre">Sicher, dass sie die Liste löschen wollen:</string>
-    <string name="alert_dialog_delete_list_message_post">Dies kann nicht rückgängig gemacht werden!</string>
+    <string name="alert_dialog_delete_list_message_pre">Liste permanent löschen:</string>
+    <string name="alert_dialog_delete_list_message_post">Löschung ist permanent!</string>
 
     <!--Alert Dialog Delete Element-->
     <string name="alert_dialog_delete_element_title">Element Löschen?</string>
-    <string name="alert_dialog_delete_element_message_pre">Sicher, dass sie das Element löschen wollen:</string>
-    <string name="alert_dialog_delete_element_message_post">This cannot be undone!</string>
+    <string name="alert_dialog_delete_element_message_pre">Element permanent löschen:</string>
+    <string name="alert_dialog_delete_element_message_post">Löschung ist permanent!</string>
 
-    <!--Alert Dialog Exit NoSave Element-->
+    <!--Alert Dialog Exit NoSave XElement-->
     <string name="alert_dialog_nosave_exit_title_element">Verlassen ohne zu speichern?</string>
-    <string name="alert_dialog_nosave_exit_message_element">Clicke SPEICHERN um zu verlassen mit Speichern.</string>
+    <string name="alert_dialog_nosave_exit_message_element">Clicke SPEICHERN um das Element in der Form zu behalten.</string>
 
-    <!--Alert Dialog Exit NoSave Element-->
+    <!--Alert Dialog Exit NoSave XList-->
     <string name="alert_dialog_nosave_exit_title_list">Verlassen ohne zu speichern?</string>
-    <string name="alert_dialog_nosave_exit_message_list">Clicke SPEICHERN um zu verlassen mit Speichern.</string>
+    <string name="alert_dialog_nosave_exit_message_list">Clicke SPEICHERN um Liste in der Form zu behalten.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_element">Verlassen ohne die Änderungen zu speichern?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_element">Clicke SPEICHERN um zu verlassen mit Speichern der Änderungen.</string>
+    <string name="alert_dialog_nosave_edit_exit_message_element">Clicke SPEICHERN um Änderungen beizubehalten.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_list">Verlassen ohne die Änderungen zu speichern?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_list">Clicke SPEICHERN um zu verlassen mit Speichern der Änderungen.</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">>Clicke SPEICHERN um Änderungen beizubehalten.</string>
 
     <!--Alert Dialog Options-->
     <string name="alert_dialog_save">Speichern</string>
@@ -187,7 +187,7 @@
     <string name="pref_title_new_obj_num">Listen sind Schlangen</string>
     <string name="pref_summary_new_obj_num">Neue Elemente werden standardmäßig ans Ende der Liste gepackt, anstatt an den Anfang.</string>
 
-    <string name="story_button_text">Die ganze Geschichte ansehen…</string>
+    <string name="story_button_text">Ganze Geschichte ansehen…</string>
     <string name="nothing_to_show_elem_view">Nichts da zum sehen…</string>
 
     <string name="pref_title_trash_first">Zuerst Papierkorb, dann löschen</string>
@@ -214,7 +214,7 @@
 
     <string name="trash_guide_delete">← Löschen</string>
     <string name="trash_guide_seperator">|</string>
-    <string name="trash_guide_restore">Wiederherstellen →</string>
+    <string name="trash_guide_restore">Herstellen →</string>
 
     <!--Image activity related-->
     <string name="your_image_fullscreen_hint">Dein Bild</string>

@@ -119,19 +119,19 @@
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_element">Exit without saving?</string>
-    <string name="alert_dialog_nosave_exit_message_element">Click SAVE to exit with saving.</string>
+    <string name="alert_dialog_nosave_exit_message_element">Click SAVE to keep element in this from.</string>
 
     <!--Alert Dialog Exit NoSave List-->
     <string name="alert_dialog_nosave_exit_title_list">Exit without saving?</string>
-    <string name="alert_dialog_nosave_exit_message_list">Click SAVE to exit with saving.</string>
+    <string name="alert_dialog_nosave_exit_message_list">Click SAVE to keep list in this from.</string>
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_element">Exit without saving changes?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_element">Click SAVE to exit with saving changes.</string>
+    <string name="alert_dialog_nosave_edit_exit_message_element">Click SAVE to save changes.</string>
 
     <!--Alert Dialog Exit NoSave Edit List-->
     <string name="alert_dialog_nosave_edit_exit_title_list">Exit without saving changes?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_list">Click SAVE to exit with saving changes.</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">Click SAVE to save changes.</string>
 
     <!--Alert Dialog Options-->
     <string name="alert_dialog_save">Save</string>
