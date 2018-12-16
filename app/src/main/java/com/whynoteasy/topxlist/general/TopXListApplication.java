@@ -109,6 +109,7 @@ public class TopXListApplication extends Application {
             myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_7_title), getString(R.string.start_list_7_desc),7,null));
             myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_8_title), getString(R.string.start_list_8_desc),8,null));
             myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_9_title), getString(R.string.start_list_9_desc),9,null));
+            myRep.insertElem(new XElemModel(tempListID, getString(R.string.start_list_10_title), getString(R.string.start_list_10_desc),10,null));
 
             //Setting up done
             settings = getSharedPreferences("PREFS_NAME", 0);

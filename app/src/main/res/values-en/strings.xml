@@ -76,11 +76,11 @@
 
     <!--Start List Strings-->
     <string name="start_list_title">How to get started…</string>
-    <string name="start_list_short_desc"><![CDATA[Click on the \"+\" Button in the bottom right of your screen to create your first list.
+    <string name="start_list_short_desc"><![CDATA[Click the + in the bottom right to create your first list.
         Edit lists by clicking on the pencil or check icon.
-        Reorder your lists via Drag & Drop.
-        Swipe Left to delete and Right to mark lists as done.
-        Use the Search Field at the top to filter and find lists.
+        Reorder your lists via drag & drop.
+        Swipe left to trash lists, and right to mark lists as done.
+        Use the search field at the top to filter and find lists.
         Click this list to see its elements.]]></string>
     <string name="start_list_long_desc">Long Descriptions can be really long.
         So you have all the space you need to tell the full story behind your list.
@@ -96,6 +96,7 @@
     <string name="start_list_7_title">Visually pleasing</string>
     <string name="start_list_8_title">Images</string>
     <string name="start_list_9_title">Settings</string>
+    <string name="start_list_10_title">Trash</string>
 
     <string name="start_list_1_desc">To get started right away</string>
     <string name="start_list_2_desc">Our lives are complicated enough</string>
@@ -106,16 +107,17 @@
     <string name="start_list_7_desc">At least that\'s what I was aiming for…</string>
     <string name="start_list_8_desc">A picture tells more than a thousand words…</string>
     <string name="start_list_9_desc">Make it work for you</string>
+    <string name="start_list_10_desc">We all make misteaks…</string>
 
     <!--Alert Dialog Delete List-->
     <string name="alert_dialog_delete_list_title">Delete List?</string>
-    <string name="alert_dialog_delete_list_message_pre">Are you sure you want to delete the list:</string>
-    <string name="alert_dialog_delete_list_message_post">This cannot be undone!</string>
+    <string name="alert_dialog_delete_list_message_pre">Sure you want to delete</string>
+    <string name="alert_dialog_delete_list_message_post">permanently?</string>
 
     <!--Alert Dialog Delete Element-->
     <string name="alert_dialog_delete_element_title">Delete Element?</string>
-    <string name="alert_dialog_delete_element_message_pre">Are you sure you want to delete the element:</string>
-    <string name="alert_dialog_delete_element_message_post">This cannot be undone!</string>
+    <string name="alert_dialog_delete_element_message_pre">Sure you want to delete</string>
+    <string name="alert_dialog_delete_element_message_post">permanently?</string>
 
     <!--Alert Dialog Exit NoSave Element-->
     <string name="alert_dialog_nosave_exit_title_element">Exit without saving?</string>
