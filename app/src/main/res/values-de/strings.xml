@@ -77,16 +77,16 @@
 
     <!--Start List Strings-->
     <string name="start_list_title">So fängst du an…</string>
-    <string name="start_list_short_desc"><![CDATA[Tippe den \"+\" Knopf im rechten unteren Teil deines Bildschirmes an um eine Liste zu erstellen.
-        Bearbeite Listen indem du den Stift oder das Häkchen antippst.
-        Ordne deine Listen neu durch Drag & Drop.
-        Wische nach Links um zu löschen und Rechts um die Liste zu markieren.
-        Mit der oberen Suchzeile kannst du deine Listen filtern und finden.
-        Denk an eine Zahl zwische 1 und 10 und dann click mich.]]></string>
+    <string name="start_list_short_desc"><![CDATA[Clicke das + rechts unten um eine Liste zu erstellen.
+        Bearbeite Listen indem du das Stift- oder Häkchenicon antippst.
+        Ordne deine Listen neu durch drag & drop.
+        Swipe nach links um in den Papierkorb zu verschieben und rechts um die Liste zu markieren.
+        Im oberen Suchfeld kannst du deine Listen filtern und finden.
+        Clicke diese Liste an um ihren Elemente zu sehen.]]></string>
     <string name="start_list_long_desc">Lange Beschreibungen können richtig lang werden.
-        Also hast du genug platz um deine ganze Geschichte hinter der Liste zu erzählen.
-        Du kannst das Bild hierdrüber anclicken um es im Vollbildschirb-modus anzuschauen.
-        Clicke den Editierknop unten rechts, um die Liste zu bearbeiten.</string>
+        Also hast du genug Platz um deine ganze Geschichte hinter der Liste zu erzählen.
+        Du kannst das Bild hierdrüber anclicken um es im Vollbildmodus anzuschauen.
+        Clicke den Stifticon unten rechts, um die Liste zu bearbeiten.</string>
     <string name="start_list_start_tag">listenKönnenTagsHaben</string>
     <string name="start_list_1_title">Intuitiv</string>
     <string name="start_list_2_title">Simpel</string>
@@ -97,6 +97,7 @@
     <string name="start_list_7_title">Visuell ansprechend</string>
     <string name="start_list_8_title">Bilder</string>
     <string name="start_list_9_title">Einstellungen</string>
+    <string name="start_list_10_title">Papierkorb</string>
 
     <string name="start_list_1_desc">Um sofort anzufangen</string>
     <string name="start_list_2_desc">Unsere Leben sind kopliziert genug</string>
@@ -107,16 +108,17 @@
     <string name="start_list_7_desc">Zumindest war das meine Absicht…</string>
     <string name="start_list_8_desc">Ein Bild sagt mehr als tausend Worte…</string>
     <string name="start_list_9_desc">Stells dir ein wie du es magst</string>
+    <string name="start_list_10_desc">Wir machen alle Felher…</string>
 
     <!--Alert Dialog Delete List-->
     <string name="alert_dialog_delete_list_title">Liste Löschen?</string>
-    <string name="alert_dialog_delete_list_message_pre">Liste permanent löschen:</string>
-    <string name="alert_dialog_delete_list_message_post">Löschung ist permanent!</string>
+    <string name="alert_dialog_delete_list_message_pre">Sicher, dass du</string>
+    <string name="alert_dialog_delete_list_message_post">permanent löschen willst?</string>
 
     <!--Alert Dialog Delete Element-->
     <string name="alert_dialog_delete_element_title">Element Löschen?</string>
-    <string name="alert_dialog_delete_element_message_pre">Element permanent löschen:</string>
-    <string name="alert_dialog_delete_element_message_post">Löschung ist permanent!</string>
+    <string name="alert_dialog_delete_element_message_pre">Sicher, dass du</string>
+    <string name="alert_dialog_delete_element_message_post">permanent löschen willst?</string>
 
     <!--Alert Dialog Exit NoSave XElement-->
     <string name="alert_dialog_nosave_exit_title_element">Verlassen ohne zu speichern?</string>
