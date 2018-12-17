@@ -145,8 +145,8 @@
     <string name="title_already_exists">Title already exists.</string>
     <string name="no_tag_title_entered">No tag name was entered.</string>
     <string name="no_spaces_allowed_in_tags">No spaces allowed in tags.</string>
-    <string name="tag_title_already_exists_for_list">Duplicate Tag</string>
-    <string name="no_proper_number_entered">No proper number was entered for Element</string>
+    <string name="tag_title_already_exists_for_list">Duplicate tag name.</string>
+    <string name="no_proper_number_entered">No proper number was entered for element.</string>
 
     <!--HTML export error messages-->
     <string name="html_export_title">My Top X List Lists:</string>
@@ -191,7 +191,7 @@
     <string name="pref_summary_trash_first">Items get trashed first. They can be permanently deleted later from the trash.</string>
 
     <string name="pref_title_trash_size">Max number of items per trash</string>
-    <string name="pref_summary_trash_size">If the specified number of items is about to succeeded the oldest items get permanently deleted from trash.</string>
+    <string name="pref_summary_trash_size">If the specified number of items is about to succeeded the oldest (smallest id) item gets permanently deleted from trash.</string>
 
     <string name="pref_title_restore_pos">Trash restore old position</string>
     <string name="pref_summary_restore_pos">Items get restored to their old positions. Otherwise, new position is based on \'Lists are queues\' preference.</string>

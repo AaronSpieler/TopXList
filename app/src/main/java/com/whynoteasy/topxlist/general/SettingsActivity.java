@@ -17,7 +17,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_PREF_CONFIRM_DELETE = "pref_confirm_delete";
     public static final String KEY_PREF_AUTO_SAVING = "pref_auto_saving";
     public static final String KEY_PREF_TRASH_FIRST= "pref_trash_first";
-    public static final String KEY_PREF_TRASH_SIZE = "pref_title_trash_size";
+    public static final String KEY_PREF_TRASH_SIZE = "pref_trash_size";
     public static final String KEY_PREF_RESTORE_POS = "pref_restore_pos";
 
     public static final int DEFAULT_TRASH_SIZE=15;
