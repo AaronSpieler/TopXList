@@ -368,7 +368,7 @@ public class XListEditActivity extends AppCompatActivity {
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(thisActivity, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(thisActivity.getString(R.string.alert_dialog_delete_list_title));
-        builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"?\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
+        builder.setMessage(thisActivity.getString(R.string.alert_dialog_delete_list_message_pre)+"\n\""+currentList.getXListModel().getXListTitle()+"\"\n"+thisActivity.getString(R.string.alert_dialog_delete_list_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 deleteXListImmediately();

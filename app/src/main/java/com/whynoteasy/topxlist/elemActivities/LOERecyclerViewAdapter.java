@@ -190,7 +190,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         AlertDialog.Builder builder;
         builder = new AlertDialog.Builder(activityContext, R.style.AppCompatAlertDialogStyle);
         builder.setTitle(activityContext.getString(R.string.alert_dialog_delete_element_title));
-        builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"?\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
+        builder.setMessage(activityContext.getString(R.string.alert_dialog_delete_element_message_pre)+"\n\""+theElement.getXElemTitle()+"\"\n"+activityContext.getString(R.string.alert_dialog_delete_element_message_post));
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 deleteXElementImmediately(position);
