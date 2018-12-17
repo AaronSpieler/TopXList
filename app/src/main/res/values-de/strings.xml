@@ -134,7 +134,7 @@
 
     <!--Alert Dialog Exit NoSave Edit Element-->
     <string name="alert_dialog_nosave_edit_exit_title_list">Verlassen ohne die Änderungen zu speichern?</string>
-    <string name="alert_dialog_nosave_edit_exit_message_list">>Clicke SPEICHERN um Änderungen beizubehalten.</string>
+    <string name="alert_dialog_nosave_edit_exit_message_list">Clicke SPEICHERN um Änderungen beizubehalten.</string>
 
     <!--Alert Dialog Options-->
     <string name="alert_dialog_save">Speichern</string>
@@ -146,7 +146,7 @@
     <string name="title_already_exists">Titel existiert bereits.</string>
     <string name="no_tag_title_entered">Es wurde kein Tag-Name eingegeben.</string>
     <string name="no_spaces_allowed_in_tags">Keine Leerzeichen in Tags erlaubt.</string>
-    <string name="tag_title_already_exists_for_list">Doppelter Tag</string>
+    <string name="tag_title_already_exists_for_list">Doppelter tag Name.</string>
     <string name="no_proper_number_entered">Es wurde keine gültige Nummer eingegeben.</string>
 
     <!--HTML export error messages-->
@@ -196,7 +196,7 @@
     <string name="pref_summary_trash_first">Elemente werden zuerst in den Papierkorb verschoben. Sie können später permanent gelöscht werden.</string>
 
     <string name="pref_title_trash_size">Größe der Papierkörbe</string>
-    <string name="pref_summary_trash_size">Wenn die spezifizierte Anzahl an Elementen im Papierkorb bereits erreicht wurde, wird das älteste Element gelöscht befor ein neues hinzugefügt wird.</string>
+    <string name="pref_summary_trash_size">Wenn die spezifizierte Anzahl an Elementen im Papierkorb bereits erreicht wurde, wird das älteste (amhand der ID) Element gelöscht bevor ein neues hinzugefügt wird.</string>
 
     <string name="pref_title_restore_pos">Beim wiederherstellen alte Position verwenden</string>
     <string name="pref_summary_restore_pos">Elemente werden an ihrer alten Position wiederhergestellt. Sonst basiert die Wiederherstellungsposition auf der \'Listen sind Schlangen\' Einstellung.</string>

@@ -472,7 +472,7 @@ public class XListEditActivity extends AppCompatActivity {
         } else if (!tempTitle.equals(currentList.getXListModel().getXListTitle().trim())) {
             if (titleAlreadyExists(tempTitle)) {
                 //alert user that no duplicate title was entered
-                Snackbar mySnackbar = Snackbar.make(view, R.string.no_title_entered, LENGTH_SHORT);
+                Snackbar mySnackbar = Snackbar.make(view, R.string.title_already_exists, LENGTH_SHORT);
                 mySnackbar.show();
                 return;
             }
