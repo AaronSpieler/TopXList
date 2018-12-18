@@ -385,10 +385,12 @@ public class XListEditActivity extends AppCompatActivity {
     //Move XList to trash
     private void trashXListImmediately() {
         myRep = DataRepository.getRepository();
-        myRep.trashList(currentList.getXListModel());
 
         //remove oldest xList from trash if necessary
         deleteOldestListFromTrashIfNecessary();
+
+        //trash list
+        myRep.trashList(currentList.getXListModel());
 
         //return to activity
         NavUtils.navigateUpFromSameTask(thisActivity);

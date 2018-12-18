@@ -343,10 +343,12 @@ public class XElemEditActivity extends AppCompatActivity {
 
     private void trashXElementImmediately() {
         myRep = DataRepository.getRepository();
-        myRep.trashElement(currentElement);
 
         //remove elements from trash based on preferences
         deleteOldestFromTrashIfNecessary(currentElement.getXListIDForeign());
+
+        //trash element
+        myRep.trashElement(currentElement);
 
         //exit to listView
         Intent intent = new Intent(thisActivity, XListViewActivity.class);
