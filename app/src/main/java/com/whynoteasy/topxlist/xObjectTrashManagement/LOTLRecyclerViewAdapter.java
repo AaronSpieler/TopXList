@@ -122,6 +122,10 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
             }
         }
 
+        //get next unique name
+        String next_unique_title = getNextUniqueXListTitle(tempPojo.getXListModel());
+        tempPojo.getXListModel().setXListTitle(next_unique_title);
+
         //restore with new position
         myRep.restoreList(tempPojo.getXListModel(),newPos);
 
@@ -207,6 +211,31 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
 
     public interface OnTrashListFragmentInteractionListener {
         void onListFragmentInteraction(LOTLRecyclerViewAdapter lolAdapter, int position, int interactionType);
+    }
+
+    private String getNextUniqueXListTitle(XListModel inpXList){
+        DataRepository myRep = DataRepository.getRepository();
+        String nextName = inpXList.getXListTitle();
+        int current_it = 0;
+
+        //find next valid name
+        while (xListTitleAlreadyExists(nextName)) {
+            current_it++;
+            nextName = inpXList.getXListTitle()+" ("+current_it+")";
+        }
+
+        return nextName;
+    }
+
+    private boolean xListTitleAlreadyExists(String newTitle) {
+        DataRepository myRep = DataRepository.getRepository();
+        List<XListTagsSharesPojo> allLists = myRep.getListsWithTagsShares();
+        for (XListTagsSharesPojo tempList : allLists) {
+            if (tempList.getXListModel().getXListTitle().toLowerCase().equals(newTitle.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

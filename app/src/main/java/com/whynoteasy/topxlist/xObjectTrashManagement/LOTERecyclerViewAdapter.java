@@ -22,6 +22,7 @@ import com.whynoteasy.topxlist.general.ElemViewHolder;
 import com.whynoteasy.topxlist.general.GeneralTrashTouchHelper;
 import com.whynoteasy.topxlist.general.SettingsActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
@@ -115,6 +116,10 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
             }
         }
 
+        //get next unique name
+        String next_unique_title = getNextUniqueXElemTitle(tempElem);
+        tempElem.setXElemTitle(next_unique_title);
+
         //restore with new position
         myRep.restoreElement(tempElem,newPos);
 
@@ -170,5 +175,33 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
     public XElemModel getItemAtPosition (int position) {
         return mValues.get(position);
     }
+
+    private String getNextUniqueXElemTitle(XElemModel inpElem){
+        DataRepository myRep = DataRepository.getRepository();
+        int currentListID = inpElem.getXListIDForeign();
+        String nextName = inpElem.getXElemTitle();
+        int current_it = 0;
+
+        //find next valid name
+        while (xElemTitleAlreadyExists(nextName,currentListID)) {
+            current_it++;
+            nextName = inpElem.getXElemTitle()+" ("+current_it+")";
+        }
+
+        return nextName;
+    }
+
+    private boolean xElemTitleAlreadyExists(String tempTitle, int currentListID) {
+        DataRepository myRep = DataRepository.getRepository();
+        List<XElemModel> allListElements = myRep.getElementsByListID(currentListID);
+        for (XElemModel tempElem : allListElements) {
+            if (tempElem.getXElemTitle().toLowerCase().equals(tempTitle.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 }
