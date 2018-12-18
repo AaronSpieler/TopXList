@@ -4,9 +4,9 @@ TODO: instead of prompting user on entering same name, just add index: name-(ind
 TODO: make ElemViewHolder and ListViewHolder encapsulated
 TODO: handle updating of xElem and xList positions more elegantly ( in the onDestroy methods (exit) of the activities/fragments (if searchbar wasnt active))
 TODO: SDK <=19 => padding on edges is weird and elevation stops working
-TODO: When lists are restored, same name is possible
 TODO: Can choose non image for cropping (no possible to fix by me I think)
 TODO: initial images (of example list) dont get deleted
+TODO: snack bars show up inconsistently: on deletion or restore from element or list view it overlaps the floating button
 
 POSSIBLE FUTURE FEATURES:
 Support tablets better
