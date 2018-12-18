@@ -50,7 +50,7 @@
             android:summary="@string/pref_summary_trash_size"
             android:entries="@array/trashSize"
             android:entryValues="@array/trashSizeData"
-            android:defaultValue="3"/>
+            android:defaultValue="15"/>
 
     </PreferenceCategory>
 

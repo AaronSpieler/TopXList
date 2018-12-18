@@ -210,7 +210,7 @@
 
     <string name="nav_trashed_lists_title">Listen Herstellen</string>
     <string name="list_restore_successfull">Liste erfolgreich wiederhergestellt.</string>
-    <string name="list_deleted_successfullly">Liste erfolgreich geläscht.</string>
+    <string name="list_deleted_successfullly">Liste erfolgreich gelöscht.</string>
     <string name="main_activity_title">Meine Liste</string>
     <string name="main_activity_trash_fragment_title">Papierkorb: Meine Liste</string>
 
