@@ -134,13 +134,21 @@
             android:label="@string/title_activity_image_fullscreen"
             android:parentActivityName=".listActivities.XListViewStoryActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.listActivities.XListViewStoryActivity" />
+        </activity>
         <activity
             android:name=".elemActivities.ImageFullscreenElemActivity"
             android:label="@string/title_activity_image_fullscreen"
             android:parentActivityName=".elemActivities.XElemViewActivity"
             android:screenOrientation="fullSensor"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.whynoteasy.topxlist.elemActivities.XElemViewActivity" />
+        </activity>
         <activity
             android:name=".xObjectTrashManagement.XElemTrashActivity"
             android:label="@string/title_activity_xelem_trash"
