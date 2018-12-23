@@ -27,7 +27,7 @@ public interface XElemDao {
     List<XElemModel> loadElementsByListID(String xListIDInp);
 
     //list_id might be more relevant => implies recency of creation
-    @Query("SELECT * FROM elements WHERE list_id = :xListIDInp AND trashed != 0 ORDER BY list_id ASC")
+    @Query("SELECT * FROM elements WHERE list_id = :xListIDInp AND trashed != 0 ORDER BY modified_date DESC")
     List<XElemModel> loadTrashedElementsByListID(String xListIDInp);
 
     @Query("SELECT * FROM elements WHERE  element_id = :xElemIDInp")

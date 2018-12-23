@@ -351,8 +351,9 @@ public class DataRepository implements DatabaseSpecification {
             Integer posOfDel = params[0].getXElemNum();
             db.xElementsModel().updateIncrementNumOfElemFromToHigherPos(Integer.toString(params[0].getXListIDForeign()), Integer.toString(db.xElementsModel().getNumberOfElementsOfList(Integer.toString(params[0].getXListIDForeign()))+1), Integer.toString(posOfDel));
 
-            //mark element as trashed
+            //mark element as trashed and update modified date
             params[0].setXElemTrashed(true);
+            params[0].updateDateModifiedMillis();
             db.xElementsModel().updateXElem(params[0]);
 
             return null;
@@ -587,8 +588,9 @@ public class DataRepository implements DatabaseSpecification {
         }
         @Override
         protected Void doInBackground(final XListModel... params) {
-            //mark element as trashed
+            //mark element as trashed and update modified date
             params[0].setXListTrashed(true);
+            params[0].updateDateModifiedMillis();
             db.xListModel().updateXList(params[0]);
             //update positions
             Integer posOfDel = params[0].getXListNum();

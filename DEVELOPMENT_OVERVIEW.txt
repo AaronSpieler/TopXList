@@ -1,5 +1,4 @@
 RATHER BUGS:
-TODO: add attribute "last edit time" to xElements and xLists => could be used for trash
 TODO: instead of prompting user on entering same name, just add index: name-(index)
 TODO: make ElemViewHolder and ListViewHolder encapsulated
 TODO: handle updating of xElem and xList positions more elegantly ( in the onDestroy methods (exit) of the activities/fragments (if searchbar wasnt active))

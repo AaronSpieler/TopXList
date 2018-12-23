@@ -6,7 +6,10 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Whatever on 15.11.2017.
@@ -55,6 +58,9 @@ public class XListModel implements Comparable<XListModel>{
     @ColumnInfo(name = "trashed")
     private boolean xListTrashed;
 
+    @ColumnInfo(name = "modified_date")
+    private long xListDateModifiedMillis;
+
     @Ignore
     public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc) {
         this.xListTitle = xListTitle;
@@ -67,7 +73,7 @@ public class XListModel implements Comparable<XListModel>{
         this.xListTrashed = false;
     }
 
-    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc, boolean xListMarked,String xListLanguage, boolean xListTrashed) {
+    public XListModel(String xListTitle, String xListShortDescription, String xListLongDescription, int xListNum, String xImageLoc, boolean xListMarked,String xListLanguage, boolean xListTrashed, long xListDateModifiedMillis) {
         this.xListTitle = xListTitle;
         this.xListShortDescription = xListShortDescription;
         this.xListLongDescription = xListLongDescription;
@@ -76,6 +82,7 @@ public class XListModel implements Comparable<XListModel>{
         this.xImageLoc = xImageLoc;
         this.xListLanguage = xListLanguage;
         this.xListTrashed = xListTrashed;
+        this.xListDateModifiedMillis = xListDateModifiedMillis;
     }
 
     //Getters and Setters
@@ -152,6 +159,14 @@ public class XListModel implements Comparable<XListModel>{
         this.xListTrashed = xListTrashed;
     }
 
+    public long getXListDateModifiedMillis() {
+        return xListDateModifiedMillis;
+    }
+
+    public void setXListDateModifiedMillis(long xListDateModifiedMillis) {
+        this.xListDateModifiedMillis = xListDateModifiedMillis;
+    }
+
     //Other Methods
 
     @Override
@@ -161,5 +176,10 @@ public class XListModel implements Comparable<XListModel>{
 
     public void negateMarked(){
         xListMarked = !xListMarked;
+    }
+
+    public void updateDateModifiedMillis() {
+        //always get the time for UTC so everything is consistent
+        this.xListDateModifiedMillis = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
     }
 }

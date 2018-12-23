@@ -297,13 +297,8 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
             e.printStackTrace();
         }
         if (trashed_xLists.size() >= curr_trash_limit) {
-            XListTagsSharesPojo oldestXList = trashed_xLists.get(0);
-            for (XListTagsSharesPojo cur_elem: trashed_xLists) {
-                if (cur_elem.getXListModel().getXListID() < oldestXList.getXListModel().getXListID()) {
-                    oldestXList = cur_elem;
-                }
-            }
-            myRep.deleteListFinally(oldestXList.getXListModel());
+            //they are sorted descending, so last element will be oldest
+            myRep.deleteListFinally(trashed_xLists.get(trashed_xLists.size()-1).getXListModel());
         }
 
     }
@@ -349,7 +344,7 @@ public class LOLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder>
         //adjust background
         mListener.onListFragmentInteraction(lolAdapterSelf, restore_index, MainListOfListsFragment.INTERACTION_INSERTION);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity) activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successful), Snackbar.LENGTH_LONG);
         mySnackbar.show();
     }
 }

@@ -143,7 +143,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".xObjectTrashManagement.XElemTrashActivity"
-            android:label="@string/trash_activity_label"
+            android:label="@string/title_activity_xelem_trash"
             android:parentActivityName="com.whynoteasy.topxlist.elemActivities.XListViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">

@@ -20,14 +20,8 @@
     <!--Navigation Draver-->
     <string name="navigation_drawer_open">Öffne navigations Fenster</string>
     <string name="navigation_drawer_close">Schließe navigations Fenster</string>
-    <string name="action_settings">Einstellungen</string>
 
-    <!--These are just to see how the cards would look with text-->
-    <string name="test_tag_text">#cool #lahm #wenJuckts #gleiche</string>
-    <string name="test_short_description_text">Some interesting fact just occurred to me so I write it down before I forget it so everything is cool, yeah!</string>
-    <string name="test_title_text">This is a great Title</string>
-    <string name="test_popup_menu">List options</string>
-    <string name="test_elem_card_num">11.</string>
+    <string name="edit_description">Element editieren.</string>
 
     <!--List and Elem Create & Edit Labels-->
     <string name="create_and_edit_save_button">Speichern</string>
@@ -157,9 +151,9 @@
     <string name="export_file_chooser_title">Exportiere Dokument</string>
 
     <!--Side navigation bar-->
-    <string name="side_menu_all_lists">Alle Listen</string>
-    <string name="side_menu_export">Exportieren (HTML)</string>
-    <string name="nav_give_feedback_text">Feedback geben</string>
+    <string name="nav_draw_all_lists">Alle Listen</string>
+    <string name="nav_draw_export">Exportieren (HTML)</string>
+    <string name="nav_draw_give_feedback">Feedback geben</string>
 
     <!--Image related texts-->
     <string name="image_description">dein Bild</string>
@@ -169,7 +163,7 @@
     <string name="image_panel_desc">Bild: </string>
 
     <!--Concerned with the preferences/settings-->
-    <string name="side_menu_settings">Einstellungen</string>
+    <string name="nav_draw_settings">Einstellungen</string>
 
     <string name="preference_layout_usability">Handhabung</string>
     <string name="usability_category_title">Handhabung</string>
@@ -196,26 +190,26 @@
     <string name="pref_summary_trash_first">Elemente werden zuerst in den Papierkorb verschoben. Sie können später permanent gelöscht werden.</string>
 
     <string name="pref_title_trash_size">Größe der Papierkörbe</string>
-    <string name="pref_summary_trash_size">Wenn die spezifizierte Anzahl an Elementen im Papierkorb bereits erreicht wurde, wird das älteste (amhand der ID) Element gelöscht bevor ein neues hinzugefügt wird.</string>
+    <string name="pref_summary_trash_size">Wenn die spezifizierte Anzahl an Elementen im Papierkorb bereits erreicht wurde, wird das älteste Element gelöscht bevor ein neues hinzugefügt wird.</string>
 
     <string name="pref_title_restore_pos">Beim wiederherstellen alte Position verwenden</string>
     <string name="pref_summary_restore_pos">Elemente werden an ihrer alten Position wiederhergestellt. Sonst basiert die Wiederherstellungsposition auf der \'Listen sind Schlangen\' Einstellung.</string>
 
     <!--Trash related-->
-    <string name="trash_activity_label">Element Papierkorb</string>
+    <string name="title_activity_xelem_trash">Element Papierkorb</string>
     <string name="trash">Papierkorb</string>
     <string name="restore_icon_hint">Wiederherstellen oder permanent Elemente löschen.</string>
-    <string name="deletion_sucessfull">Element erfolgreich gelöscht.</string>
-    <string name="restoration_sucessfull">Element erfolgreich wiederhergestellt.</string>
+    <string name="deletion_successful">Element erfolgreich gelöscht.</string>
+    <string name="restoration_successful">Element erfolgreich wiederhergestellt.</string>
 
-    <string name="nav_trashed_lists_title">Listen Herstellen</string>
-    <string name="list_restore_successfull">Liste erfolgreich wiederhergestellt.</string>
-    <string name="list_deleted_successfullly">Liste erfolgreich gelöscht.</string>
+    <string name="nav_draw_trashed_lists_title">Listen Herstellen</string>
+    <string name="list_restore_successful">Liste erfolgreich wiederhergestellt.</string>
+    <string name="list_deleted_successfully">Liste erfolgreich gelöscht.</string>
     <string name="main_activity_title">Meine Liste</string>
     <string name="main_activity_trash_fragment_title">Papierkorb: Meine Liste</string>
 
     <string name="trash_guide_delete">← Löschen</string>
-    <string name="trash_guide_seperator">|</string>
+    <string name="trash_guide_separator">|</string>
     <string name="trash_guide_restore">Herstellen →</string>
 
     <!--Image activity related-->

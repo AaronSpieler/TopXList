@@ -406,13 +406,8 @@ public class XListEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (trashed_xLists.size() >= curr_trash_limit) {
-            XListTagsSharesPojo oldestXList = trashed_xLists.get(0);
-            for (XListTagsSharesPojo cur_elem: trashed_xLists) {
-                if (cur_elem.getXListModel().getXListID() < oldestXList.getXListModel().getXListID()) {
-                    oldestXList = cur_elem;
-                }
-            }
-            myRep.deleteListFinally(oldestXList.getXListModel());
+            //they are sorted descending, so last element will be oldest
+            myRep.deleteListFinally(trashed_xLists.get(trashed_xLists.size()-1).getXListModel());
         }
 
     }

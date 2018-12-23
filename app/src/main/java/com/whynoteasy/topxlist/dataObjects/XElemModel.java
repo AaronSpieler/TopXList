@@ -8,6 +8,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by Whatever on 15.11.2017.
  * Main Purpose: Represents Lists Elements, Defines through Room database tables
@@ -58,6 +61,9 @@ public class XElemModel implements Comparable<XElemModel>{
     @ColumnInfo(name = "trashed")
     private boolean xElemTrashed;
 
+    @ColumnInfo(name = "modified_date")
+    private long xElemDateModifiedMillis;
+
     //Constructor
     @Ignore
     public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, String xImageLoc) {
@@ -70,7 +76,7 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemTrashed = false;
     }
 
-    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, boolean xElemMarked, String xImageLoc, boolean xElemTrashed) {
+    public XElemModel(int xListIDForeign, String xElemTitle, String xElemDescription, int xElemNum, boolean xElemMarked, String xImageLoc, boolean xElemTrashed, long xElemDateModifiedMillis) {
         this.xListIDForeign = xListIDForeign;
         this.xElemTitle = xElemTitle;
         this.xElemDescription = xElemDescription;
@@ -78,6 +84,7 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemMarked = xElemMarked;
         this.xImageLoc = xImageLoc;
         this.xElemTrashed = xElemTrashed;
+        this.xElemDateModifiedMillis = xElemDateModifiedMillis;
     }
 
     //Getters and Setters
@@ -142,6 +149,14 @@ public class XElemModel implements Comparable<XElemModel>{
         this.xElemTrashed = xElemTrashed;
     }
 
+    public long getXElemDateModifiedMillis() {
+        return xElemDateModifiedMillis;
+    }
+
+    public void setXElemDateModifiedMillis(long xElemDateModifiedMillis) {
+        this.xElemDateModifiedMillis = xElemDateModifiedMillis;
+    }
+
     //Other Methods
 
     @Override
@@ -151,5 +166,10 @@ public class XElemModel implements Comparable<XElemModel>{
 
     public void negateMarked(){
         xElemMarked = !xElemMarked;
+    }
+
+    public void updateDateModifiedMillis() {
+        //always get the time for UTC so everything is consistent
+        this.xElemDateModifiedMillis = Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis();
     }
 }

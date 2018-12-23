@@ -28,8 +28,6 @@ import com.whynoteasy.topxlist.general.SettingsActivity;
 
 import java.util.List;
 
-import static android.support.design.widget.Snackbar.LENGTH_LONG;
-
 /**
  * {@link RecyclerView.Adapter} that can display a {@link XListTagsSharesPojo} and makes a call to the
  * specified {@link OnTrashListFragmentInteractionListener}.
@@ -132,7 +130,7 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
         this.mValues.remove(tempPojo);
         notifyItemRemoved(position);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successfull), Snackbar.LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_restore_successful), Snackbar.LENGTH_LONG);
         mySnackbar.show();
     }
 
@@ -190,7 +188,7 @@ public class LOTLRecyclerViewAdapter extends RecyclerView.Adapter<ListViewHolder
         mValues.remove(tempPojo);
         notifyItemRemoved(position);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_deleted_successfullly), Snackbar.LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.drawer_layout), activityContext.getString(R.string.list_deleted_successfully), Snackbar.LENGTH_LONG);
         mySnackbar.show();
     }
 

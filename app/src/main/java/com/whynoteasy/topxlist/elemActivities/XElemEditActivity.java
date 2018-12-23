@@ -366,13 +366,8 @@ public class XElemEditActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         if (trash_xElements_list.size() >= curr_trash_limit) {
-            XElemModel oldestElement = trash_xElements_list.get(0);
-            for (XElemModel cur_elem: trash_xElements_list) {
-                if (cur_elem.getXElemID() < oldestElement.getXElemID()) {
-                    oldestElement = cur_elem;
-                }
-            }
-            myRep.deleteElemFinally(oldestElement);
+            //they are sorted descending, so last element will be oldest
+            myRep.deleteElemFinally(trash_xElements_list.get(trash_xElements_list.size()-1));
         }
 
     }

@@ -265,13 +265,8 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         e.printStackTrace();
     }
         if (trash_xElements_list.size() >= curr_trash_limit) {
-            XElemModel oldestElement = trash_xElements_list.get(0);
-            for (XElemModel cur_elem: trash_xElements_list) {
-                if (cur_elem.getXElemID() < oldestElement.getXElemID()) {
-                    oldestElement = cur_elem;
-                }
-            }
-            myRep.deleteElemFinally(oldestElement);
+            //they are sorted descending, so last element will be oldest
+            myRep.deleteElemFinally(trash_xElements_list.get(trash_xElements_list.size()-1));
         }
 
     }
@@ -306,7 +301,7 @@ public class LOERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder>
         //update background
         mListener.onListFragmentInteraction(loeAdapterSelf, restore_index , ListOfElementsFragment.INTERACTION_INSERTION);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_sucessfull), LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_successful), LENGTH_LONG);
         mySnackbar.show();
     }
 }

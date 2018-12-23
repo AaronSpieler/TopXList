@@ -27,9 +27,8 @@ public interface XListTagsSharesDao {
     @Query("SELECT * FROM lists WHERE list_id = :xListIDInp")
     XListTagsSharesPojo loadListWithTagAndSharesByID(String xListIDInp);
 
-    //order by list id, because it might reflect more the recency of deletion
     @Transaction
-    @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY list_id ASC")
+    @Query("SELECT * FROM lists WHERE trashed != 0 ORDER BY modified_date DESC")
     List<XListTagsSharesPojo> loadAllTrashedListsWithTagsAndShares();
 
 }
