@@ -22,7 +22,6 @@ import com.whynoteasy.topxlist.general.ElemViewHolder;
 import com.whynoteasy.topxlist.general.GeneralTrashTouchHelper;
 import com.whynoteasy.topxlist.general.SettingsActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
@@ -126,7 +125,7 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
         this.mValues.remove(tempElem);
         notifyItemRemoved(position);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_sucessfull), LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.restoration_successful), LENGTH_LONG);
         mySnackbar.show();
     }
 
@@ -168,7 +167,7 @@ public class LOTERecyclerViewAdapter extends RecyclerView.Adapter<ElemViewHolder
         mValues.remove(theElement);
         notifyItemRemoved(position);
 
-        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.deletion_sucessfull), LENGTH_LONG);
+        Snackbar mySnackbar = Snackbar.make(((Activity)activityContext).findViewById(R.id.toolbar_list_view),  activityContext.getString(R.string.deletion_successful), LENGTH_LONG);
         mySnackbar.show();
     }
 

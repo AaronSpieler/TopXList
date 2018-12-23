@@ -1,0 +1,312 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 4,
+    "identityHash": "6e320897a4efe2fd5cd0a198a2c494f5",
+    "entities": [
+      {
+        "tableName": "tags",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`tag_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_id` INTEGER NOT NULL, `tag_name` TEXT, FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "xTagID",
+            "columnName": "tag_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListIDForeign",
+            "columnName": "list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xTagName",
+            "columnName": "tag_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "tag_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "tags_list_idx",
+            "unique": false,
+            "columnNames": [
+              "list_id"
+            ],
+            "createSql": "CREATE  INDEX `tags_list_idx` ON `${TABLE_NAME}` (`list_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "lists",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "list_id"
+            ],
+            "referencedColumns": [
+              "list_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "elements",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`element_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_id` INTEGER NOT NULL, `element_name` TEXT, `element_desc` TEXT, `element_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `image_loc` TEXT, `trashed` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL, FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "xElemID",
+            "columnName": "element_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListIDForeign",
+            "columnName": "list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xElemTitle",
+            "columnName": "element_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xElemDescription",
+            "columnName": "element_desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xElemNum",
+            "columnName": "element_num",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xElemMarked",
+            "columnName": "marked_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xImageLoc",
+            "columnName": "image_loc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xElemTrashed",
+            "columnName": "trashed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xElemDateModifiedMillis",
+            "columnName": "modified_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "element_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "elements_list_idx",
+            "unique": false,
+            "columnNames": [
+              "list_id"
+            ],
+            "createSql": "CREATE  INDEX `elements_list_idx` ON `${TABLE_NAME}` (`list_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "lists",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "list_id"
+            ],
+            "referencedColumns": [
+              "list_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "lists",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`list_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `list_name` TEXT, `list_desc` TEXT, `list_long_desc` TEXT, `list_num` INTEGER NOT NULL, `marked_status` INTEGER NOT NULL, `language` TEXT, `image_loc` TEXT, `trashed` INTEGER NOT NULL, `modified_date` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "xListID",
+            "columnName": "list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListTitle",
+            "columnName": "list_name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xListShortDescription",
+            "columnName": "list_desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xListLongDescription",
+            "columnName": "list_long_desc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xListNum",
+            "columnName": "list_num",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListMarked",
+            "columnName": "marked_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListLanguage",
+            "columnName": "language",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xImageLoc",
+            "columnName": "image_loc",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xListTrashed",
+            "columnName": "trashed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListDateModifiedMillis",
+            "columnName": "modified_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "list_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "share_rules",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rule_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `owner_id` INTEGER NOT NULL, `list_id` INTEGER NOT NULL, `share_type_num` INTEGER NOT NULL, `shared_with_id` INTEGER NOT NULL, `sync_status` INTEGER NOT NULL, `firebase_url` TEXT, `modified_date` INTEGER NOT NULL, FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "xShareID",
+            "columnName": "rule_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xOwnerID",
+            "columnName": "owner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xListIDForeign",
+            "columnName": "list_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xShareType",
+            "columnName": "share_type_num",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xSharedWithID",
+            "columnName": "shared_with_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xSharedStatus",
+            "columnName": "sync_status",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "xShareFireURL",
+            "columnName": "firebase_url",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "xShareDateModifiedMillis",
+            "columnName": "modified_date",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "rule_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "shares_list_idx",
+            "unique": false,
+            "columnNames": [
+              "list_id"
+            ],
+            "createSql": "CREATE  INDEX `shares_list_idx` ON `${TABLE_NAME}` (`list_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "lists",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "list_id"
+            ],
+            "referencedColumns": [
+              "list_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6e320897a4efe2fd5cd0a198a2c494f5\")"
+    ]
+  }
+}

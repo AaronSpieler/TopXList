@@ -22,14 +22,14 @@ import com.whynoteasy.topxlist.dataObjects.XTagModel;
  * SINGLETON PATTERN
  * Main Purpose:    Defining & Configuring the Application Database
  */
-@Database(entities = {XTagModel.class, XElemModel.class, XListModel.class, XShareModel.class}, version = 3, exportSchema = true)
+@Database(entities = {XTagModel.class, XElemModel.class, XListModel.class, XShareModel.class}, version = 4, exportSchema = true)
 public abstract class XRoomDatabase extends RoomDatabase{
 
     private static XRoomDatabase sInstance;
 
     public static XRoomDatabase getDatabase(){
         if (sInstance == null){
-            sInstance = Room.databaseBuilder(TopXListApplication.getAppContext(), XRoomDatabase.class, "topXList_db").addMigrations(MIGRATION_1_2, MIGRATION_2_3).build();
+            sInstance = Room.databaseBuilder(TopXListApplication.getAppContext(), XRoomDatabase.class, "topXList_db").addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4).build();
         }
         return sInstance;
     }
@@ -76,12 +76,20 @@ public abstract class XRoomDatabase extends RoomDatabase{
                     "PRIMARY KEY(`element_id`), FOREIGN KEY(`list_id`) REFERENCES `lists`(`list_id`) ON DELETE CASCADE ON UPDATE NO ACTION)");
             database.execSQL("INSERT INTO `elements` (`element_id`, `list_id`, `element_name`, `element_desc`, `element_num`, `marked_status`) " +
                     "SELECT `xElemID`, `xListIDForeign`, `xElemTitle`, `xElemDescription`, `xElemNum`, `xElemMarked` FROM XElemModel");
-            database.execSQL("ALTER TABLE elements ADD image_loc TEXT ");
+            database.execSQL("ALTER TABLE `elements` ADD image_loc TEXT ");
             database.execSQL("ALTER TABLE `elements` ADD `trashed` INTEGER NOT NULL DEFAULT 0");
             database.execSQL("DROP TABLE XElemModel");
             database.execSQL("CREATE INDEX `elements_list_idx` ON `elements` (`list_id`)"); //seems to be non deterministic? sometimes sql doesnt creste the index??
         }
 
+    };
+
+    public static final Migration MIGRATION_3_4 = new Migration(3, 4) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE elements ADD modified_date INTEGER NOT NULL DEFAULT 0");
+            database.execSQL("ALTER TABLE lists ADD modified_date INTEGER NOT NULL DEFAULT 0");
+        }
     };
 
     public abstract XElemDao xElementsModel();

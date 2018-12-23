@@ -57,7 +57,7 @@
                 android:foregroundGravity="center"
                 android:gravity="center"
                 android:padding="@dimen/card_defaults"
-                android:text="@string/trash_guide_seperator"
+                android:text="@string/trash_guide_separator"
                 android:textColor="@color/darkBlue"
                 android:textSize="20sp"
                 android:textStyle="bold"
