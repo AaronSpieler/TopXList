@@ -21,11 +21,9 @@ A few use cases would be: The best quotes I have ever heard. Top 10 movies I hav
 
 ## Screenshots:
 
-<img src="readme_images/image_00.png" alt="Start Screen" width="200"/> <img src="readme_images/image_01.png" alt="Navigation Drawer" width="200"/> <img src="readme_images/image_02.png" alt="List View" width="200"/> 
+<img src="readme_images/image_00.png" alt="Start Screen" width="220"/> <img src="readme_images/image_01.png" alt="Navigation Drawer" width="220"/> <img src="readme_images/image_02.png" alt="List View" width="220"/> <img src="readme_images/image_03.png" alt="Dragging" width="220"/>
 
-<img src="readme_images/image_03.png" alt="Dragging" width="200"/> <img src="readme_images/image_04.png" alt="Editing" width="200"/> <img src="readme_images/image_05.png" alt="Swiping" width="200"/>
-
-<img src="readme_images/image_06.png" alt="Alert Dialog" width="200"/> <img src="readme_images/image_07.png" alt="Settings" width="200"/>
+ <img src="readme_images/image_04.png" alt="Editing" width="220"/> <img src="readme_images/image_05.png" alt="Swiping" width="220"/> <img src="readme_images/image_06.png" alt="Alert Dialog" width="220"/> <img src="readme_images/image_07.png" alt="Settings" width="220"/>
 
 ## Concept to the project
 
