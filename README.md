@@ -59,4 +59,4 @@ I was looking for an app for android that was visually appealing and would allow
 
 ## Licence
 
-[MIT](LICENCE.md)
+[MIT](LICENSE.md)
